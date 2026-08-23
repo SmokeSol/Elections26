@@ -240,8 +240,12 @@ def _candidate_awareness(card: Mapping[str, Any], *, mind_state: Mapping[str, An
     if isinstance(explicit, bool):
         return explicit, {"status": "EXPLICIT_UPSTREAM_VISIBILITY", "visible": explicit}
     anchors = (mind_state.get("before_this_election") or {}).get("anchors") or {}
-    attention = _unit((anchors.get("political_attention") or {}).get("observed_value")) or .5
-    localism = _unit((anchors.get("local_orientation") or {}).get("observed_value")) or .5
+    attention = _unit((anchors.get("political_attention") or {}).get("observed_value"))
+    if attention is None:
+        attention = .5
+    localism = _unit((anchors.get("local_orientation") or {}).get("observed_value"))
+    if localism is None:
+        localism = .5
     tier = _band(attention); threshold = {"LOW": .78, "MEDIUM": .52, "HIGH": .22}.get(tier, .52)
     score = attention + .22 * localism + .08 * _fraction(snapshot_id, voter_id, card.get("party_id"))
     visible = score >= threshold
