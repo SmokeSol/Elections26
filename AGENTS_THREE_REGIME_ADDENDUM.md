@@ -1,5 +1,7 @@
 # Agent Society — three-regime goal addendum
 
+> **Behavioral V8 / current-vintage override:** before any new P3 model call, read `AGENTS_BEHAVIORAL_MIND_ADDENDUM.md`. Its `P3_CURRENT_VINTAGE_2026` rules supersede the stale complete-roster fail-closed wording below **for current-vintage pilots only**. `FINAL_BALLOT_2026` remains strict. Historical text is retained here for auditability rather than rewritten.
+
 This addendum supersedes the old assumption that the fully blind G0 is the candidate primary election simulation.
 
 Read first:
