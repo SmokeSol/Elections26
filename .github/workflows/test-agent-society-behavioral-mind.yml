@@ -1,0 +1,47 @@
+name: test-agent-society-behavioral-mind
+
+on:
+  push:
+    branches:
+      - morocco26-agent-society-v2-front-vote-llm
+    paths:
+      - 'morocco26/agent_society_v4/behavioral_*.py'
+      - 'morocco26/agent_society_v4/tests/test_behavioral_*.py'
+      - 'morocco26/scripts/agent_society_behavioral_v8.py'
+      - 'morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_*'
+      - 'morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/run_g0_sol_named_2026_behavioral_v8.py'
+      - 'AGENTS_BEHAVIORAL_MIND_ADDENDUM.md'
+      - 'AGENTS_THREE_REGIME_ADDENDUM.md'
+  workflow_dispatch:
+
+jobs:
+  behavioral-mind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile behavioral code
+        run: |
+          python -m py_compile \
+            morocco26/agent_society_v4/behavioral_mind_v8.py \
+            morocco26/agent_society_v4/behavioral_environment_v8.py \
+            morocco26/agent_society_v4/behavioral_realism.py \
+            morocco26/scripts/agent_society_behavioral_v8.py \
+            morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/run_g0_sol_named_2026_behavioral_v8.py
+      - name: Validate JSON contracts
+        run: |
+          python - <<'PY'
+          import json
+          for path in [
+              'morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_OUTPUT_SCHEMA_V1.json',
+              'morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_MIND_PROTOCOL_V1.json',
+              'morocco26/data/goal100/agent_society_v2/BEHAVIORAL_MIND_STATE_V1.json',
+          ]:
+              with open(path, encoding='utf-8') as handle:
+                  json.load(handle)
+          print('PASS_BEHAVIORAL_JSON')
+          PY
+      - name: Behavioral unit tests
+        run: python -m unittest discover -v -s morocco26/agent_society_v4/tests -p 'test_behavioral_*.py'

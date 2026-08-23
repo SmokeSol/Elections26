@@ -1,0 +1,92 @@
+{
+  "architecture": [
+    "OBJECTIVE_WORLD",
+    "VOTER_STATE",
+    "SUBJECTIVE_MIND",
+    "BEHAVIOR",
+    "FREE_FIRST_PERSON_POV",
+    "SEPARATE_AUDIT"
+  ],
+  "behavior_rules": {
+    "forced_decisiveness_forbidden": true,
+    "local_and_regional_ballots_are_distinct": true,
+    "local_candidate_evidence_must_not_drive_regional_ballot_by_default": true,
+    "split_ticket_allowed": true,
+    "turnout_and_party_preference_are_distinct": true,
+    "uncertainty_and_indecision_allowed": true
+  },
+  "current_vintage_rules": {
+    "candidate_states": [
+      "OFFICIAL",
+      "DECLARED",
+      "REPORTED",
+      "UNKNOWN",
+      "NO_LIST"
+    ],
+    "final_ballot_completeness_required_for_pilot": false,
+    "final_ballot_gate_remains_separate_and_strict": true,
+    "silent_candidate_imputation_forbidden": true,
+    "unknown_candidate_is_valid_information": true
+  },
+  "execution_gate": {
+    "expected_voters_in_startup_work_item": 32,
+    "no_scale_override_flag": true,
+    "scale_allowed_before_all_required_gates": false,
+    "startup_work_item_cap": 1
+  },
+  "mind_state_rules": {
+    "candidate_awareness_assignment": "EXPERIMENTAL_DETERMINISTIC_UNVALIDATED_WHEN_NO_EXPLICIT_UPSTREAM_VISIBILITY",
+    "candidate_awareness_assignment_requires_paired_validation_before_scale": true,
+    "candidate_vs_programme_orientation_heuristic": "EXPERIMENTAL_DERIVED_UNVALIDATED",
+    "demographics_alone_cannot_create_party_preference": true,
+    "explicit_registered_prior_required_to_fill_missing_psychopolitical_state": true,
+    "invented_candidate_reputation_forbidden": true,
+    "invented_clientelism_or_notability_forbidden": true,
+    "invented_family_or_neighborhood_recommendation_forbidden": true,
+    "invented_party_rejection_forbidden": true,
+    "invented_personal_candidate_relationship_forbidden": true,
+    "invented_tribal_or_community_alignment_forbidden": true,
+    "unknown_dimensions_remain_unknown": true
+  },
+  "model": "gpt-5.6-sol",
+  "parent_regime": "P3_CURRENT_VINTAGE_2026",
+  "promotion_gates": {
+    "BR0": "exact 32-row/identity integrity",
+    "BR1": "non-degenerate LOCAL and REGIONAL partisan vectors",
+    "BR2": "paired persona sensitivity",
+    "BR3": "paired UNKNOWN-to-KNOWN candidate sensitivity",
+    "BR4": "paired programme sensitivity",
+    "BR5": "party-memory sensitivity",
+    "BR6": "non-degenerate turnout mechanism",
+    "BR7": "noninformative placebo",
+    "BR8": "first-person POV with no research ontology in the voice"
+  },
+  "protocol_id": "ATLAS_AGENT_SOCIETY_BEHAVIORAL_MIND_V8_PROTOCOL_V1",
+  "reasoning_effort": "medium",
+  "safety": {
+    "historical_outcomes_opened_for_this_protocol": false,
+    "historical_target_outcomes_in_model_context": false,
+    "memory_in_model_context": false,
+    "tools_in_model_context": false,
+    "web_in_model_context": false
+  },
+  "schema_version": "1.0",
+  "scientific_interpretation": {
+    "agent_society_role": "BEHAVIORAL_SIGNAL_ENGINE",
+    "forecast_role": "ATLAS_STRUCTURAL_BASELINE_PLUS_CALIBRATED_AGENTIC_DELTA",
+    "lambda_may_be_nonzero_only_after_registered_historical_out_of_sample_validation": true,
+    "pre_validation_lambda": 0.0,
+    "raw_agent_output_is_forecast": false
+  },
+  "status": "FROZEN_BEFORE_BEHAVIORAL_V8_PILOT",
+  "voter_voice_rules": {
+    "audit_runs_after_behavior": true,
+    "cited_factors_not_requested": true,
+    "factor_importance_not_requested": true,
+    "first_person_required": true,
+    "free_continuous_pov": true,
+    "observable_rationale_replaced_by_pov_fr": true,
+    "reason_codes_not_requested": true,
+    "research_factor_taxonomy_in_voice_forbidden": true
+  }
+}

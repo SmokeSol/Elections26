@@ -1,0 +1,61 @@
+{
+  "state_id": "M26_AGENT_SOCIETY_BEHAVIORAL_MIND_STATE_V1",
+  "schema_version": "1.0",
+  "status": "READY_TO_BUILD_BEHAVIORAL_V8_PILOT",
+  "registered_at": "2026-08-23T10:28:00+01:00",
+  "parent_branch_head_observed_before_implementation": "8ac095645c853fd9819f93aec6c14829016e70f7",
+  "diagnostic_run": {
+    "name": "P3_atomic_ain_chock",
+    "purpose": "technical D0+L0 atomic pilot that exposed behavioral degeneracy",
+    "zip_sha256": "d148429f48f4d4efbee00d794a759db895c4a35c5e06ba0cce78c97dc5d59c42",
+    "raw_output_sha256": "c8142a3ca4e3ff1c35dd70d679e0d00d669e06ebe5c821064c0425ece97241ba",
+    "prompt_sha256": "2d6f4763689c7788c3572d0674b9275ba1c4ead3313084fa84ce7f7318953b42",
+    "schema_sha256": "1ab6ee0b86c7fec2dc674ad034ecc585f5822797130367dcacdc495c182212ee",
+    "rows": 32,
+    "unique_archetypes": 32,
+    "mean_turnout_probability": 0.52,
+    "unique_local_probability_vectors": 1,
+    "unique_regional_probability_vectors": 2,
+    "local_winner_counts": {"PAM": 32},
+    "regional_winner_counts": {"PAM": 8, "PPS": 24},
+    "behavioral_realism_audit": {
+      "BR0_integrity": "PASS",
+      "BR1_partisan_heterogeneity": "FAIL_DEGENERATE_LOCAL",
+      "BR2_persona_sensitivity": "NOT_TESTED",
+      "BR3_candidate_sensitivity": "NOT_TESTED",
+      "BR4_programme_sensitivity": "NOT_TESTED",
+      "BR5_party_memory_sensitivity": "NOT_TESTED",
+      "BR6_turnout_mechanism": "PASS_NONDEGENERATE",
+      "BR7_placebo": "NOT_TESTED",
+      "BR8_pov_fidelity": "FAIL_LEGACY_ANALYST_RATIONALE"
+    },
+    "technical_pipeline": "PASS",
+    "dual_ballot_transport": "PASS",
+    "behavioral_pilot": "FAIL",
+    "forecast_usability": "FAIL",
+    "scale_allowed": false
+  },
+  "canonical_next_architecture": [
+    "OBJECTIVE_WORLD",
+    "VOTER_STATE",
+    "SUBJECTIVE_MIND",
+    "BEHAVIOR",
+    "FREE_FIRST_PERSON_POV",
+    "SEPARATE_AUDIT"
+  ],
+  "next_execution": {
+    "allowed": "ONE_2026_CURRENT_VINTAGE_WORK_ITEM_32_VOTERS_BEHAVIORAL_V8",
+    "automatic_model_call_during_build": false,
+    "scale_allowed": false,
+    "promotion_requires": ["BR0", "BR1", "BR6", "BR8"],
+    "broad_scale_additionally_requires": ["BR2", "BR3", "BR4", "BR5", "BR7", "historical_out_of_sample_validation"]
+  },
+  "forecast_boundary": {
+    "agent_society_raw_output_is_forecast": false,
+    "pre_validation_lambda": 0.0,
+    "structural_baseline": "ATLAS",
+    "future_forecast_expression": "ATLAS + calibrated AgenticDelta"
+  },
+  "historical_outcomes_opened_during_this_behavioral_reset": false,
+  "sol_calls_made_during_this_behavioral_reset": 0
+}
