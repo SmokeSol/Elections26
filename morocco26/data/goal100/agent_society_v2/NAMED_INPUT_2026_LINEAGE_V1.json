@@ -1,0 +1,57 @@
+{
+  "all_recorded_digests_agree": true,
+  "artifact_id": "M26_CURRENT_VINTAGE_2026-08-22",
+  "audit_before_publication": {
+    "candidate_name_source": "MEDIAS24_ELECTIONS_DB, known_as_of 2026-08-17, already represented in the repository",
+    "candidate_verified_profiles_populated": false,
+    "sealed_mapping_material_present": false,
+    "target_outcome_fields_present": false,
+    "voter_rows_synthetic": true
+  },
+  "bound_certificates": [
+    {
+      "agrees": true,
+      "certificate_sha256": "1096ef1f44c6690c3ff1b4f2f58499fa6df233c0b2add806a09fc4bac98641b6",
+      "frozen_in": "FREEZE_MANIFEST_V9_1_P3_REMEDIATION.json revision 2",
+      "path": "morocco26/data/goal100/agent_society_v2/P3_DATA_LAYER_CERTIFICATE_V1.json",
+      "records_named_input_sha256": "9a4e3c121e01363354c88dd5582e392a26decf54316836fb80d5f96975b0b706"
+    },
+    {
+      "agrees": true,
+      "census_sha256": "d13299b9e4ba22b31b203c4d0332d6ed996ad3ee6582cb2692c011bff87e5e1c",
+      "frozen_in": "FREEZE_MANIFEST_V9_1_P3_REMEDIATION.json revision 2",
+      "path": "morocco26/data/candidate_ballot_cells_2026.json",
+      "records_named_input_sha256": "9a4e3c121e01363354c88dd5582e392a26decf54316836fb80d5f96975b0b706"
+    }
+  ],
+  "bytes": 1188738,
+  "content": {
+    "candidacies": 828,
+    "parties": 9,
+    "state_census": {
+      "OFFICIAL": 521,
+      "UNKNOWN": 307
+    },
+    "territories": 92,
+    "voter_fields_per_row": 7,
+    "voter_rows": 2944
+  },
+  "frozen_files_untouched": [
+    "the two bound certificates are read, never modified: revision 2 of the remediation freeze stays byte-stable"
+  ],
+  "line_ending_policy": {
+    "gitattributes_rule": "morocco26/data/goal100/agent_society_v2/named_input_current_vintage_*.json -text -diff",
+    "why": "The file contains CRLF. Without -text, core.autocrlf would rewrite it to LF on commit and every recorded digest would stop matching the checked-out bytes."
+  },
+  "lineage_id": "M26-NAMED-INPUT-CURRENT-VINTAGE-2026-08-22-LINEAGE-V1",
+  "lineage_sha256": "b9da02b768a2a0555b20aa01259ddb4fa4e4a8407eadd5a756cd665a0473f72c",
+  "main_commit_sha": "4df897c356d3f0c36832405c7fcfc7f8f0cd6de2",
+  "path": "morocco26/data/goal100/agent_society_v2/named_input_current_vintage_2026-08-22.json",
+  "reason": "R0 forbids embedding a data layer whose canonical snapshot and certificate are not published together. The named input was the last artifact still living outside the repository while three published certificates hashed it. Committing it closes the loop and removes the manual artifact upload the 2026 population build required.",
+  "regime_gate": "P3_CURRENT_VINTAGE_2026",
+  "schema_version": "ATLAS_NAMED_INPUT_2026_LINEAGE_V1",
+  "sha256": "9a4e3c121e01363354c88dd5582e392a26decf54316836fb80d5f96975b0b706",
+  "snapshot_known_as_of": "2026-08-22",
+  "status": "PASS_NAMED_INPUT_PUBLISHED_WITH_ITS_CERTIFICATES",
+  "vintage_snapshot_sha256": "ef10d94e8bcac9ac5c067e5189baf28d96e0c04d053613a7e89818d20e94d0c9"
+}

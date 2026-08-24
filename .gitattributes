@@ -16,3 +16,9 @@ morocco26/data/goal100/e_collect/runs/**/raw/** -text -diff
 # l'ecriture, invaliderait le manifeste : l'arbre entier est traite comme binaire.
 morocco26/frontends/agent_society_opus/source_v2/** -text
 morocco26/frontends/agent_society_opus/source_v2/web/data/contrib/** -text -diff
+
+# The canonical current-vintage named 2026 input is hash-addressed: its sha256
+# is recorded in the R0 data-layer certificate, in the ballot-cell census and in
+# the population lineage. Any line-ending translation on checkout would change
+# those digests, so the file is treated as bytes.
+morocco26/data/goal100/agent_society_v2/named_input_current_vintage_*.json -text -diff

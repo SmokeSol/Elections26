@@ -1,0 +1,40 @@
+name: morocco26-p3-named-input-lineage
+
+# Sibling of morocco26-p3-remediation-gates.yml, which is frozen at revision 2
+# of FREEZE_MANIFEST_V9_1_P3_REMEDIATION.json and must stay byte-stable until
+# revision 3 records the produced 2026 population. Post-rev2 additions are gated
+# here instead of by editing a frozen file.
+#
+# No `paths` filter, for the same reason as its sibling: coverage must not
+# depend on what else happens to be in the push.
+
+on:
+  push:
+    branches:
+      - morocco26-agent-society-v2-front-vote-llm
+  workflow_dispatch:
+
+jobs:
+  named-input-lineage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile the post-rev2 modules
+        run: |
+          python -m py_compile \
+            morocco26/scripts/p3_verify_named_input.py \
+            morocco26/scripts/p3_r3_ci_preflight_v2.py \
+            morocco26/scripts/agent_society_v2_build_current_population_2026_geo_v2.py
+
+      - name: The committed named input matches every published digest
+        run: python morocco26/scripts/p3_verify_named_input.py --named-input morocco26/data/goal100/agent_society_v2/named_input_current_vintage_2026-08-22.json
+
+      - name: The certified 2026 geometry still resolves 92 constituencies
+        run: python -m unittest -v morocco26.agent_society_v4.tests.test_p3_current_population_geometry
+
+      - name: Named-input lineage tests
+        run: python -m unittest -v morocco26.agent_society_v4.tests.test_p3_remediation_named_input

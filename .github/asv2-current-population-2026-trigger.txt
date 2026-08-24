@@ -1,0 +1,19 @@
+# Trigger for: Morocco26 Agent Society V2 current-vintage 2026 population V2
+#
+# Bump the request line below and push to launch the build. Same idiom as
+# .github/asv2-rich-populations-trigger.txt.
+#
+# The build no longer needs an uploaded artifact: it reads the committed
+# named input and refuses any other bytes.
+#
+#   named input   morocco26/data/goal100/agent_society_v2/named_input_current_vintage_2026-08-22.json
+#   sha256        9a4e3c121e01363354c88dd5582e392a26decf54316836fb80d5f96975b0b706
+#   lineage       morocco26/data/goal100/agent_society_v2/NAMED_INPUT_2026_LINEAGE_V1.json
+#   geometry      morocco26/data/goal100/geometry_2026_certificate.json (PASS, 92 rows)
+#   labour        morocco26/data/goal100/agent_society_v2/LABOUR_CONTEXT_2026_Q2_HCP.json (HCP EMO2026 Q2)
+#
+# Expected result: 92/92 territories, zero failures, certificate PASS, geometry
+# lineage PASS, no political memory. That output is what freeze revision 3 will
+# record, and what R2 will bridge before R3 runs.
+
+request: 2026-08-24 build current-vintage 2026 population V2, snapshot 2026-08-24
