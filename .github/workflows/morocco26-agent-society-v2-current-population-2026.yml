@@ -1,0 +1,108 @@
+name: Morocco26 Agent Society V2 current-vintage 2026 population
+
+# Builds the population R2 needs. The raking problem contains no electoral
+# dimension: prior_vote_or_abstention is absent, not defaulted. The labour
+# context must be supplied, sourced, by the operator - the shipped template
+# fails validation on purpose.
+
+on:
+  workflow_dispatch:
+    inputs:
+      named_input_artifact_id:
+        description: 'Actions artifact id holding named_input_current_vintage.json'
+        required: true
+      labour_context_artifact_id:
+        description: 'Actions artifact id holding a sourced LABOUR_CONTEXT_2026 json'
+        required: true
+      snapshot_date:
+        description: 'Snapshot cutoff, ISO date'
+        required: true
+        default: '2026-08-24'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install readers
+        run: python -m pip install -q pyreadstat pandas numpy
+
+      - name: Fetch source microdata and operator inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pop2026/data /tmp/pop2026/in /tmp/pop2026/out
+          for item in \
+            "named_input:${{ github.event.inputs.named_input_artifact_id }}" \
+            "labour:${{ github.event.inputs.labour_context_artifact_id }}"; do
+            name="${item%%:*}"; id="${item#*:}"
+            curl -fsSL -L -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+              -o "/tmp/pop2026/${name}.zip" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip"
+            unzip -q -o "/tmp/pop2026/${name}.zip" -d "/tmp/pop2026/in/${name}"
+          done
+          cat >/tmp/pop2026/urls.txt <<'EOF'
+          rgph_individual.dta|https://www.rgph2014.hcp.ma/file/210749/
+          rgph_household.dta|https://www.rgph2014.hcp.ma/file/210748/
+          encdm_household.sav|https://www.hcp.ma/file/231078/
+          EOF
+          while IFS='|' read -r name url; do
+            (curl -fL --retry 4 --retry-delay 2 --connect-timeout 30 --max-time 900 \
+              -A 'Mozilla/5.0 (ASV2 academic build)' -o "/tmp/pop2026/data/$name" "$url") &
+          done </tmp/pop2026/urls.txt
+          wait
+
+      - name: Build the current-vintage 2026 population
+        run: |
+          set -euo pipefail
+          named=$(find /tmp/pop2026/in/named_input -name '*.json' | head -1)
+          labour=$(find /tmp/pop2026/in/labour -name '*.json' | head -1)
+          python morocco26/scripts/agent_society_v2_build_current_population_2026.py \
+            --ind /tmp/pop2026/data/rgph_individual.dta \
+            --hh /tmp/pop2026/data/rgph_household.dta \
+            --encdm /tmp/pop2026/data/encdm_household.sav \
+            --named-input "$named" \
+            --labour-context "$labour" \
+            --snapshot-date '${{ github.event.inputs.snapshot_date }}' \
+            --outdir /tmp/pop2026/out
+
+      - name: Assert the certificate declares no electoral input
+        run: |
+          python - <<'PY'
+          import json, pathlib, sys
+          cert = json.loads(pathlib.Path(
+              "/tmp/pop2026/out/current_population_2026_certificate_v1.json").read_text(encoding="utf-8"))
+          required_false = [
+              "historical_outcome_read",
+              "prior_election_raking_dimension",
+              "sealed_mapping_read",
+              "atlas_prior_reinjected",
+              "target_outcome_used",
+              "dummy_unknown_marginal_used",
+          ]
+          bad = [name for name in required_false if cert.get(name) is not False]
+          if bad or cert.get("political_memory_population_source") != "NONE":
+              print("certificate does not declare a politically empty population:", bad)
+              sys.exit(1)
+          if not cert["status"].startswith("PASS"):
+              print("certificate status:", cert["status"], cert["gates"])
+              sys.exit(1)
+          print("PASS_CURRENT_VINTAGE_POPULATION_2026", cert["territories"], "territories")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asv2-current-population-2026
+          retention-days: 90
+          path: |
+            /tmp/pop2026/out/2026_current_population_v1.json
+            /tmp/pop2026/out/current_population_2026_certificate_v1.json

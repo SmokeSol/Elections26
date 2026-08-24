@@ -450,10 +450,17 @@ class EmpiricalMindV91Tests(unittest.TestCase):
                 "information_diet_tier": "LOW",
             }
         )
-        self.assertEqual(mind["dimensions"]["political_attention"]["value"], 0.42)
+        # attention_score is the engine's own composite, so political_attention is
+        # recorded and not counted as evidence: see test_p3_remediation_r3.
+        self.assertEqual(
+            mind["dimensions"]["political_attention"]["epistemic_status"],
+            "ENGINE_DERIVED_COMPOSITE",
+        )
+        self.assertIsNone(mind["dimensions"]["political_attention"]["value"])
         self.assertEqual(mind["dimensions"]["territorial_local_orientation"]["value"], 0.8)
         self.assertEqual(mind["dimensions"]["turnout_memory"]["value"], "PRIOR_ABSTENTION")
         self.assertEqual(audit["populated_dimensions"], 5)
+        self.assertEqual(audit["independent_evidence_dimensions"], 4)
         # information_diet_tier is an engine rule, deliberately not a dimension
         ids = {row["dimension_id"] for row in self.registry["dimensions"]}
         self.assertNotIn("information_diet_tier", ids)

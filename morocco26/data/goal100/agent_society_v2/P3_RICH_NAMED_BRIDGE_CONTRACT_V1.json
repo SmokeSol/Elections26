@@ -1,33 +1,19 @@
 {
-  "schema_version": "ATLAS_P3_RICH_NAMED_BRIDGE_CONTRACT_V1",
+  "attention_score_provenance_requirement": {
+    "consequence": "political_attention resolves to ENGINE_DERIVED_COMPOSITE and is not evidence.",
+    "finding": "In the named 2026 pipeline attention_score equals the information-diet engine composite 0.45*political_discussion + 0.30*education_score + 0.15*0.4 + 0.10*localism, verified exactly on 2944/2944 rows.",
+    "requirement_for_2026": "The 2026 builder must either certify an independently measured attention variable, or political_attention is reconstructed from admissible empirical sources. Re-injecting the engine composite is forbidden."
+  },
+  "commands": {
+    "bridge": "python morocco26/scripts/p3_rich_named_bridge.py bridge --named-input <named_input.json> --rich-population <rich_population.json> --attitude-overlay <overlay.jsonl> --output <named_input_rich.json> --certificate-output <bridge_certificate.json>",
+    "inspect": "python morocco26/scripts/p3_rich_named_bridge.py inspect --rich-population <rich_population.json>"
+  },
   "contract_id": "M26-P3-RICH-NAMED-BRIDGE-CONTRACT-V1",
-  "status": "FROZEN_R2_REMEDIATION",
-  "objective": "Stop reducing a 158-field Moroccan population to a seven-column service road on the way into the named 2026 pipeline.",
+  "contract_revision": 2,
   "finding": "The rich population exists (population_certificate_v1.json = PASS), its builders are in the repository, and the named 2026 voters carry 7 fields. This was wiring, not collection.",
-  "inputs": {
-    "named_input": "a current-vintage named 2026 input (territories, candidacies, programmes, conditions)",
-    "rich_population": "output of morocco26/scripts/agent_society_v2_build_rich_populations_v2.py: {territories: [{constituency_id, archetypes: [...]}]}",
-    "attitude_overlay": "output of morocco26/scripts/agent_society_v2_build_attitude_overlay.py, JSONL, one row per (constituency_id, archetype_id)",
-    "crosswalk": "optional JSON object mapping named territory_id to rich constituency_id, when the two identifier spaces differ"
-  },
-  "join": {
-    "key": "real territorial identifier",
-    "sealed_identity_mapping_required": false,
-    "historical_outcome_required": false,
-    "note": "The named 2026 territories are real (ain-chock, ...) and the rich populations are keyed by real constituency_id, so the join opens no sealed mapping."
-  },
-  "voter_row_layers": {
-    "individual": "RGPH-observed person-level attributes",
-    "household_context": "RGPH-observed dwelling-level attributes",
-    "survey_stratum": "Afrobarometer stratum means with their _sd and stratum n",
-    "territory_context": "labour-market and territorial context, never a personal attribute"
-  },
   "guards": {
-    "prior_election_anchor": {
-      "default": "DROPPED",
-      "flag": "--allow-prior-election-anchor",
-      "reason": "prior_vote_or_abstention in a rich record comes from the PRIOR_ELECTION_ANCHOR family. Importing it into a current-vintage 2026 snapshot would carry a sealed historical outcome into an environment that must not know it. Consequence: turnout_memory stays UNKNOWN and BR5 stays NOT_TESTABLE until the owner authorises it explicitly."
-    },
+    "encdm_donor_fields": "never enter the individual layer as observations; V9.1 labels them MATCHED_DONOR_LATENT_STATE",
+    "forbidden_field_behaviour": "hard error, never a silent filter",
     "forbidden_identity_fields": [
       "religion",
       "ethnicity",
@@ -38,39 +24,98 @@
       "named_future_vote_preference",
       "target_outcome"
     ],
-    "forbidden_field_behaviour": "hard error, never a silent filter",
-    "stratum_fields": "never enter the individual layer; V9.1 labels them SURVEY_STRATUM_PRIOR",
-    "encdm_donor_fields": "never enter the individual layer as observations; V9.1 labels them MATCHED_DONOR_LATENT_STATE"
-  },
-  "selection": {
-    "rule": "deterministic weight-proportional systematic sampling, start offset = sha256(snapshot_id, territory_id)",
-    "distinctness": "guaranteed; units heavier than one sampling step are not selected twice, the remaining slots go to the heaviest unselected units",
-    "reproducibility": "same environment and territory always yield the same people"
+    "prior_election_anchor": {
+      "default": "DROPPED",
+      "flag": "--allow-prior-election-anchor",
+      "reason": "prior_vote_or_abstention in a rich record comes from the PRIOR_ELECTION_ANCHOR family. Importing it into a current-vintage 2026 snapshot would carry a sealed historical outcome into an environment that must not know it. Consequence: turnout_memory stays UNKNOWN and BR5 stays NOT_TESTABLE until the owner authorises it explicitly."
+    },
+    "stratum_fields": "never enter the individual layer; V9.1 labels them SURVEY_STRATUM_PRIOR"
   },
   "identity_warning": {
-    "statement": "The A001..ANNN labels emitted here are re-issued from the rich population.",
     "consequence": "They are NOT the archetypes of the 2026-08-23 Ain Chock pilot. No traceable mapping exists between the seven-column named rows and any rich archetype, so a comparison with that pilot is between populations, not paired.",
-    "paired_design": "R3 obtains a paired design by holding the rich population fixed across arms and varying only the mind layer."
+    "paired_design": "R3 obtains a paired design by holding the rich population fixed across arms and varying only the mind layer.",
+    "statement": "The A001..ANNN labels emitted here are re-issued from the rich population."
+  },
+  "inputs": {
+    "attitude_overlay": "output of morocco26/scripts/agent_society_v2_build_attitude_overlay.py, JSONL, one row per (constituency_id, archetype_id)",
+    "crosswalk": "optional JSON object mapping named territory_id to rich constituency_id, when the two identifier spaces differ",
+    "named_input": "a current-vintage named 2026 input (territories, candidacies, programmes, conditions)",
+    "rich_population": "output of morocco26/scripts/agent_society_v2_build_rich_populations_v2.py: {territories: [{constituency_id, archetypes: [...]}]}"
+  },
+  "join": {
+    "historical_outcome_required": false,
+    "key": "real territorial identifier",
+    "note": "The named 2026 territories are real (ain-chock, ...) and the rich populations are keyed by real constituency_id, so the join opens no sealed mapping.",
+    "sealed_identity_mapping_required": false
+  },
+  "matched_donor_quality_requirements": {
+    "applies_to": "every field resolving to MATCHED_DONOR_LATENT_STATE",
+    "gate_status": {
+      "blocks_R3": false,
+      "blocks_scale_or_forecast": true,
+      "reason": "Soft, clearly labelled contextual use is acceptable for R3; promotion is not."
+    },
+    "rationale": "The epistemic type settles what the variable is, not how good the imputation is. A very distant ENCDM donor is still a MATCHED_DONOR_LATENT_STATE, and still a bad latent state.",
+    "required_fields": [
+      "donor_source_year",
+      "donor_match_method",
+      "donor_match_distance",
+      "donor_reuse_count",
+      "donor_support_overlap"
+    ]
   },
   "measured_effect_on_a_shape_faithful_fixture": {
-    "named_pipeline_before": {"individual_fields": 7, "populated_v9_dimensions": 2, "catalogue": 108},
-    "rich_bridge_after": {
-      "individual_fields": 33,
-      "household_fields": 48,
-      "survey_stratum_fields": 37,
-      "territory_context_fields": 7,
-      "populated_v9_1_dimensions": 30,
-      "catalogue": 121
+    "caveat": "Measured on a shape-faithful synthetic fixture, not on Moroccan data. The real numbers must be re-measured once the CI builders publish a 2026 rich population.",
+    "named_pipeline_before": {
+      "catalogue": 108,
+      "individual_fields": 7,
+      "populated_v9_dimensions": 2
     },
-    "caveat": "Measured on a shape-faithful synthetic fixture, not on Moroccan data. The real numbers must be re-measured once the CI builders publish a 2026 rich population."
+    "rich_bridge_after": {
+      "catalogue": 121,
+      "household_fields": 48,
+      "individual_fields": 33,
+      "populated_v9_1_dimensions": 30,
+      "survey_stratum_fields": 37,
+      "territory_context_fields": 7
+    }
   },
+  "objective": "Stop reducing a 158-field Moroccan population to a seven-column service road on the way into the named 2026 pipeline.",
+  "population_2026_rule": {
+    "consequence": "turnout_memory stays UNKNOWN and BR5 stays NOT_TESTABLE until a defensible source or protocol exists for political memory",
+    "prior_vote_or_abstention": "ABSENT from the raking problem, not a dummy UNKNOWN=100% marginal",
+    "raking_dimensions": [
+      "age_band",
+      "sex",
+      "urban_rural",
+      "education_band",
+      "activity_status"
+    ],
+    "reasons": [
+      "the historical raking reconstructs the political marginal from the previous election's turnout and votes, which is a historical outcome a current-vintage snapshot must not read",
+      "the Atlas structural baseline already carries electoral history, so re-injecting 2021 as a pseudo individual memory would double-count the same signal inside Agent Society"
+    ],
+    "statement": "The 2026 population is raked on demographic and socio-economic margins only."
+  },
+  "revision_reason": "Records the 2026 population requirement precisely (no electoral raking dimension) and adds the donor-quality fields a MATCHED_DONOR_LATENT_STATE needs before scale or forecast.",
+  "schema_version": "ATLAS_P3_RICH_NAMED_BRIDGE_CONTRACT_V1",
+  "selection": {
+    "distinctness": "guaranteed; units heavier than one sampling step are not selected twice, the remaining slots go to the heaviest unselected units",
+    "reproducibility": "same environment and territory always yield the same people",
+    "rule": "deterministic weight-proportional systematic sampling, start offset = sha256(snapshot_id, territory_id)"
+  },
+  "status": "FROZEN_R2_REMEDIATION",
   "still_required_before_r3_on_real_data": [
-    "a rich population artifact for the 2026 target year, published by the existing CI builders",
+    "a current-vintage 2026 population built by morocco26/scripts/agent_society_v2_build_current_population_2026.py",
+    "its certificate reporting prior_election_raking_dimension=false, historical_outcome_read=false, sealed_mapping_read=false, political_memory_population_source=NONE",
+    "a sourced LABOUR_CONTEXT_2026 (the shipped template deliberately fails validation)",
     "the matching attitude overlay for the same population",
     "a territory crosswalk if the named territory_id space differs from the rich constituency_id space"
   ],
-  "commands": {
-    "inspect": "python morocco26/scripts/p3_rich_named_bridge.py inspect --rich-population <rich_population.json>",
-    "bridge": "python morocco26/scripts/p3_rich_named_bridge.py bridge --named-input <named_input.json> --rich-population <rich_population.json> --attitude-overlay <overlay.jsonl> --output <named_input_rich.json> --certificate-output <bridge_certificate.json>"
+  "voter_row_layers": {
+    "household_context": "RGPH-observed dwelling-level attributes",
+    "individual": "RGPH-observed person-level attributes",
+    "survey_stratum": "Afrobarometer stratum means with their _sd and stratum n",
+    "territory_context": "labour-market and territorial context, never a personal attribute"
   }
 }

@@ -16,9 +16,11 @@ from .empirical_mind_v9_1 import (
     ALLOWED_EPISTEMIC_STATUSES_V9_1,
     DEFAULT_MATCHED_DONOR_FIELDS,
     EMPIRICAL_MIND_V9_1_SCHEMA,
+    ENGINE_DERIVED_COMPOSITE,
     MATCHED_DONOR_LATENT_STATE,
     SURVEY_STRATUM_PRIOR,
     assert_no_cultural_fabrication_v9_1,
+    is_engine_derived_field,
     is_matched_donor_field,
     is_stratum_field,
 )
@@ -85,6 +87,7 @@ def audit_empirical_mind_v9_1(
         str(field)
         for field in dimension_registry.get("matched_donor_fields") or DEFAULT_MATCHED_DONOR_FIELDS
     )
+    engine_fields = dict(dimension_registry.get("engine_derived_composite_fields") or {})
     known_source_families = {
         str(dimension_registry.get("matched_donor_source_family") or "ENCDM2014_SES_DONOR")
     }
@@ -93,6 +96,7 @@ def audit_empirical_mind_v9_1(
     ecological_overclaims: list[str] = []
     stratum_overclaims: list[str] = []
     donor_overclaims: list[str] = []
+    engine_overclaims: list[str] = []
     stratum_dispersion_lost: list[str] = []
     prior_overclaims: list[str] = []
     sensitive_prior_violations: list[str] = []
@@ -113,6 +117,7 @@ def audit_empirical_mind_v9_1(
                     "CONTEXT_FIELD:",
                     "SURVEY_STRATUM_FIELD:",
                     "MATCHED_DONOR_FIELD:",
+                    "ENGINE_FIELD:",
                     "AFROBAROMETER_",
                 )
             ):
@@ -152,6 +157,20 @@ def audit_empirical_mind_v9_1(
             if state.get("stratum_sd") is None and "stratum_sd" in state:
                 stratum_dispersion_lost.append(dimension_id)
 
+        # A composite the engine computed is never evidence and never spoken.
+        if is_engine_derived_field(source_field, engine_fields) and status in {
+            "OBSERVED_INDIVIDUAL",
+            "OBSERVED_HOUSEHOLD",
+        }:
+            engine_overclaims.append(dimension_id)
+        if status == ENGINE_DERIVED_COMPOSITE:
+            if state.get("individual_fact_claimed") is not False:
+                engine_overclaims.append(dimension_id + ":claimed")
+            if state.get("value") is not None:
+                engine_overclaims.append(dimension_id + ":individual_value_present")
+            if str(state.get("model_visibility") or "") != "HIDDEN_CALIBRATION_ONLY":
+                engine_overclaims.append(dimension_id + ":model_visible")
+
         if status == "ECOLOGICAL_CONTEXT_ONLY":
             if state.get("value") is not None or state.get("individual_fact_claimed") is True:
                 ecological_overclaims.append(dimension_id)
@@ -182,7 +201,9 @@ def audit_empirical_mind_v9_1(
         cultural_fabrication = True
 
     declared = mind.get("population_prior_relabelled_as_individual_fact")
-    measured = bool(stratum_overclaims or donor_overclaims or ecological_overclaims)
+    measured = bool(
+        stratum_overclaims or donor_overclaims or ecological_overclaims or engine_overclaims
+    )
     assertion_matches_measurement = declared is measured or (declared is False and not measured)
 
     calibrated = bool(prior_pack and prior_pack.get("status") == CALIBRATED_STATUS)
@@ -221,6 +242,7 @@ def audit_empirical_mind_v9_1(
         "EM12_MANIFEST_ASSERTIONS_MEASURED": (
             assertion_matches_measurement and bool((mind.get("epistemic_audit") or {}).get("measured"))
         ),
+        "EM13_NO_ENGINE_COMPOSITE_COUNTED_AS_EVIDENCE": not engine_overclaims,
     }
     scale_allowed = all(gates.values())
     counts = mind.get("epistemic_counts") or {}
@@ -236,6 +258,7 @@ def audit_empirical_mind_v9_1(
             "ecological_overclaims": sorted(set(ecological_overclaims)),
             "stratum_overclaims": sorted(set(stratum_overclaims)),
             "matched_donor_overclaims": sorted(set(donor_overclaims)),
+            "engine_composite_overclaims": sorted(set(engine_overclaims)),
             "stratum_dispersion_lost": sorted(set(stratum_dispersion_lost)),
             "prior_overclaims": sorted(set(prior_overclaims)),
             "sensitive_prior_violations": sorted(set(sensitive_prior_violations)),
@@ -255,6 +278,17 @@ def audit_empirical_mind_v9_1(
                 1
                 for state in dimensions.values()
                 if state.get("epistemic_status") == MATCHED_DONOR_LATENT_STATE
+            ),
+            "engine_derived_composite_dimensions": sum(
+                1
+                for state in dimensions.values()
+                if state.get("epistemic_status") == ENGINE_DERIVED_COMPOSITE
+            ),
+            "independent_evidence_dimensions": sum(
+                1
+                for state in dimensions.values()
+                if state.get("epistemic_status")
+                not in {"UNKNOWN", ENGINE_DERIVED_COMPOSITE}
             ),
             "total_dimensions": len(dimensions),
         },

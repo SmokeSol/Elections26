@@ -1,4 +1,10 @@
-# P3 remediation R0–R7 — runbook
+# P3 remediation R0-R7 - runbook
+
+> **Revision 2.** Three corrections landed after review, before any R3 model
+> call: the CI freeze gate had a path filter that excluded the workflow and its
+> own manifest; `attention_score` turned out to be an engine composite, not
+> evidence; and R3's three-arm design could not identify contamination. See
+> *Revision 2 corrections* at the end.
 
 Remediation of the V9 Aïn Chock pilot (2026-08-23). The pilot's `FAIL` was
 localised to the environment, not to the voter mind: three of four data layers
@@ -117,10 +123,34 @@ mapping is opened. The prior-election anchor is dropped by default — importing
 it would carry a historical outcome into a current-vintage snapshot — which is
 why `turnout_memory` stays UNKNOWN and BR5 stays NOT_TESTABLE.
 
-**Still required:** a rich population artifact for target year 2026. The
-existing CI builders produce 2016 and 2021. Producing the 2026 vintage is the
-one engineering task left in R2, and it must not take its prior-vote marginals
-from a sealed result.
+**The 2026 population.** The historical builder rakes on six dimensions and the
+sixth is `prior_vote_or_abstention`, reconstructed from the previous election's
+turnout and votes. That is inadmissible here, twice over: it reads a historical
+outcome into a current-vintage snapshot, and the Atlas structural baseline
+already carries electoral history, so re-injecting 2021 as a pseudo individual
+memory would double-count the same signal inside Agent Society.
+
+The historical builder is not modified. A sibling builds the 2026 vintage with
+
+```text
+targets = age_band x sex x urban_rural x education_band x activity_status
+```
+
+`prior_vote_or_abstention` is **absent from the raking problem** - not a dummy
+`UNKNOWN = 100%` marginal. `assert_no_electoral_raking` refuses either form. The
+certificate must declare `historical_outcome_read=false`,
+`prior_election_raking_dimension=false`, `sealed_mapping_read=false`,
+`atlas_prior_reinjected=false` and `political_memory_population_source=NONE`,
+and CI asserts it. Consequence: `turnout_memory` stays UNKNOWN and BR5 stays
+NOT_TESTABLE until a defensible source or protocol exists for political memory.
+
+The labour context is empirical input: `LABOUR_CONTEXT_2026_TEMPLATE.json` ships
+with null rates and **fails validation on purpose**. A build cannot start until
+an operator fills it from a published HCP release with a URL and a known_as_of.
+
+```bash
+python morocco26/scripts/agent_society_v2_build_current_population_2026.py --ind rgph_individual.dta --hh rgph_household.dta --encdm encdm_household.sav --named-input named_input_current_vintage.json --labour-context LABOUR_CONTEXT_2026.json --snapshot-date 2026-08-24 --outdir out
+```
 
 ---
 
@@ -136,18 +166,40 @@ python morocco26/scripts/p3_r3_local_pilot.py build-arms \
   --snapshot-date 2026-08-24 --output-root <run_root>
 ```
 
-| arm | population | mind | role |
-|---|---|---|---|
-| A0 | named pipeline, 7 columns | V8.1 | reference, **not** paired |
-| A | rich | V8.1 | paired control |
-| B | rich (identical) | V8.1 + V9.1 | paired treatment |
-| C | rich (identical) | V8.1 + V9.1, one voter per context | intra-batch contamination |
+A 2×2, all four cells on the same rich population:
 
-A and B share archetype identity, so their contrast is clean. A0 does not: the
-seven-column archetypes have no traceable mapping to any rich archetype, so it
-is a reference point, never a control. Randomise arm order, one fresh context
-per arm — the 2026-08-23 run generated ARM B after ARM A in the same context,
-which is why its measured V9 effect is an upper bound rather than a test.
+|  | **batch 32** | **solo 1** |
+|---|---|---|
+| **V8.1** | `A_batch` | `A_solo` |
+| **V9.1** | `B_batch` | `B_solo` |
+
+which yields four paired contrasts and, above all, the interaction:
+
+```text
+D_mind_batch    = L1(A_batch, B_batch)
+D_mind_solo     = L1(A_solo,  B_solo)     effect of V9.1 with no inter-voter conditioning
+D_batching_v8_1 = L1(A_batch, A_solo)
+D_batching_v9_1 = L1(B_batch, B_solo)
+interaction     = D_mind_batch - D_mind_solo
+```
+
+The interaction is the question that matters: **does the V9.1 mind behave
+differently because the 32 voters cohabit in one context?** Revision 1 tried to
+read that from `B − C` alone, which confounds the batch effect, the context-size
+effect, run stochasticity and contamination, and had no solo counterpart of A.
+
+Every cell is replicated (3 batch, 2 solo by default) because two calls on
+identical inputs already differ: `same_condition_noise` is the null. A0 stays an
+unpaired historical reference — the seven-column archetypes have no traceable
+mapping to any rich archetype.
+
+Randomise the order of the (arm, replicate) units, one fresh context each — the
+2026-08-23 run generated ARM B after ARM A in the same context, which is why its
+measured V9 effect is an upper bound rather than a test.
+
+Default budget: 6 batch calls + 2 × N solo calls (134 for a 32-voter territory).
+`build-arms` prints it and refuses to proceed on a dirty tree or without a
+recorded CI conclusion.
 
 After the run:
 
@@ -157,8 +209,19 @@ python morocco26/scripts/p3_r3_local_pilot.py measure \
   --certificate <certificate.json> --output <measurement.json>
 ```
 
-Success threshold: the paired A→B L1 on LOCAL must exceed 20 % of the
-between-voter dispersion. The 2026-08-23 pilot measured 4.3 %, which is noise.
+Promotion needs **both** rules to hold on the contamination-free contrast:
+
+```text
+R3_PROMOTION_THRESHOLD = 0.20   D_mind_solo > 20% of between-voter dispersion in A_solo
+R3_NOISE_MULTIPLE      = 2.0    D_mind_solo > 2x the same-condition replicate noise
+```
+
+The 2026-08-23 pilot measured 4.3 % of dispersion and estimated no null at all.
+
+`R3_FAIL` blocks promotion of the current V9.1 mechanism **under the current
+LOCAL information surface**. It does not prove that V9.1 cannot interact with a
+richer electoral offer: R3 runs without real programmes, without party memory
+and without a regional ballot.
 
 ---
 
@@ -225,3 +288,72 @@ Not verified, and stated as such:
 * no 2026 rich population artifact exists yet, so R2 has not run on real data;
 * R3 has not been executed — it requires model calls and is the owner's decision;
 * R4 and R5 are field collection, not engineering.
+
+---
+
+## Revision 2 corrections
+
+Three findings from the pre-R3 review, all fixed here.
+
+### The freeze gate did not run on its own commit
+
+`morocco26-p3-remediation-gates.yml` had a `paths` filter listing neither the
+workflow nor `FREEZE_MANIFEST_V9_1_P3_REMEDIATION.json`. Commit `08d4b62`
+changed exactly those two files, so the check it introduced never fired. The
+filter is gone — the gate runs on every push to the branch — and the inline
+heredocs moved into `morocco26/scripts/p3_verify_freeze.py`.
+
+The branch is not protected and has no required status check, so the freeze is a
+**detector, not a barrier**. `p3_r3_local_pilot.py build-arms` therefore records
+the git HEAD sha, the working-tree state, the freeze manifest sha and revision,
+and the operator-supplied CI conclusion into `r3_arm_plan.json`, and refuses to
+proceed on a dirty tree or an unrecorded CI run.
+
+### attention_score is an engine composite, not evidence
+
+`information_diet.derive_profile` computes
+
+```text
+attention = 0.45*political_discussion + 0.30*education_score
+          + 0.15*digital_news_exposure + 0.10*localism
+```
+
+Verified on the named 2026 input: **2944/2944 rows exact**, max abs error
+1.11e-16, with `digital_news_exposure` absent so the engine default 0.4 applies
+to everyone as a constant.
+
+`political_attention` was therefore misclassified twice: engine-derived rather
+than observed, and a deterministic function of three dimensions already
+registered separately. V9.1 adds `ENGINE_DERIVED_COMPOSITE` (precedence 10,
+`individual_fact_claimed=false`, hidden from the model), the gate
+`EM13_NO_ENGINE_COMPOSITE_COUNTED_AS_EVIDENCE`, and a new audit figure
+`independent_evidence_dimensions`.
+
+Corrected count on the named pipeline: **4 populated, 3 independent** — not 4.
+The dimension keeps a genuine `political_attention` source field for the day a
+measured variable exists. The 2026 builder must certify the provenance of any
+attention variable it emits; re-injecting the engine composite is forbidden.
+
+### R3 became a 2×2 with a null
+
+See the R3 section. `B − C` was not identifiable; `D_mind_solo` and the
+interaction are.
+
+### Freeze manifests are chained
+
+Revision 2 records `supersedes_manifest_sha256`, `git_commit_sha`, `reason` and
+a `freeze_chain`, so a manifest cannot be silently replaced by a new truth.
+
+### Recorded, not blocking
+
+A `MATCHED_DONOR_LATENT_STATE` settles what a variable *is*, not how good the
+imputation was. Before scale or forecast the donor fields must carry
+`donor_source_year`, `donor_match_method`, `donor_match_distance`,
+`donor_reuse_count` and `donor_support_overlap`. Recorded in the R2 contract as
+a scale gate, not an R3 blocker: soft, clearly labelled contextual use is fine
+for R3, promotion is not.
+
+### The guiding principle
+
+Not catalogue density. 30/121, 40/121 or 20/121 can each be correct. The target
+is **maximum true information, minimum invented information.**

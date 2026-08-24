@@ -89,14 +89,40 @@ a regional candidacy, never a pre-2026 position presented as the 2026 programme.
 R3 is LOCAL-only by construction. Spending calls on a ballot the environment
 cannot describe tests the packet.
 
+### 9. A value the engine computed is not evidence
+
+`attention_score` in the named 2026 pipeline is exactly
+`0.45*political_discussion + 0.30*education_score + 0.15*0.4 + 0.10*localism`,
+verified on 2944/2944 rows. Counting it as an observed attention level both
+misstated its provenance and double-counted three dimensions already registered
+separately. Any such field is declared in
+`engine_derived_composite_fields`, resolves to `ENGINE_DERIVED_COMPOSITE`, stays
+hidden from the model, and is excluded from `independent_evidence_dimensions`.
+Report both numbers: populated and independent.
+
+### 10. A 2026 population is raked on demographics only
+
+The historical builder's sixth raking dimension is `prior_vote_or_abstention`,
+rebuilt from the previous election. For a current-vintage 2026 population that
+dimension is **absent from the problem** — not a dummy `UNKNOWN = 100%`
+marginal. Use `agent_society_v2_build_current_population_2026.py`; the
+historical builder is not modified. Political memory then stays UNKNOWN by
+contract and BR5 stays NOT_TESTABLE.
+
+### 11. An effect smaller than the null is not an effect
+
+Two model calls on identical inputs already differ. Any A/B contrast must be
+read against same-condition replicates, and the contamination-free contrast is
+the one that governs promotion.
+
 ## Order of work
 
 | phase | state |
 |---|---|
 | R0 certify the four layers, kill the silent fallback | done |
 | R1 V9.1: EM2 corrected, assertions measured, vocabulary reconnected | done |
-| R2 bridge the rich population into the named pipeline | code done, waiting on a 2026 rich-population artifact |
-| R3 LOCAL-only pilot, arms A0/A/B/C | preregistered, not run — needs model calls |
+| R2 bridge the rich population into the named pipeline | code done, waiting on the 2026 population build |
+| R3 LOCAL-only pilot, 2×2 with replication | preregistered rev 2, not run — needs model calls |
 | R4 collect real party programmes | contract and validator ready, dataset empty |
 | R5 collect the real regional ballot | contract and validator ready, dataset empty |
 | R6 dual-ballot pilot | blocked on R4 and R5 |

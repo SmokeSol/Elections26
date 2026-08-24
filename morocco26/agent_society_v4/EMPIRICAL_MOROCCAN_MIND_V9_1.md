@@ -65,6 +65,37 @@ MATCHED_DONOR_LATENT_STATE   precedence 45
   model_visibility = DONOR_CONTEXT
 ```
 
+### A value the engine computed is not evidence
+
+`information_diet.derive_profile` computes
+
+```text
+attention = 0.45*political_discussion + 0.30*education_score
+          + 0.15*digital_news_exposure + 0.10*localism
+```
+
+The named 2026 pipeline's `attention_score` is exactly that value —
+**2944/2944 rows, max abs error 1.11e-16** — with `digital_news_exposure`
+absent, so the engine default 0.4 applies to everyone as a constant.
+
+Registering it as an observed attention level was wrong twice: the provenance is
+the engine, not a measurement, and the value is a deterministic function of
+three dimensions already registered here. V9.1 adds:
+
+```text
+ENGINE_DERIVED_COMPOSITE   precedence 10
+  individual_fact_claimed = false
+  independent_evidence    = false
+  model_visibility        = HIDDEN_CALIBRATION_ONLY   (never spoken)
+  redundant_with          = [political_discussion, education_level,
+                             territorial_local_orientation]
+```
+
+with gate `EM13_NO_ENGINE_COMPOSITE_COUNTED_AS_EVIDENCE` and a separate audit
+figure `independent_evidence_dimensions`. On the named pipeline that is
+**4 populated, 3 independent**. The dimension keeps a genuine
+`political_attention` source field for the day a measured variable exists.
+
 ### Manifest assertions are measured
 
 `build_empirical_environment()` wrote
@@ -120,11 +151,14 @@ member used to read as burden 1.0.
 
 ## Effect, measured
 
-| | catalogue | populated per voter |
-|---|---|---|
-| V9 on the named pipeline (7 columns) | 108 | 2 |
-| V9.1 on the named pipeline | 121 | 4 |
-| V9.1 on the R2 rich population | 121 | 30 |
+| | catalogue | populated | independent evidence |
+|---|---|---|---|
+| V9 on the named pipeline (7 columns) | 108 | 2 | 2 |
+| V9.1 on the named pipeline | 121 | 4 | **3** |
+| V9.1 on the R2 rich population | 121 | 30 | 30 |
+
+The named-pipeline gap is `political_attention`: populated, recorded, and not
+independent evidence. Report both columns — catalogue density is not the target.
 
 The rich figure is measured on a shape-faithful synthetic fixture, not on
 Moroccan data. Re-measure once the CI builders publish a 2026 rich population.

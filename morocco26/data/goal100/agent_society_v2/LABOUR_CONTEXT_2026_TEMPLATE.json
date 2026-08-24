@@ -1,0 +1,18 @@
+{
+  "known_as_of": null,
+  "publisher": null,
+  "purpose": "The historical builder ships LABOR[2016] and LABOR[2021] as constants. The 2026 build refuses to invent the equivalent: fill this file from a published HCP release, with the publisher, the URL and a known_as_of at or before the snapshot date.",
+  "rates": {
+    "activity": null,
+    "female_unemployment": null,
+    "rural_unemployment": null,
+    "underemployment": null,
+    "unemployment": null,
+    "urban_unemployment": null,
+    "youth_unemployment": null
+  },
+  "schema_version": "ATLAS_CURRENT_VINTAGE_LABOUR_CONTEXT_2026_V1",
+  "source_url": null,
+  "status": "TEMPLATE_NOT_SOURCED",
+  "validation_note": "As shipped this file FAILS validate_labour_context on purpose. A build cannot start until an operator replaces the nulls with sourced proportions in [0,1]."
+}

@@ -1,588 +1,4 @@
 {
-  "schema_version": "ATLAS_EMPIRICAL_MIND_DIMENSIONS_AMENDMENT_V9_1",
-  "amendment_id": "V9_AMENDMENT_01",
-  "version": "V9.1",
-  "status": "FROZEN_V9_1_AMENDMENT",
-  "base_registry": {
-    "path": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_MIND_DIMENSIONS_V1.json",
-    "sha256": "9aec393c96e3c8c55352b55ed465660d1e2ed67010e7445c3518d51b4cd7bb24",
-    "dimension_count": 108,
-    "families": 10,
-    "must_remain_byte_stable": true
-  },
-  "rationale": "The frozen V9 payload 3cdda05d... is not edited. This amendment is applied on top of it at load time, exactly as agent_society_v2_main_bridge_v6.py amends V5 without touching V5.",
-  "corrections": {
-    "EM2_SURVEY_STRATUM": "latent_attitude_<x>_mean fields are Afrobarometer stratum posterior means with a companion _sd and a stratum n. V9 stamped them OBSERVED_INDIVIDUAL / individual_fact_claimed=true. V9.1 routes them to SURVEY_STRATUM_PRIOR, consumes the _sd and the stratum n, and forbids them from being spoken as a personal fact.",
-    "EM2_MATCHED_DONOR": "latent_ses_* / latent_poverty_risk / latent_vulnerability_risk / latent_*_budget_share come from an ENCDM donor matched statistically to the synthetic person. The rich feature manifest already states they are 'not an observed fact about that synthetic person'. V9.1 gives them their own status instead of letting the rich bridge turn them into biography.",
-    "MANIFEST_ASSERTIONS": "population_prior_relabelled_as_individual_fact is measured over the built minds, never hard-coded.",
-    "NAMED_PIPELINE_VOCABULARY": "V9 individual_source_fields were written against the 158-field blind population and never against the 7-field named pipeline. Four of the seven available fields were lost for no substantive reason.",
-    "RICH_VOCABULARY": "Several V9 dimensions declared source fields the rich population does carry, but in a form V9 could not read: an activity band, a French education label, a persons-per-room ratio, a tenure label, an unemployed head-count. They resolved to UNKNOWN or, worse, to a wrong band. V9.1 declares an explicit transform per field."
-  },
-  "new_epistemic_statuses": {
-    "SURVEY_STRATUM_PRIOR": {
-      "precedence": 35,
-      "meaning": "A conditional mean and dispersion measured on a survey stratum of comparable people. It is not an observation about this person.",
-      "individual_fact_claimed": false,
-      "behavioral_use": "CONTEXT_ONLY_NOT_INDIVIDUAL_TRAIT",
-      "default_model_visibility": "STRATUM_CONTEXT",
-      "direct_statement_allowed": false,
-      "promotion_path": "A methodologically validated conditional draw may later turn this into SYNTHETIC_POSTERIOR_DRAW_FROM_MOROCCAN_SURVEY, which the model may embody. That validation does not exist yet, so no promotion happens here."
-    },
-    "MATCHED_DONOR_LATENT_STATE": {
-      "precedence": 45,
-      "meaning": "A person-level latent state produced by statistically matching this synthetic person to a donor survey household. Attached to the replicate, never observed for the person.",
-      "individual_fact_claimed": false,
-      "behavioral_use": "SOFT_CONTEXT_SYNTHETIC_LATENT_STATE",
-      "default_model_visibility": "DONOR_CONTEXT",
-      "direct_statement_allowed": false,
-      "source_family": "ENCDM2014_SES_DONOR"
-    }
-  },
-  "stratum_source_detection": {
-    "field_patterns": [
-      "latent_attitude_*_mean"
-    ],
-    "dispersion_suffix": "_sd",
-    "support_fields": [
-      "attitude_posterior_stratum_n",
-      "attitude_posterior_match_level",
-      "attitude_source"
-    ],
-    "block_key": "survey_stratum",
-    "note": "Detection is by field shape, so every present and future latent_attitude_* family is covered without listing dimensions one by one."
-  },
-  "matched_donor_source_detection": {
-    "field_patterns": [
-      "latent_ses_decile",
-      "latent_poverty_risk",
-      "latent_vulnerability_risk",
-      "latent_food_budget_share",
-      "latent_housing_energy_budget_share",
-      "latent_health_hygiene_budget_share",
-      "latent_transport_communications_budget_share",
-      "latent_education_culture_budget_share"
-    ],
-    "source_family": "ENCDM2014_SES_DONOR"
-  },
-  "field_transforms": {
-    "prior_vote_or_abstention": "PRIOR_VOTE_TO_TURNOUT_MEMORY",
-    "activity_status": "ACTIVITY_STATUS_TO_EMPLOYMENT",
-    "education_level": "EDUCATION_LABEL_TO_LEVEL",
-    "persons_per_room": "PERSONS_PER_ROOM_TO_CROWDING",
-    "household_unemployed_count": "UNEMPLOYED_COUNT_TO_BURDEN",
-    "household_children_count": "CARE_DEPENDENTS_TO_BURDEN",
-    "tenure_status": "TENURE_LABEL_TO_HOUSING_SECURITY",
-    "internet_owned": "YES_NO_LABEL_TO_BOOLEAN",
-    "mobile_phone_owned": "YES_NO_LABEL_TO_BOOLEAN"
-  },
-  "field_transform_definitions": {
-    "PRIOR_VOTE_TO_TURNOUT_MEMORY": "ABSTAIN -> PRIOR_ABSTENTION; any other non-empty value -> PRIOR_TURNOUT; empty/UNKNOWN -> UNKNOWN. The party identity is never carried into this dimension.",
-    "ACTIVITY_STATUS_TO_EMPLOYMENT": "ACTIVE_EMPLOYED -> EMPLOYED; UNEMPLOYED -> UNEMPLOYED; INACTIVE -> INACTIVE; STUDENT/RETIRED pass through; MISSING -> UNKNOWN.",
-    "EDUCATION_LABEL_TO_LEVEL": "HCP NIV_ET_AGR French labels folded to the registry categories: contains 'sup' -> TERTIARY; 'second'/'coll'/'qualif'/'lyc' -> SECONDARY; 'prim' -> PRIMARY; 'aucun'/'prescol'/'neant' -> NONE. Already-canonical values pass through. Anything else -> UNKNOWN.",
-    "PERSONS_PER_ROOM_TO_CROWDING": "crowding = clip((persons_per_room - 1) / 3, 0, 1). One person per room is no crowding; four or more is maximal. Without this, V9 read 2.5 persons/room as the unit-interval value 0.025 and reported LOW crowding.",
-    "UNEMPLOYED_COUNT_TO_BURDEN": "burden = clip(household_unemployed_count / max(1, household_adult_count), 0, 1). Requires household_adult_count in the same container, otherwise UNKNOWN. Without this, a single unemployed member read as burden 1.0.",
-    "CARE_DEPENDENTS_TO_BURDEN": "burden = clip((household_children_count + household_elderly_count) / max(1, household_adult_count) / 3, 0, 1). Requires the sibling counts, otherwise UNKNOWN.",
-    "TENURE_LABEL_TO_HOUSING_SECURITY": "owner/proprietaire -> 0.9; accession/credit -> 0.75; tenant/locataire/location -> 0.5; free/gratuit/loge -> 0.35; anything else -> UNKNOWN. Never a guess: unmatched labels stay unknown.",
-    "YES_NO_LABEL_TO_BOOLEAN": "oui/yes/1/true -> YES; non/no/0/false -> NO; anything else including MISSING -> UNKNOWN."
-  },
-  "new_dimensions": [
-    {
-      "dimension_id": "political_attention",
-      "family": "INFORMATION_MEDIA",
-      "value_type": "UNIT_INTERVAL",
-      "categories": [
-        "LOW",
-        "MEDIUM",
-        "HIGH"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": true,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "L'attention que tu portes à la vie politique en général",
-      "rendering": {
-        "fr": "L'attention que tu portes à la vie politique : {value}."
-      },
-      "individual_source_fields": [
-        "attention_score",
-        "political_attention"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "AFROBAROMETER_MAR_R10_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "PROBABILISTIC_CONTEXT",
-        "survey_stratum": "STRATUM_CONTEXT",
-        "matched_donor": "DONOR_CONTEXT",
-        "ecological": "CONTEXT_ONLY"
-      },
-      "amendment_note": "attention_score existed in the named pipeline and matched no V9 dimension. It is registered as generic political attention, deliberately distinct from campaign_attention (attention to this campaign) and political_interest (dispositional interest), neither of which the field measures."
-    },
-    {
-      "dimension_id": "turnout_memory",
-      "family": "POLITICAL_BIOGRAPHY",
-      "value_type": "CATEGORICAL",
-      "categories": [
-        "PRIOR_TURNOUT",
-        "PRIOR_ABSTENTION"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Ce dont tu te souviens de ta participation à la dernière élection",
-      "rendering": {
-        "fr": "Ta dernière élection : {value}."
-      },
-      "individual_source_fields": [
-        "turnout_memory",
-        "prior_vote_or_abstention"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE",
-        "DO_NOT_REVEAL_WHICH_PARTY_WAS_SUPPORTED_THROUGH_THIS_DIMENSION"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      },
-      "amendment_note": "prior_vote_or_abstention is a single-election memory, not a participation rate. It is NOT aliased onto habitual_turnout, which would claim a habit the field does not measure. The transform keeps only turned-out / abstained; the party identity stays in voter_mind_state.party_memory where V8 already handles it.",
-      "category_labels_fr": {
-        "PRIOR_TURNOUT": "tu avais voté",
-        "PRIOR_ABSTENTION": "tu n'avais pas voté"
-      }
-    },
-    {
-      "dimension_id": "territorial_local_orientation",
-      "family": "TERRITORIAL_ATTACHMENT",
-      "value_type": "UNIT_INTERVAL",
-      "categories": [
-        "LOW",
-        "MEDIUM",
-        "HIGH"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": true,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "L'importance que tu accordes à ton quartier et à ta commune",
-      "rendering": {
-        "fr": "L'importance que tu accordes à ton quartier et à ta commune : {value}."
-      },
-      "individual_source_fields": [
-        "territorial_local_orientation",
-        "localism",
-        "local_orientation"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "AFROBAROMETER_MAR_R10_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "PROBABILISTIC_CONTEXT",
-        "survey_stratum": "STRATUM_CONTEXT",
-        "matched_donor": "DONOR_CONTEXT",
-        "ecological": "CONTEXT_ONLY"
-      },
-      "amendment_note": "The V9 catalogue of 108 has no territorial-attachment dimension at all, so localism had nowhere to land. It is registered explicitly here rather than quietly reinterpreted into an existing dimension. It is not local_responsiveness_perception, which measures what the voter thinks local institutions do."
-    },
-    {
-      "dimension_id": "age_band",
-      "family": "DEMOGRAPHIC_PROFILE",
-      "value_type": "CATEGORICAL",
-      "categories": [
-        "18_24",
-        "25_34",
-        "35_44",
-        "45_59",
-        "60_PLUS"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Ta tranche d'âge",
-      "rendering": {
-        "fr": "Ta tranche d'âge : {value}."
-      },
-      "individual_source_fields": [
-        "age_band"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "HCP_RGPH_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      },
-      "amendment_note": "Life stage genuinely structures experience. Sex, language and religion are deliberately NOT registered as dimensions: they are already in the raw row, they add nothing the POV needs, and giving them a rendered sentence increases stereotype pressure for no measured gain.",
-      "category_labels_fr": {
-        "18_24": "18 à 24 ans",
-        "25_34": "25 à 34 ans",
-        "35_44": "35 à 44 ans",
-        "45_59": "45 à 59 ans",
-        "60_PLUS": "60 ans et plus"
-      }
-    },
-    {
-      "dimension_id": "urban_rural_milieu",
-      "family": "DEMOGRAPHIC_PROFILE",
-      "value_type": "CATEGORICAL",
-      "categories": [
-        "URBAN",
-        "RURAL"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Le milieu où tu vis",
-      "rendering": {
-        "fr": "Le milieu où tu vis : {value}."
-      },
-      "individual_source_fields": [
-        "urban_rural"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "HCP_RGPH_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      },
-      "amendment_note": "Current milieu, not a trajectory. urban_rural is deliberately NOT aliased onto urban_rural_life_trajectory, whose categories describe a move the field does not record.",
-      "category_labels_fr": {
-        "URBAN": "urbain",
-        "RURAL": "rural"
-      }
-    },
-    {
-      "dimension_id": "marital_status",
-      "family": "DEMOGRAPHIC_PROFILE",
-      "value_type": "CATEGORICAL",
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Ta situation familiale",
-      "rendering": {
-        "fr": "Ta situation familiale : {value}."
-      },
-      "individual_source_fields": [
-        "marital_status"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "HCP_RGPH_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      }
-    },
-    {
-      "dimension_id": "occupation_group",
-      "family": "LIFE_TRAJECTORY",
-      "value_type": "CATEGORICAL",
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Le type de métier que tu exerces",
-      "rendering": {
-        "fr": "Le type de métier que tu exerces : {value}."
-      },
-      "individual_source_fields": [
-        "occupation_group"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "HCP_RGPH_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      }
-    },
-    {
-      "dimension_id": "industry_sector",
-      "family": "LIFE_TRAJECTORY",
-      "value_type": "CATEGORICAL",
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Le secteur dans lequel tu travailles",
-      "rendering": {
-        "fr": "Le secteur dans lequel tu travailles : {value}."
-      },
-      "individual_source_fields": [
-        "industry_sector"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "HCP_RGPH_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      }
-    },
-    {
-      "dimension_id": "household_size",
-      "family": "MATERIAL_HOUSEHOLD",
-      "value_type": "COUNT",
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Le nombre de personnes qui vivent chez toi",
-      "rendering": {
-        "fr": "Le nombre de personnes qui vivent chez toi : {value}."
-      },
-      "individual_source_fields": [],
-      "household_source_fields": [
-        "household_size"
-      ],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "HCP_RGPH_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      }
-    },
-    {
-      "dimension_id": "household_asset_position",
-      "family": "MATERIAL_HOUSEHOLD",
-      "value_type": "UNIT_INTERVAL",
-      "categories": [
-        "LOW",
-        "MEDIUM",
-        "HIGH"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Le niveau d'équipement de ton foyer",
-      "rendering": {
-        "fr": "Le niveau d'équipement de ton foyer : {value}."
-      },
-      "individual_source_fields": [],
-      "household_source_fields": [
-        "asset_index"
-      ],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "HCP_RGPH_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      },
-      "amendment_note": "asset_index is a mean of observed RGPH household ownership indicators, already on [0,1]."
-    },
-    {
-      "dimension_id": "household_basic_services_position",
-      "family": "MATERIAL_HOUSEHOLD",
-      "value_type": "UNIT_INTERVAL",
-      "categories": [
-        "LOW",
-        "MEDIUM",
-        "HIGH"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "L'accès de ton logement aux services de base",
-      "rendering": {
-        "fr": "L'accès de ton logement aux services de base : {value}."
-      },
-      "individual_source_fields": [],
-      "household_source_fields": [
-        "basic_services_index"
-      ],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [
-        "HCP_RGPH_2024"
-      ],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
-        "survey_stratum": "HIDDEN_CALIBRATION_ONLY",
-        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
-        "ecological": "CONTEXT_ONLY"
-      }
-    },
-    {
-      "dimension_id": "material_living_standard_position",
-      "family": "MATERIAL_HOUSEHOLD",
-      "value_type": "UNIT_INTERVAL",
-      "categories": [
-        "LOW",
-        "MEDIUM",
-        "HIGH"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "Ta position matérielle par rapport au reste du pays",
-      "rendering": {
-        "fr": "Ta position matérielle par rapport au reste du pays : {value}."
-      },
-      "individual_source_fields": [
-        "latent_ses_decile"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "PROBABILISTIC_CONTEXT",
-        "survey_stratum": "STRATUM_CONTEXT",
-        "matched_donor": "DONOR_CONTEXT",
-        "ecological": "CONTEXT_ONLY"
-      },
-      "amendment_note": "Fed only by an ENCDM matched donor, so it resolves to MATCHED_DONOR_LATENT_STATE and never to an observed fact."
-    },
-    {
-      "dimension_id": "food_budget_pressure",
-      "family": "MATERIAL_HOUSEHOLD",
-      "value_type": "UNIT_INTERVAL",
-      "categories": [
-        "LOW",
-        "MEDIUM",
-        "HIGH"
-      ],
-      "default_epistemic_status": "UNKNOWN",
-      "direct_evidence_only": false,
-      "partisan_target": false,
-      "survey_prior_allowed": false,
-      "behavioral_use": "SOFT_CONTEXT",
-      "description_fr": "La part de ton budget qui passe dans l'alimentation",
-      "rendering": {
-        "fr": "La part de ton budget qui passe dans l'alimentation : {value}."
-      },
-      "individual_source_fields": [
-        "latent_food_budget_share"
-      ],
-      "household_source_fields": [],
-      "ecological_context_fields": [],
-      "ecological_prior_allowed": false,
-      "survey_source_ids": [],
-      "forbidden_inferences": [
-        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
-      ],
-      "model_visibility": {
-        "observed": "DIRECT_STATEMENT",
-        "survey_prior": "PROBABILISTIC_CONTEXT",
-        "survey_stratum": "STRATUM_CONTEXT",
-        "matched_donor": "DONOR_CONTEXT",
-        "ecological": "CONTEXT_ONLY"
-      },
-      "amendment_note": "Same donor class as material_living_standard_position."
-    }
-  ],
   "alias_extensions": [
     {
       "dimension_id": "internet_access",
@@ -606,83 +22,171 @@
       "note": "Combined with household_elderly_count and household_adult_count by CARE_DEPENDENTS_TO_BURDEN."
     }
   ],
+  "amendment_id": "V9_AMENDMENT_01",
+  "base_registry": {
+    "dimension_count": 108,
+    "families": 10,
+    "must_remain_byte_stable": true,
+    "path": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_MIND_DIMENSIONS_V1.json",
+    "sha256": "9aec393c96e3c8c55352b55ed465660d1e2ed67010e7445c3518d51b4cd7bb24"
+  },
+  "category_label_extensions": {
+    "education_level": {
+      "HIGH_SCHOOL": "lycée",
+      "NONE": "aucune scolarité",
+      "OTHER": "autre",
+      "PRIMARY": "primaire",
+      "SECONDARY": "secondaire",
+      "TERTIARY": "supérieur"
+    },
+    "employment_status": {
+      "EMPLOYED": "en emploi",
+      "INACTIVE": "sans activité",
+      "OTHER": "autre",
+      "RETIRED": "retraité(e)",
+      "STUDENT": "étudiant(e)",
+      "UNEMPLOYED": "au chômage"
+    }
+  },
+  "category_label_extensions_note": "Rendering only. No category, source field, value type or epistemic rule of the frozen V9 registry is changed by this block.",
+  "corrections": {
+    "EM2_MATCHED_DONOR": "latent_ses_* / latent_poverty_risk / latent_vulnerability_risk / latent_*_budget_share come from an ENCDM donor matched statistically to the synthetic person. The rich feature manifest already states they are 'not an observed fact about that synthetic person'. V9.1 gives them their own status instead of letting the rich bridge turn them into biography.",
+    "EM2_SURVEY_STRATUM": "latent_attitude_<x>_mean fields are Afrobarometer stratum posterior means with a companion _sd and a stratum n. V9 stamped them OBSERVED_INDIVIDUAL / individual_fact_claimed=true. V9.1 routes them to SURVEY_STRATUM_PRIOR, consumes the _sd and the stratum n, and forbids them from being spoken as a personal fact.",
+    "ENGINE_DERIVED_COMPOSITE": "attention_score was registered as an observed individual attention level. It is the information-diet engine's own composite over political_discussion, education_level and localism plus a constant. Registering it as evidence misstated its provenance and double-counted three registered dimensions. V9.1 gives it its own status, hides it from the model, and excludes it from independent_evidence_dimensions.",
+    "MANIFEST_ASSERTIONS": "population_prior_relabelled_as_individual_fact is measured over the built minds, never hard-coded.",
+    "NAMED_PIPELINE_VOCABULARY": "V9 individual_source_fields were written against the 158-field blind population and never against the 7-field named pipeline. Four of the seven available fields were lost for no substantive reason.",
+    "RICH_VOCABULARY": "Several V9 dimensions declared source fields the rich population does carry, but in a form V9 could not read: an activity band, a French education label, a persons-per-room ratio, a tenure label, an unemployed head-count. They resolved to UNKNOWN or, worse, to a wrong band. V9.1 declares an explicit transform per field."
+  },
+  "declined_aliases": [
+    {
+      "declined_target": "campaign_attention",
+      "field": "attention_score",
+      "reason": "campaign_attention is attention to this specific campaign; attention_score is not measured that way."
+    },
+    {
+      "declined_target": "habitual_turnout",
+      "field": "prior_vote_or_abstention",
+      "reason": "one remembered election is not a turnout habit."
+    },
+    {
+      "declined_target": "political_information_confidence",
+      "field": "information_diet_tier",
+      "reason": "an engine distribution rule is not a psychological confidence state."
+    },
+    {
+      "declined_target": "television_news_exposure",
+      "field": "tv_owned",
+      "reason": "owning a television is not exposure to political news."
+    },
+    {
+      "declined_target": "radio_news_exposure",
+      "field": "radio_owned",
+      "reason": "owning a radio is not exposure to political news."
+    },
+    {
+      "declined_target": "urban_rural_life_trajectory",
+      "field": "urban_rural",
+      "reason": "a current milieu is not a migration trajectory."
+    },
+    {
+      "declined_target": "literacy",
+      "field": "literacy_status",
+      "reason": "the HCP LIR_ECR label set is not verified here; an unverified fold would invent a literacy level. Left UNKNOWN until the label set is checked."
+    },
+    {
+      "declined_target": "transport_burden",
+      "field": "paved_road_distance_km",
+      "reason": "distance to a paved road is not a commute burden and is not on the unit interval."
+    },
+    {
+      "declined_target": "a DEMOGRAPHIC_PROFILE dimension",
+      "field": "sex",
+      "reason": "already present in the raw row; rendering it as a sentence adds stereotype pressure with no measured gain."
+    }
+  ],
+  "does_not_change": [
+    "the frozen V9 payload sha256 3cdda05d95ef387c85ef8919fe3ea188226f21c0ccc9d5ef9eb7bf35c7d32df0",
+    "any file listed in FREEZE_MANIFEST_V9_EMPIRICAL_MIND.json",
+    "the V8 cognitive architecture",
+    "forecast lambda, which stays 0"
+  ],
+  "engine_derived_composite_detection": {
+    "audit_gate": "EM13_NO_ENGINE_COMPOSITE_COUNTED_AS_EVIDENCE",
+    "rule": "A declared engine field never resolves as an observation. It is resolved last, below ecological context, and its value is stripped from the model-visible copy."
+  },
+  "engine_derived_composite_fields": {
+    "attention_score": {
+      "consequence": "political_attention resolves to ENGINE_DERIVED_COMPOSITE on the named pipeline: recorded in the audit, never shown to the model, never counted as independent evidence.",
+      "constant_inputs": {
+        "digital_news_exposure": 0.4,
+        "note": "digital_news_exposure is absent from the named pipeline, so the engine default 0.4 applies to every voter and contributes a constant 0.06."
+      },
+      "education_score_map": {
+        "HIGH_SCHOOL": 0.65,
+        "NONE": 0.1,
+        "PRIMARY": 0.3,
+        "SECONDARY": 0.55,
+        "SUPERIEUR": 0.9,
+        "TERTIARY": 0.9
+      },
+      "engine": "morocco26/agent_society_v4/information_diet.py::derive_profile",
+      "formula": "0.45*political_discussion + 0.30*education_score + 0.15*digital_news_exposure + 0.10*localism, clipped to [0,1]",
+      "how_to_make_it_evidence": "The 2026 builder must either certify attention_score as an independently measured variable, or reconstruct political_attention from admissible empirical sources. Until then the dimension stays engine-derived.",
+      "inputs": [
+        "political_discussion",
+        "education_level",
+        "localism"
+      ],
+      "redundant_with": [
+        "political_discussion",
+        "education_level",
+        "territorial_local_orientation"
+      ],
+      "verified_on": "named_input_current_vintage.json, 2944/2944 voter rows, max abs error 1.11e-16"
+    }
+  },
   "engine_only_fields": {
     "information_diet_tier": {
+      "consumed_by": "three_regime_core.information_diet",
       "decision": "NOT_A_MIND_DIMENSION",
-      "reason": "information_diet_tier is the engine's information-distribution rule, not a psychological state. Mapping it onto political_information_confidence would turn a delivery parameter into a claim about how confident the person feels. It stays an engine field and is excluded from the empirical mind.",
-      "consumed_by": "three_regime_core.information_diet"
+      "reason": "information_diet_tier is the engine's information-distribution rule, not a psychological state. Mapping it onto political_information_confidence would turn a delivery parameter into a claim about how confident the person feels. It stays an engine field and is excluded from the empirical mind."
     },
-    "weighted_archetype_id": {
-      "decision": "IDENTITY_FIELD",
-      "reason": "identity, not a human dimension"
+    "target_year_unemployment_rate": {
+      "decision": "TERRITORY_OR_NATIONAL_CONTEXT",
+      "reason": "a labour-market rate is context, not a personal attribute; it belongs in territory_context"
     },
     "weight": {
       "decision": "SAMPLING_FIELD",
       "reason": "post-stratification weight, hidden from the model by V8"
     },
-    "target_year_unemployment_rate": {
-      "decision": "TERRITORY_OR_NATIONAL_CONTEXT",
-      "reason": "a labour-market rate is context, not a personal attribute; it belongs in territory_context"
+    "weighted_archetype_id": {
+      "decision": "IDENTITY_FIELD",
+      "reason": "identity, not a human dimension"
     }
-  },
-  "declined_aliases": [
-    {
-      "field": "attention_score",
-      "declined_target": "campaign_attention",
-      "reason": "campaign_attention is attention to this specific campaign; attention_score is not measured that way."
-    },
-    {
-      "field": "prior_vote_or_abstention",
-      "declined_target": "habitual_turnout",
-      "reason": "one remembered election is not a turnout habit."
-    },
-    {
-      "field": "information_diet_tier",
-      "declined_target": "political_information_confidence",
-      "reason": "an engine distribution rule is not a psychological confidence state."
-    },
-    {
-      "field": "tv_owned",
-      "declined_target": "television_news_exposure",
-      "reason": "owning a television is not exposure to political news."
-    },
-    {
-      "field": "radio_owned",
-      "declined_target": "radio_news_exposure",
-      "reason": "owning a radio is not exposure to political news."
-    },
-    {
-      "field": "urban_rural",
-      "declined_target": "urban_rural_life_trajectory",
-      "reason": "a current milieu is not a migration trajectory."
-    },
-    {
-      "field": "literacy_status",
-      "declined_target": "literacy",
-      "reason": "the HCP LIR_ECR label set is not verified here; an unverified fold would invent a literacy level. Left UNKNOWN until the label set is checked."
-    },
-    {
-      "field": "paved_road_distance_km",
-      "declined_target": "transport_burden",
-      "reason": "distance to a paved road is not a commute burden and is not on the unit interval."
-    },
-    {
-      "field": "sex",
-      "declined_target": "a DEMOGRAPHIC_PROFILE dimension",
-      "reason": "already present in the raw row; rendering it as a sentence adds stereotype pressure with no measured gain."
-    }
-  ],
-  "named_pipeline_coverage_after_amendment": {
-    "education_level": "education_level (V9, now with a label transform)",
-    "political_discussion": "political_discussion (V9)",
-    "attention_score": "political_attention (V9.1)",
-    "localism": "territorial_local_orientation (V9.1)",
-    "prior_vote_or_abstention": "turnout_memory (V9.1, stays UNKNOWN while the current-vintage guard keeps prior-election anchors out)",
-    "information_diet_tier": "engine field, deliberately not a dimension",
-    "weighted_archetype_id": "identity field"
   },
   "expected_dimension_count_after_amendment": 121,
   "expected_family_count_after_amendment": 12,
+  "field_transform_definitions": {
+    "ACTIVITY_STATUS_TO_EMPLOYMENT": "ACTIVE_EMPLOYED -> EMPLOYED; UNEMPLOYED -> UNEMPLOYED; INACTIVE -> INACTIVE; STUDENT/RETIRED pass through; MISSING -> UNKNOWN.",
+    "CARE_DEPENDENTS_TO_BURDEN": "burden = clip((household_children_count + household_elderly_count) / max(1, household_adult_count) / 3, 0, 1). Requires the sibling counts, otherwise UNKNOWN.",
+    "EDUCATION_LABEL_TO_LEVEL": "HCP NIV_ET_AGR French labels folded to the registry categories: contains 'sup' -> TERTIARY; 'second'/'coll'/'qualif'/'lyc' -> SECONDARY; 'prim' -> PRIMARY; 'aucun'/'prescol'/'neant' -> NONE. Already-canonical values pass through. Anything else -> UNKNOWN.",
+    "PERSONS_PER_ROOM_TO_CROWDING": "crowding = clip((persons_per_room - 1) / 3, 0, 1). One person per room is no crowding; four or more is maximal. Without this, V9 read 2.5 persons/room as the unit-interval value 0.025 and reported LOW crowding.",
+    "PRIOR_VOTE_TO_TURNOUT_MEMORY": "ABSTAIN -> PRIOR_ABSTENTION; any other non-empty value -> PRIOR_TURNOUT; empty/UNKNOWN -> UNKNOWN. The party identity is never carried into this dimension.",
+    "TENURE_LABEL_TO_HOUSING_SECURITY": "owner/proprietaire -> 0.9; accession/credit -> 0.75; tenant/locataire/location -> 0.5; free/gratuit/loge -> 0.35; anything else -> UNKNOWN. Never a guess: unmatched labels stay unknown.",
+    "UNEMPLOYED_COUNT_TO_BURDEN": "burden = clip(household_unemployed_count / max(1, household_adult_count), 0, 1). Requires household_adult_count in the same container, otherwise UNKNOWN. Without this, a single unemployed member read as burden 1.0.",
+    "YES_NO_LABEL_TO_BOOLEAN": "oui/yes/1/true -> YES; non/no/0/false -> NO; anything else including MISSING -> UNKNOWN."
+  },
+  "field_transforms": {
+    "activity_status": "ACTIVITY_STATUS_TO_EMPLOYMENT",
+    "education_level": "EDUCATION_LABEL_TO_LEVEL",
+    "household_children_count": "CARE_DEPENDENTS_TO_BURDEN",
+    "household_unemployed_count": "UNEMPLOYED_COUNT_TO_BURDEN",
+    "internet_owned": "YES_NO_LABEL_TO_BOOLEAN",
+    "mobile_phone_owned": "YES_NO_LABEL_TO_BOOLEAN",
+    "persons_per_room": "PERSONS_PER_ROOM_TO_CROWDING",
+    "prior_vote_or_abstention": "PRIOR_VOTE_TO_TURNOUT_MEMORY",
+    "tenure_status": "TENURE_LABEL_TO_HOUSING_SECURITY"
+  },
   "invariants_preserved": [
     "default_is_unknown",
     "population_prior_is_not_individual_fact",
@@ -692,29 +196,581 @@
     "direct_party_preference_from_demographics_forbidden",
     "dimensions_may_be_added_only_by_new_version"
   ],
-  "does_not_change": [
-    "the frozen V9 payload sha256 3cdda05d95ef387c85ef8919fe3ea188226f21c0ccc9d5ef9eb7bf35c7d32df0",
-    "any file listed in FREEZE_MANIFEST_V9_EMPIRICAL_MIND.json",
-    "the V8 cognitive architecture",
-    "forecast lambda, which stays 0"
-  ],
-  "category_label_extensions": {
-    "education_level": {
-      "NONE": "aucune scolarité",
-      "PRIMARY": "primaire",
-      "SECONDARY": "secondaire",
-      "HIGH_SCHOOL": "lycée",
-      "TERTIARY": "supérieur",
-      "OTHER": "autre"
+  "matched_donor_source_detection": {
+    "field_patterns": [
+      "latent_ses_decile",
+      "latent_poverty_risk",
+      "latent_vulnerability_risk",
+      "latent_food_budget_share",
+      "latent_housing_energy_budget_share",
+      "latent_health_hygiene_budget_share",
+      "latent_transport_communications_budget_share",
+      "latent_education_culture_budget_share"
+    ],
+    "source_family": "ENCDM2014_SES_DONOR"
+  },
+  "named_pipeline_coverage_after_amendment": {
+    "attention_score": "political_attention (V9.1) but resolved as ENGINE_DERIVED_COMPOSITE: recorded, not evidence",
+    "education_level": "education_level (V9, now with a label transform)",
+    "information_diet_tier": "engine field, deliberately not a dimension",
+    "localism": "territorial_local_orientation (V9.1)",
+    "political_discussion": "political_discussion (V9)",
+    "prior_vote_or_abstention": "turnout_memory (V9.1, stays UNKNOWN while the current-vintage guard keeps prior-election anchors out)",
+    "weighted_archetype_id": "identity field"
+  },
+  "named_pipeline_independent_evidence_dimensions": {
+    "count": 3,
+    "dimensions": [
+      "education_level",
+      "political_discussion",
+      "territorial_local_orientation"
+    ],
+    "note": "turnout_memory stays UNKNOWN while the prior-election anchor is withheld; political_attention is engine-derived."
+  },
+  "new_dimensions": [
+    {
+      "amendment_note": "attention_score existed in the named pipeline and matched no V9 dimension. The name political_attention is the right one: it is deliberately distinct from campaign_attention (attention to this campaign) and political_interest (dispositional interest). But on the named 2026 pipeline attention_score is NOT an observation: it is the engine composite 0.45*discussion + 0.30*education + 0.15*0.4 + 0.10*localism, verified exactly on 2944/2944 rows, and therefore a deterministic function of three dimensions already registered here. It resolves to ENGINE_DERIVED_COMPOSITE and is hidden from the model. The dimension keeps a genuine source field, political_attention, for the day a measured variable exists.",
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ],
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "L'attention que tu portes à la vie politique en général",
+      "dimension_id": "political_attention",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "INFORMATION_MEDIA",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "attention_score",
+        "political_attention"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "engine_derived": "HIDDEN_CALIBRATION_ONLY",
+        "matched_donor": "DONOR_CONTEXT",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "PROBABILISTIC_CONTEXT",
+        "survey_stratum": "STRATUM_CONTEXT"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "L'attention que tu portes à la vie politique : {value}."
+      },
+      "survey_prior_allowed": true,
+      "survey_source_ids": [
+        "AFROBAROMETER_MAR_R10_2024"
+      ],
+      "value_type": "UNIT_INTERVAL"
     },
-    "employment_status": {
-      "EMPLOYED": "en emploi",
-      "UNEMPLOYED": "au chômage",
-      "INACTIVE": "sans activité",
-      "STUDENT": "étudiant(e)",
-      "RETIRED": "retraité(e)",
-      "OTHER": "autre"
+    {
+      "amendment_note": "prior_vote_or_abstention is a single-election memory, not a participation rate. It is NOT aliased onto habitual_turnout, which would claim a habit the field does not measure. The transform keeps only turned-out / abstained; the party identity stays in voter_mind_state.party_memory where V8 already handles it.",
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "PRIOR_TURNOUT",
+        "PRIOR_ABSTENTION"
+      ],
+      "category_labels_fr": {
+        "PRIOR_ABSTENTION": "tu n'avais pas voté",
+        "PRIOR_TURNOUT": "tu avais voté"
+      },
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Ce dont tu te souviens de ta participation à la dernière élection",
+      "dimension_id": "turnout_memory",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "POLITICAL_BIOGRAPHY",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE",
+        "DO_NOT_REVEAL_WHICH_PARTY_WAS_SUPPORTED_THROUGH_THIS_DIMENSION"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "turnout_memory",
+        "prior_vote_or_abstention"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Ta dernière élection : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [],
+      "value_type": "CATEGORICAL"
+    },
+    {
+      "amendment_note": "The V9 catalogue of 108 has no territorial-attachment dimension at all, so localism had nowhere to land. It is registered explicitly here rather than quietly reinterpreted into an existing dimension. It is not local_responsiveness_perception, which measures what the voter thinks local institutions do.",
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ],
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "L'importance que tu accordes à ton quartier et à ta commune",
+      "dimension_id": "territorial_local_orientation",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "TERRITORIAL_ATTACHMENT",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "territorial_local_orientation",
+        "localism",
+        "local_orientation"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "DONOR_CONTEXT",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "PROBABILISTIC_CONTEXT",
+        "survey_stratum": "STRATUM_CONTEXT"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "L'importance que tu accordes à ton quartier et à ta commune : {value}."
+      },
+      "survey_prior_allowed": true,
+      "survey_source_ids": [
+        "AFROBAROMETER_MAR_R10_2024"
+      ],
+      "value_type": "UNIT_INTERVAL"
+    },
+    {
+      "amendment_note": "Life stage genuinely structures experience. Sex, language and religion are deliberately NOT registered as dimensions: they are already in the raw row, they add nothing the POV needs, and giving them a rendered sentence increases stereotype pressure for no measured gain.",
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "18_24",
+        "25_34",
+        "35_44",
+        "45_59",
+        "60_PLUS"
+      ],
+      "category_labels_fr": {
+        "18_24": "18 à 24 ans",
+        "25_34": "25 à 34 ans",
+        "35_44": "35 à 44 ans",
+        "45_59": "45 à 59 ans",
+        "60_PLUS": "60 ans et plus"
+      },
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Ta tranche d'âge",
+      "dimension_id": "age_band",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "DEMOGRAPHIC_PROFILE",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "age_band"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Ta tranche d'âge : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [
+        "HCP_RGPH_2024"
+      ],
+      "value_type": "CATEGORICAL"
+    },
+    {
+      "amendment_note": "Current milieu, not a trajectory. urban_rural is deliberately NOT aliased onto urban_rural_life_trajectory, whose categories describe a move the field does not record.",
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "URBAN",
+        "RURAL"
+      ],
+      "category_labels_fr": {
+        "RURAL": "rural",
+        "URBAN": "urbain"
+      },
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Le milieu où tu vis",
+      "dimension_id": "urban_rural_milieu",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "DEMOGRAPHIC_PROFILE",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "urban_rural"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Le milieu où tu vis : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [
+        "HCP_RGPH_2024"
+      ],
+      "value_type": "CATEGORICAL"
+    },
+    {
+      "behavioral_use": "SOFT_CONTEXT",
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Ta situation familiale",
+      "dimension_id": "marital_status",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "DEMOGRAPHIC_PROFILE",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "marital_status"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Ta situation familiale : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [
+        "HCP_RGPH_2024"
+      ],
+      "value_type": "CATEGORICAL"
+    },
+    {
+      "behavioral_use": "SOFT_CONTEXT",
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Le type de métier que tu exerces",
+      "dimension_id": "occupation_group",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "LIFE_TRAJECTORY",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "occupation_group"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Le type de métier que tu exerces : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [
+        "HCP_RGPH_2024"
+      ],
+      "value_type": "CATEGORICAL"
+    },
+    {
+      "behavioral_use": "SOFT_CONTEXT",
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Le secteur dans lequel tu travailles",
+      "dimension_id": "industry_sector",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "LIFE_TRAJECTORY",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "industry_sector"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Le secteur dans lequel tu travailles : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [
+        "HCP_RGPH_2024"
+      ],
+      "value_type": "CATEGORICAL"
+    },
+    {
+      "behavioral_use": "SOFT_CONTEXT",
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Le nombre de personnes qui vivent chez toi",
+      "dimension_id": "household_size",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "MATERIAL_HOUSEHOLD",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [
+        "household_size"
+      ],
+      "individual_source_fields": [],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Le nombre de personnes qui vivent chez toi : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [
+        "HCP_RGPH_2024"
+      ],
+      "value_type": "COUNT"
+    },
+    {
+      "amendment_note": "asset_index is a mean of observed RGPH household ownership indicators, already on [0,1].",
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ],
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Le niveau d'équipement de ton foyer",
+      "dimension_id": "household_asset_position",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "MATERIAL_HOUSEHOLD",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [
+        "asset_index"
+      ],
+      "individual_source_fields": [],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Le niveau d'équipement de ton foyer : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [
+        "HCP_RGPH_2024"
+      ],
+      "value_type": "UNIT_INTERVAL"
+    },
+    {
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ],
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "L'accès de ton logement aux services de base",
+      "dimension_id": "household_basic_services_position",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "MATERIAL_HOUSEHOLD",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [
+        "basic_services_index"
+      ],
+      "individual_source_fields": [],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "HIDDEN_CALIBRATION_ONLY",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "HIDDEN_CALIBRATION_ONLY",
+        "survey_stratum": "HIDDEN_CALIBRATION_ONLY"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "L'accès de ton logement aux services de base : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [
+        "HCP_RGPH_2024"
+      ],
+      "value_type": "UNIT_INTERVAL"
+    },
+    {
+      "amendment_note": "Fed only by an ENCDM matched donor, so it resolves to MATCHED_DONOR_LATENT_STATE and never to an observed fact.",
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ],
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "Ta position matérielle par rapport au reste du pays",
+      "dimension_id": "material_living_standard_position",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "MATERIAL_HOUSEHOLD",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "latent_ses_decile"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "DONOR_CONTEXT",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "PROBABILISTIC_CONTEXT",
+        "survey_stratum": "STRATUM_CONTEXT"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "Ta position matérielle par rapport au reste du pays : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [],
+      "value_type": "UNIT_INTERVAL"
+    },
+    {
+      "amendment_note": "Same donor class as material_living_standard_position.",
+      "behavioral_use": "SOFT_CONTEXT",
+      "categories": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ],
+      "default_epistemic_status": "UNKNOWN",
+      "description_fr": "La part de ton budget qui passe dans l'alimentation",
+      "dimension_id": "food_budget_pressure",
+      "direct_evidence_only": false,
+      "ecological_context_fields": [],
+      "ecological_prior_allowed": false,
+      "family": "MATERIAL_HOUSEHOLD",
+      "forbidden_inferences": [
+        "DO_NOT_INFER_PARTY_CHOICE_FROM_THIS_DIMENSION_ALONE"
+      ],
+      "household_source_fields": [],
+      "individual_source_fields": [
+        "latent_food_budget_share"
+      ],
+      "model_visibility": {
+        "ecological": "CONTEXT_ONLY",
+        "matched_donor": "DONOR_CONTEXT",
+        "observed": "DIRECT_STATEMENT",
+        "survey_prior": "PROBABILISTIC_CONTEXT",
+        "survey_stratum": "STRATUM_CONTEXT"
+      },
+      "partisan_target": false,
+      "rendering": {
+        "fr": "La part de ton budget qui passe dans l'alimentation : {value}."
+      },
+      "survey_prior_allowed": false,
+      "survey_source_ids": [],
+      "value_type": "UNIT_INTERVAL"
+    }
+  ],
+  "new_epistemic_statuses": {
+    "ENGINE_DERIVED_COMPOSITE": {
+      "behavioral_use": "DO_NOT_IMPUTE",
+      "default_model_visibility": "HIDDEN_CALIBRATION_ONLY",
+      "independent_evidence": false,
+      "individual_fact_claimed": false,
+      "meaning": "A value the environment's own engine computed from other fields. It restates evidence already present, so it is not evidence.",
+      "model_visible": false,
+      "precedence": 10,
+      "rationale": "Counting a composite as a populated dimension inflates the richness score with information that was already counted once."
+    },
+    "MATCHED_DONOR_LATENT_STATE": {
+      "behavioral_use": "SOFT_CONTEXT_SYNTHETIC_LATENT_STATE",
+      "default_model_visibility": "DONOR_CONTEXT",
+      "direct_statement_allowed": false,
+      "individual_fact_claimed": false,
+      "meaning": "A person-level latent state produced by statistically matching this synthetic person to a donor survey household. Attached to the replicate, never observed for the person.",
+      "precedence": 45,
+      "source_family": "ENCDM2014_SES_DONOR"
+    },
+    "SURVEY_STRATUM_PRIOR": {
+      "behavioral_use": "CONTEXT_ONLY_NOT_INDIVIDUAL_TRAIT",
+      "default_model_visibility": "STRATUM_CONTEXT",
+      "direct_statement_allowed": false,
+      "individual_fact_claimed": false,
+      "meaning": "A conditional mean and dispersion measured on a survey stratum of comparable people. It is not an observation about this person.",
+      "precedence": 35,
+      "promotion_path": "A methodologically validated conditional draw may later turn this into SYNTHETIC_POSTERIOR_DRAW_FROM_MOROCCAN_SURVEY, which the model may embody. That validation does not exist yet, so no promotion happens here."
     }
   },
-  "category_label_extensions_note": "Rendering only. No category, source field, value type or epistemic rule of the frozen V9 registry is changed by this block."
+  "rationale": "The frozen V9 payload 3cdda05d... is not edited. This amendment is applied on top of it at load time, exactly as agent_society_v2_main_bridge_v6.py amends V5 without touching V5.",
+  "schema_version": "ATLAS_EMPIRICAL_MIND_DIMENSIONS_AMENDMENT_V9_1",
+  "status": "FROZEN_V9_1_AMENDMENT",
+  "stratum_source_detection": {
+    "block_key": "survey_stratum",
+    "dispersion_suffix": "_sd",
+    "field_patterns": [
+      "latent_attitude_*_mean"
+    ],
+    "note": "Detection is by field shape, so every present and future latent_attitude_* family is covered without listing dimensions one by one.",
+    "support_fields": [
+      "attitude_posterior_stratum_n",
+      "attitude_posterior_match_level",
+      "attitude_source"
+    ]
+  },
+  "version": "V9.1"
 }

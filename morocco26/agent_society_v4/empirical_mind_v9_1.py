@@ -58,12 +58,15 @@ AMENDMENT_SCHEMA = "ATLAS_EMPIRICAL_MIND_DIMENSIONS_AMENDMENT_V9_1"
 
 SURVEY_STRATUM_PRIOR = "SURVEY_STRATUM_PRIOR"
 MATCHED_DONOR_LATENT_STATE = "MATCHED_DONOR_LATENT_STATE"
+ENGINE_DERIVED_COMPOSITE = "ENGINE_DERIVED_COMPOSITE"
 STRATUM_VISIBILITY = "STRATUM_CONTEXT"
 DONOR_VISIBILITY = "DONOR_CONTEXT"
+ENGINE_VISIBILITY = "HIDDEN_CALIBRATION_ONLY"
 
 ALLOWED_EPISTEMIC_STATUSES_V9_1 = frozenset(ALLOWED_EPISTEMIC_STATUSES) | {
     SURVEY_STRATUM_PRIOR,
     MATCHED_DONOR_LATENT_STATE,
+    ENGINE_DERIVED_COMPOSITE,
 }
 
 EPISTEMIC_PRECEDENCE_V9_1 = {
@@ -74,6 +77,7 @@ EPISTEMIC_PRECEDENCE_V9_1 = {
     SURVEY_STRATUM_PRIOR: 35,
     "ECOLOGICAL_CONTEXT_ONLY": 30,
     "REGISTERED_EXPERIMENTAL_PRIOR": 20,
+    ENGINE_DERIVED_COMPOSITE: 10,
     "UNKNOWN": 0,
 }
 
@@ -125,8 +129,20 @@ def is_matched_donor_field(field: str, donor_fields: Sequence[str] = ()) -> bool
     return str(field) in (tuple(donor_fields) or DEFAULT_MATCHED_DONOR_FIELDS)
 
 
-def is_non_individual_field(field: str, donor_fields: Sequence[str] = ()) -> bool:
-    return is_stratum_field(field) or is_matched_donor_field(field, donor_fields)
+def is_engine_derived_field(field: str, engine_fields: Mapping[str, Any] | None = None) -> bool:
+    return str(field) in dict(engine_fields or {})
+
+
+def is_non_individual_field(
+    field: str,
+    donor_fields: Sequence[str] = (),
+    engine_fields: Mapping[str, Any] | None = None,
+) -> bool:
+    return (
+        is_stratum_field(field)
+        or is_matched_donor_field(field, donor_fields)
+        or is_engine_derived_field(field, engine_fields)
+    )
 
 
 def apply_registry_amendment(
@@ -185,6 +201,9 @@ def apply_registry_amendment(
         amendment.get("matched_donor_source_detection") or {}
     ).get("source_family")
     effective["engine_only_fields"] = sorted(amendment.get("engine_only_fields") or {})
+    effective["engine_derived_composite_fields"] = dict(
+        amendment.get("engine_derived_composite_fields") or {}
+    )
     validate_dimension_registry(effective)
     expected = amendment.get("expected_dimension_count_after_amendment")
     if isinstance(expected, int) and expected != len(dimensions):
@@ -413,6 +432,52 @@ def _donor_state(
     }
 
 
+def _engine_composite_state(
+    *,
+    spec: Mapping[str, Any],
+    value: Any,
+    source_field: str,
+    snapshot_date: str,
+    declaration: Mapping[str, Any],
+) -> dict[str, Any]:
+    """A value the engine computed from other fields is not evidence.
+
+    `attention_score` in the named 2026 pipeline is
+    `.45*political_discussion + .30*education_score + .15*0.4 + .10*localism`,
+    verified exactly on 2944/2944 rows. Reporting it as an observation would
+    both misstate its provenance and double-count three dimensions that are
+    already registered separately.
+    """
+    normalized, band = _normalize_value(value, spec)
+    if normalized is None:
+        return _unknown_state(spec)
+    visibility = (spec.get("model_visibility") or {}).get("engine_derived", ENGINE_VISIBILITY)
+    if visibility in {"DIRECT_STATEMENT", "PROBABILISTIC_CONTEXT", "CONTEXT_ONLY", STRATUM_VISIBILITY, DONOR_VISIBILITY}:
+        raise EmpiricalMindV91Error(
+            f"{spec.get('dimension_id')}: an engine-derived composite may not be spoken to the model"
+        )
+    return {
+        "schema_version": EMPIRICAL_DIMENSION_STATE_SCHEMA,
+        "dimension_id": str(spec["dimension_id"]),
+        "family": str(spec["family"]),
+        "epistemic_status": ENGINE_DERIVED_COMPOSITE,
+        "value": None,
+        "engine_value": normalized,
+        "band_or_category": band,
+        "uncertainty": "NOT_AN_INDEPENDENT_MEASUREMENT",
+        "model_visibility": visibility,
+        "behavioral_use": "DO_NOT_IMPUTE",
+        "source_ids": [f"ENGINE_FIELD:{source_field}"],
+        "known_as_of": snapshot_date,
+        "conditioning_fields": list(declaration.get("inputs") or []),
+        "source_field": source_field,
+        "engine_formula": declaration.get("formula"),
+        "redundant_with": list(declaration.get("redundant_with") or []),
+        "individual_fact_claimed": False,
+        "independent_evidence": False,
+    }
+
+
 def resolve_dimension_v9_1(
     *,
     voter: Mapping[str, Any],
@@ -426,9 +491,11 @@ def resolve_dimension_v9_1(
     field_transforms: Mapping[str, str] | None = None,
     donor_fields: Sequence[str] = (),
     donor_source_family: str | None = None,
+    engine_fields: Mapping[str, Any] | None = None,
     stratum_visibility: str = "context",
 ) -> dict[str, Any]:
     field_transforms = field_transforms or {}
+    engine_fields = dict(engine_fields or {})
     fallback_transform = spec.get("value_transform")
     individual_fields = [str(field) for field in spec.get("individual_source_fields") or []]
 
@@ -438,7 +505,7 @@ def resolve_dimension_v9_1(
     # 1. genuine individual observations, in declared order; stratum and donor
     #    fields are deliberately skipped here, they are not observations
     for field in individual_fields:
-        if is_non_individual_field(field, donor_fields):
+        if is_non_individual_field(field, donor_fields, engine_fields):
             continue
         if field in voter and voter.get(field) is not None:
             value = apply_field_transform(voter.get(field), transform_for(field), voter)
@@ -452,7 +519,7 @@ def resolve_dimension_v9_1(
 
     # 2. household observations
     for field in [str(item) for item in spec.get("household_source_fields") or []]:
-        if is_non_individual_field(field, donor_fields):
+        if is_non_individual_field(field, donor_fields, engine_fields):
             continue
         if field in household and household.get(field) is not None:
             value = apply_field_transform(household.get(field), transform_for(field), household)
@@ -528,6 +595,24 @@ def resolve_dimension_v9_1(
                 source_field=field,
                 snapshot_date=snapshot_date,
             )
+
+    # 7. last resort: a composite the engine computed from other fields. It is
+    #    recorded for the audit and never shown to the model.
+    for field in individual_fields:
+        declaration = engine_fields.get(field)
+        if not declaration:
+            continue
+        for container in (voter, household):
+            if field in container and container.get(field) is not None:
+                state = _engine_composite_state(
+                    spec=spec,
+                    value=container.get(field),
+                    source_field=field,
+                    snapshot_date=snapshot_date,
+                    declaration=declaration,
+                )
+                if state["epistemic_status"] != "UNKNOWN":
+                    return state
     return _unknown_state(spec)
 
 
@@ -617,9 +702,14 @@ def _render_statement_v9_1(state: Mapping[str, Any], spec: Mapping[str, Any]) ->
 
 
 def measure_relabelling(
-    states: Mapping[str, Mapping[str, Any]], *, donor_fields: Sequence[str] = ()
+    states: Mapping[str, Mapping[str, Any]],
+    *,
+    donor_fields: Sequence[str] = (),
+    engine_fields: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """The assertion V9 hard-coded, actually measured."""
+    engine_fields = dict(engine_fields or {})
+    engine_as_individual = []
     stratum_as_individual = []
     donor_as_individual = []
     ecological_as_individual = []
@@ -644,8 +734,15 @@ def measure_relabelling(
                 stratum_spoken_directly.append(dimension_id)
         if status == MATCHED_DONOR_LATENT_STATE and claimed:
             donor_as_individual.append(dimension_id)
+        if is_engine_derived_field(source_field, engine_fields) and (
+            status in {"OBSERVED_INDIVIDUAL", "OBSERVED_HOUSEHOLD"} or claimed
+        ):
+            engine_as_individual.append(dimension_id)
     offending = sorted(
-        set(stratum_as_individual) | set(donor_as_individual) | set(ecological_as_individual)
+        set(stratum_as_individual)
+        | set(donor_as_individual)
+        | set(ecological_as_individual)
+        | set(engine_as_individual)
     )
     return {
         "population_prior_relabelled_as_individual_fact": bool(
@@ -653,6 +750,7 @@ def measure_relabelling(
         ),
         "survey_stratum_relabelled_as_individual_fact": bool(stratum_as_individual),
         "matched_donor_relabelled_as_individual_fact": bool(donor_as_individual),
+        "engine_composite_relabelled_as_individual_fact": bool(engine_as_individual),
         "ecological_context_relabelled_as_individual_fact": bool(ecological_as_individual),
         "stratum_priors_without_retained_dispersion": sorted(stratum_without_dispersion),
         "stratum_priors_spoken_as_direct_statement": sorted(stratum_spoken_directly),
@@ -709,6 +807,7 @@ def build_empirical_mind_v9_1(
         str(field) for field in dimension_registry.get("matched_donor_fields") or DEFAULT_MATCHED_DONOR_FIELDS
     )
     donor_source_family = dimension_registry.get("matched_donor_source_family")
+    engine_fields = dict(dimension_registry.get("engine_derived_composite_fields") or {})
     states: dict[str, dict[str, Any]] = {}
     statements: list[str] = []
     counts = {status: 0 for status in sorted(ALLOWED_EPISTEMIC_STATUSES_V9_1)}
@@ -726,6 +825,7 @@ def build_empirical_mind_v9_1(
             field_transforms=field_transforms,
             donor_fields=donor_fields,
             donor_source_family=donor_source_family,
+            engine_fields=engine_fields,
             stratum_visibility=stratum_visibility,
         )
         status = str(state["epistemic_status"])
@@ -737,7 +837,9 @@ def build_empirical_mind_v9_1(
         if statement:
             statements.append(statement)
 
-    relabelling = measure_relabelling(states, donor_fields=donor_fields)
+    relabelling = measure_relabelling(
+        states, donor_fields=donor_fields, engine_fields=engine_fields
+    )
     mind = {
         "schema_version": EMPIRICAL_MIND_V9_1_SCHEMA,
         "amendment_id": dimension_registry.get("amendment_id") or "V9_AMENDMENT_01",
@@ -781,12 +883,15 @@ def build_empirical_mind_v9_1(
             f"{relabelling['offending_dimensions']}"
         )
     populated = len(states) - counts["UNKNOWN"]
+    independent = populated - counts[ENGINE_DERIVED_COMPOSITE]
     audit = {
         "schema_version": "AGENT_SOCIETY_EMPIRICAL_MIND_V9_1_AUDIT_V1",
         "weighted_archetype_id": mind["identity"]["weighted_archetype_id"],
         "epistemic_counts": counts,
         "dimensions": len(states),
         "populated_dimensions": populated,
+        "independent_evidence_dimensions": independent,
+        "engine_derived_composite_dimensions": counts[ENGINE_DERIVED_COMPOSITE],
         "unknown_share": round(counts["UNKNOWN"] / max(1, len(states)), 6),
         "model_visible_statement_count": len(statements),
         "direct_evidence_only_dimensions": sorted(DIRECT_EVIDENCE_ONLY_DIMENSIONS),
@@ -841,11 +946,14 @@ def empiricalize_behavioral_voter_v9_1(
             state.pop("stratum_sd", None)
         if state.get("epistemic_status") == MATCHED_DONOR_LATENT_STATE:
             state.pop("donor_value", None)
+        if state.get("epistemic_status") == ENGINE_DERIVED_COMPOSITE:
+            state.pop("engine_value", None)
     visible["empirical_moroccan_mind"] = stripped
     visible["empirical_mind_contract"] = {
         "population_priors_are_not_individual_facts": True,
         "survey_stratum_priors_are_not_individual_facts": True,
         "matched_donor_states_are_not_individual_facts": True,
+        "engine_derived_composites_are_not_evidence": True,
         "ecological_context_is_not_personal_psychology": True,
         "unknown_dimensions_must_remain_unknown": True,
         "direct_evidence_only_for_sensitive_cultural_mechanisms": True,

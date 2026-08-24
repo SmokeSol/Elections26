@@ -1,66 +1,112 @@
 {
   "schema_version": "ATLAS_P3_R3_LOCAL_ONLY_PILOT_PROTOCOL_V1",
   "protocol_id": "M26-P3-R3-LOCAL-ONLY-PILOT-V1",
+  "protocol_revision": 2,
+  "supersedes_revision": 1,
+  "revision_reason": "Revision 1 used a three-arm A/B/C design in which C was meant to measure intra-batch contamination on its own. B minus C is not identifiable: it confounds the batch effect, the context-size effect, run stochasticity and contamination, and there was no solo counterpart of A. Revision 2 is a 2x2 with same-condition replication.",
   "status": "PREREGISTERED_BEFORE_ANY_R3_MODEL_CALL",
   "registered_on": "2026-08-24",
-  "question": "With a real multitude of human characteristics and a real local candidate offer, does the model produce a behaviourally structured population on the LOCAL ballot alone?",
+  "question": "With a real multitude of human characteristics and a real local candidate offer, does the model produce a behaviourally structured population on the LOCAL ballot alone - and does that depend on the 32 voters sharing a context?",
   "why_local_only": "BR1-REGIONAL and BR4 are NOT_TESTABLE_MISSING_DATA under the R0 certificate. Spending model calls on a ballot the environment cannot describe tests the packet, not the voter mind. R3 runs before R4/R5 precisely because it does not need them.",
   "preconditions": {
-    "R0_certificate_present": true,
-    "R0_certificate_not_blocking": true,
-    "R1_V9_1_EM2_measured_clean": true,
-    "R2_rich_population_bridged": true,
+    "R0_certificate_present_and_not_blocking": true,
+    "R1_V9_1_EM2_and_EM13_measured_clean": true,
+    "R2_rich_population_bridged_from_a_2026_current_vintage_artifact": true,
+    "population_builder_used_no_electoral_raking_dimension": true,
+    "ci_freeze_gate_passed_on_the_exact_head_sha": true,
+    "working_tree_clean": true,
     "regional_simulation_allowed": false,
     "forecast_lambda": 0.0
   },
+  "design": {
+    "type": "2x2 factorial with same-condition replication",
+    "factor_1": {"name": "mind_layer", "levels": ["V8_1", "V9_1"]},
+    "factor_2": {"name": "context", "levels": ["BATCH_32", "SOLO_1"]},
+    "population": "identical rich population across all four cells, so every contrast is paired on archetype identity",
+    "cells": ["A_batch", "B_batch", "A_solo", "B_solo"]
+  },
   "arms": [
     {
-      "arm_id": "A0_MINIMAL_V8_1",
-      "population": "named 2026 pipeline, seven columns per voter",
+      "arm_id": "A_batch",
       "mind_layer": "V8.1 only",
-      "role": "the 'before' reference. NOT paired with the other arms: the seven-column archetypes have no traceable mapping to any rich archetype.",
-      "optional": true
+      "context": "32 voters in one model call, canonical protocol",
+      "role": "control, batched"
     },
     {
-      "arm_id": "A_RICH_V8_1",
-      "population": "rich population bridged by R2",
-      "mind_layer": "V8.1 only",
-      "role": "paired control"
-    },
-    {
-      "arm_id": "B_RICH_V9_1",
-      "population": "identical to A_RICH_V8_1",
+      "arm_id": "B_batch",
       "mind_layer": "V8.1 + Empirical Moroccan Mind V9.1",
-      "role": "paired treatment. The only controlled difference from A is the mind layer."
+      "context": "32 voters in one model call",
+      "role": "treatment, batched"
     },
     {
-      "arm_id": "C_RICH_V9_1_SOLO",
-      "population": "identical to B_RICH_V9_1",
+      "arm_id": "A_solo",
+      "mind_layer": "V8.1 only",
+      "context": "one voter per model call, fresh context",
+      "role": "control, contamination-free"
+    },
+    {
+      "arm_id": "B_solo",
       "mind_layer": "V8.1 + V9.1",
-      "protocol_difference": "one voter per work item, one fresh model context per voter",
-      "role": "measures intra-batch contamination: in the canonical protocol all 32 voters share one call and can condition on each other."
+      "context": "one voter per model call, fresh context",
+      "role": "treatment, contamination-free"
+    },
+    {
+      "arm_id": "A0_MINIMAL_V8_1",
+      "mind_layer": "V8.1 only",
+      "population": "named 2026 pipeline, seven columns per voter",
+      "context": "batch",
+      "role": "historical reference. NOT paired with anything: the seven-column archetypes have no traceable mapping to a rich archetype.",
+      "optional": true
     }
   ],
+  "replication": {
+    "purpose": "A and B are two different model calls even on identical inputs, so L1(A,B) > 0 is not by itself an effect of the mind layer. Same-condition replicates give the null.",
+    "batch_replicates_default": 3,
+    "solo_replicates_default": 2,
+    "minimum_for_a_valid_read": {"batch_replicates": 2, "solo_replicates": 2},
+    "independence": "every replicate is a fresh context; replicate order randomised together with arm order"
+  },
+  "contrasts": {
+    "D_mind_batch": "L1(A_batch, B_batch) - effect of V9.1 under the canonical batched protocol",
+    "D_mind_solo": "L1(A_solo, B_solo) - effect of V9.1 with no inter-voter conditioning",
+    "D_batching_v8_1": "L1(A_batch, A_solo) - effect of batching under V8.1",
+    "D_batching_v9_1": "L1(B_batch, B_solo) - effect of batching under V9.1",
+    "interaction": "D_mind_batch - D_mind_solo - does the V9.1 mind behave differently because the 32 voters cohabit in one context?",
+    "noise_same_condition": "mean L1 between replicates of the same cell, per cell"
+  },
+  "primary_measures": [
+    "unique LOCAL probability vectors out of N",
+    "mean pairwise L1 between voters on LOCAL",
+    "mean top1-top2 margin and exact-tie rate",
+    "turnout dispersion",
+    "unique POVs, first-person rate, analyst-jargon count, out-of-diet candidate mentions"
+  ],
+  "promotion_rule": {
+    "name": "R3_PROMOTION_THRESHOLD",
+    "value": 0.2,
+    "statement": "D_mind_solo must exceed 20 percent of the between-voter LOCAL dispersion measured in A_solo.",
+    "noise_rule": {
+      "name": "R3_NOISE_MULTIPLE",
+      "value": 2.0,
+      "statement": "D_mind_solo must also exceed twice the same-condition replicate noise of the A and B solo cells. An effect smaller than the null is not an effect."
+    },
+    "reference_point": "The 2026-08-23 pilot measured 4.3 percent of between-voter dispersion, with no null estimated at all.",
+    "not_a_scientific_validation": "This is a promotion gate for the current mechanism under the current information surface. It is not evidence of Moroccan voter realism, which requires the paired perturbation tests and historical out-of-sample validation."
+  },
+  "failure_semantics": {
+    "R3_FAIL": "blocks promotion of the current V9.1 mechanism under the current LOCAL information surface",
+    "R3_FAIL_does_not_prove": "that V9.1 cannot interact with a richer electoral offer. R3 runs without real programmes, without party memory and without a regional ballot; a weak interaction here is a statement about this surface, not about the mechanism in general.",
+    "on_fail_next_step": "collect R4/R5 and re-test before drawing any conclusion about the voter mind itself"
+  },
   "execution_rules": {
-    "model": "declare the exact model id in the run manifest; the same model for every arm",
-    "arm_order": "randomised, and each arm in a fresh context",
+    "model": "declare the exact model id in the run manifest; the same model for every cell and every replicate",
+    "randomisation": "randomise the order of (arm, replicate) pairs; one fresh context per unit",
     "cross_arm_contamination": "the 2026-08-23 pilot generated ARM B after ARM A in the same context, which makes its measured V9 effect an upper bound on sensitivity rather than a clean test. R3 must not repeat that.",
     "retries": "only on schema-invalid output, with the identical prompt and no feedback beyond schema validity",
     "prompt": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_PROMPT_V1_1_LOCAL_ONLY.md",
     "output_schema": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_OUTPUT_SCHEMA_V1_1_LOCAL_ONLY.json",
     "regional_vote_in_output": "forbidden; a row carrying regional_party_probabilities fails BR0"
   },
-  "primary_measures": [
-    "unique LOCAL probability vectors out of N",
-    "mean pairwise L1 distance between voters on LOCAL",
-    "mean top1-top2 margin and exact-tie rate",
-    "turnout dispersion",
-    "unique POVs, first-person rate, analyst-jargon count, out-of-diet candidate mentions"
-  ],
-  "paired_measures": [
-    "A vs B: per-archetype L1 on LOCAL, turnout delta, change in the set of top options",
-    "B vs C: same measures, isolating intra-batch conditioning"
-  ],
   "gates": {
     "BR0_INTEGRITY": "TESTABLE",
     "BR1_LOCAL": "TESTABLE",
@@ -73,25 +119,23 @@
     "BR7_PLACEBO": "TESTABLE",
     "BR8_POV": "TESTABLE"
   },
-  "success_criterion": {
-    "statement": "R3 succeeds if the testable gates pass and the A-vs-B contrast is large enough to be a mechanism rather than second-pass noise.",
-    "mechanism_threshold": "mean paired L1 on LOCAL must exceed 20 percent of the mean pairwise L1 between voters. The 2026-08-23 pilot measured 4.3 percent, which is noise.",
-    "failure_is_informative": "If B does not separate from A, the voter mind does not use the added human substance, and no further data collection will fix that."
-  },
   "forbidden": [
     "any dual-ballot model call before R4 and R5 have collected the missing layers",
     "repairing a gate inside the prompt",
     "presenting a programme scaffold as a programme",
     "reusing the local ballot as a regional surface",
+    "counting an engine-derived composite as evidence",
     "any forecast claim; agentic lambda stays 0"
   ],
   "artifacts_to_freeze": [
+    "git HEAD sha, freeze manifest sha, CI run conclusion and working-tree state, recorded in r3_arm_plan.json before the first call",
     "the P3 data-layer certificate used to build the arms",
-    "the rich-named bridge certificate",
-    "the V8.1 and V9.1 environment manifests per arm",
-    "prompt, schema and per-arm context sha256",
-    "raw JSONL outputs per arm",
-    "the V8.1 testability-aware audit per arm and the paired comparison"
+    "the rich-named bridge certificate and the 2026 population certificate",
+    "the V8.1 and V9.1 environment manifests per cell",
+    "prompt, schema and per-cell context sha256",
+    "raw JSONL outputs per cell and per replicate",
+    "the V8.1 testability-aware audit per cell and the 2x2 measurement report"
   ],
-  "boundary": "R3 evaluates behavioural realism of a synthetic society. It is not an electoral forecast, and no historical out-of-sample validation has been performed."
+  "boundary": "R3 evaluates behavioural realism of a synthetic society. It is not an electoral forecast, and no historical out-of-sample validation has been performed.",
+  "guiding_principle": "The optimisation target is not catalogue density. 30/121, 40/121 or 20/121 can each be correct. The target is maximum true information and minimum invented information."
 }
