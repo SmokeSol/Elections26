@@ -1,0 +1,46 @@
+{
+  "schema_version": "ATLAS_CURRENT_VINTAGE_LABOUR_CONTEXT_2026_V1",
+  "status": "SOURCED_HCP_EMO2026_Q2",
+  "publisher": "Haut-Commissariat au Plan (HCP), Royaume du Maroc",
+  "publication_title": "Situation du marché du travail au Maroc au deuxième trimestre de 2026 à partir de la nouvelle enquête sur la main-d’œuvre (EMO2026)",
+  "known_as_of": "2026-08-03",
+  "source_url": "https://www.hcp.ma/attachment/2897232/",
+  "rates": {
+    "activity": 0.422,
+    "unemployment": 0.095,
+    "urban_unemployment": 0.119,
+    "rural_unemployment": 0.054,
+    "youth_unemployment": 0.272,
+    "female_unemployment": 0.148,
+    "underemployment": 0.04951611387766607
+  },
+  "rate_definitions": {
+    "activity": "Taux de participation à la main-d’œuvre, national, T2 2026.",
+    "unemployment": "Taux de chômage strict, national, T2 2026.",
+    "urban_unemployment": "Taux de chômage strict, milieu urbain, T2 2026.",
+    "rural_unemployment": "Taux de chômage strict, milieu rural, T2 2026.",
+    "youth_unemployment": "Taux de chômage strict des 15-24 ans, T2 2026.",
+    "female_unemployment": "Taux de chômage strict des femmes, T2 2026.",
+    "underemployment": "Part des personnes en emploi contre revenu en situation de sous-emploi lié à la durée du travail. Dérivée des volumes HCP 527000 / 10643000 afin de préserver la sémantique d’un taux de sous-emploi parmi les personnes en emploi; ce n’est PAS le taux combiné chômage strict + sous-emploi de 14,0%."
+  },
+  "underemployment_derivation": {
+    "numerator_time_related_underemployed_persons": 527000,
+    "denominator_employed_against_income_persons": 10643000,
+    "derived_rate": 0.04951611387766607,
+    "reported_combined_strict_unemployment_plus_time_related_underemployment_rate": 0.14,
+    "crosscheck_labour_force_persons": 11764000,
+    "note": "HCP reports 527,000 employed persons in time-related underemployment and 10,643,000 persons employed against income. The standalone rate stored here uses the employed-person denominator."
+  },
+  "methodology_break": {
+    "from": "Enquête Nationale sur l’Emploi (ENE)",
+    "to": "Enquête sur la Main-d’œuvre (EMO2026)",
+    "direct_comparability_with_pre_2026_ene": false,
+    "note": "HCP states that EMO2026 results are not directly comparable with previously published ENE results because of conceptual and methodological changes. The 2026 values are current-vintage inputs, not a continuation of the old ENE series."
+  },
+  "use_boundary": {
+    "population_raking": "Only strict-unemployment rates are used by the current builder's labour multiplier; no electoral variable is introduced.",
+    "underemployment": "Contextual current-year field only; the derivation and EMO2026 concept break must remain attached to its provenance.",
+    "historical_outcome_used": false,
+    "electoral_raking_used": false
+  }
+}
