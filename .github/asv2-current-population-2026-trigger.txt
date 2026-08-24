@@ -16,6 +16,16 @@
 # lineage PASS, no political memory. That output is what freeze revision 3 will
 # record, and what R2 will bridge before R3 runs.
 
-request: 2026-08-24 rebuild after run 32742167166 failed in the build step with exit 2
-note: the log is not publicly readable, so this run verifies each download
-      individually and runs a parent-resolution preflight before the 92 fits
+# Verified independently on 2026-08-24, from a client outside CI: all three
+# source files download complete and hash exactly as recorded.
+#
+#   rgph_individual.dta  200,532,997 bytes  62dbbfc6...  match
+#   rgph_household.dta    39,442,553 bytes  0c630cfa...  match
+#   encdm_household.sav   33,254,643 bytes  6a3d6bbb...  match
+#
+# So HCP did not republish: runs 32742167166 and 32742873701 died on a truncated
+# transfer inside CI, which neither the bare `wait` nor a 1 MB size floor could
+# detect. p3_fetch_microdata.py now compares received bytes to Content-Length per
+# file and retries a short read.
+
+request: 2026-08-24 rebuild with per-file completeness verification
