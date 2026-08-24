@@ -1,10 +1,14 @@
 # Agent Society — Behavioral Mind V8 addendum
 
+> **Empirical V9 override for voter substance:** before any new P3 model call, read `AGENTS_EMPIRICAL_MIND_ADDENDUM.md`. V8 remains the cognitive architecture; V9 is now authoritative for which human/Moroccan dimensions may populate `voter_mind_state`, their provenance, uncertainty and scale gates.
+
 This is the highest-priority Agent Society behavioral instruction after the three-regime and current-vintage architecture.
 
 Read before any new P3 model call:
 
 ```text
+AGENTS_EMPIRICAL_MIND_ADDENDUM.md
+morocco26/data/goal100/agent_society_v2/EMPIRICAL_MOROCCAN_MIND_STATE_V1.json
 morocco26/data/goal100/agent_society_v2/BEHAVIORAL_MIND_STATE_V1.json
 morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_MIND_PROTOCOL_V1.json
 morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_PROMPT_V1.md
@@ -56,10 +60,10 @@ See `BEHAVIORAL_MIND_STATE_V1.json` for hashes.
 Before any broader P3 run:
 
 1. build a Behavioral Mind V8 overlay from the already-valid current-vintage named environment;
-2. run exactly one work item / 32 voters with `run_g0_sol_named_2026_behavioral_v8.py`;
-3. run `agent_society_behavioral_v8.py audit`;
-4. require BR0 + BR1 + BR6 + BR8 before any second-stage pilot;
-5. require paired BR2/BR3/BR4/BR5/BR7 tests and historical out-of-sample validation before broad scale.
+2. enrich it through Empirical Moroccan Mind V9;
+3. do not call Sol from V9 until a calibrated Moroccan prior pack passes EM0-EM5;
+4. run exactly one work item / 32 voters with `run_g0_sol_named_2026_empirical_v9.py`;
+5. require BR/EM paired tests and historical out-of-sample validation before broad scale.
 
 There is no scale-override flag.
 

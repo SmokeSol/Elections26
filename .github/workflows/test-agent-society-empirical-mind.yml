@@ -1,30 +1,27 @@
-name: apply-agent-society-empirical-v9
+name: test-agent-society-empirical-mind
 
 on:
   push:
     branches:
       - morocco26-agent-society-v2-front-vote-llm
     paths:
-      - '.github/workflows/apply-agent-society-empirical-v9.yml'
+      - 'morocco26/agent_society_v4/empirical_*.py'
+      - 'morocco26/agent_society_v4/tests/test_empirical_*.py'
+      - 'morocco26/scripts/agent_society_empirical_mind_v9.py'
+      - 'morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_*'
+      - 'morocco26/data/goal100/agent_society_v2/EMPIRICAL_MOROCCAN_MIND_STATE_V1.json'
+      - 'AGENTS_EMPIRICAL_MIND_ADDENDUM.md'
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  apply:
+  empirical-mind:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: morocco26-agent-society-v2-front-vote-llm
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Apply frozen V9 payload
-        run: python .github/agent_society_empirical_v9_payload.py
-      - name: Compile and test V9
+      - name: Compile V9 code
         run: |
           python -m py_compile \
             morocco26/agent_society_v4/empirical_priors_v9.py \
@@ -33,7 +30,8 @@ jobs:
             morocco26/agent_society_v4/empirical_environment_v9.py \
             morocco26/scripts/agent_society_empirical_mind_v9.py \
             morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/run_g0_sol_named_2026_empirical_v9.py
-          python -m unittest discover -v -s morocco26/agent_society_v4/tests -p 'test_empirical_*.py'
+      - name: Validate JSON registries and blocked prior template
+        run: |
           python morocco26/scripts/agent_society_empirical_mind_v9.py validate-registry \
             --dimensions morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_MIND_DIMENSIONS_V1.json \
             --sources morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_SOURCE_REGISTRY_V1.json \
@@ -44,11 +42,5 @@ jobs:
             --prior-pack morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_PRIOR_PACK_TEMPLATE_V1.json \
             --snapshot-date 2026-08-23 \
             --allow-blocked-template
-          git diff --check
-      - name: Commit V9
-        run: |
-          git config user.name "SmokeSol"
-          git config user.email "90652507+SmokeSol@users.noreply.github.com"
-          git add -A
-          git commit -m "feat(agent-society): add V9 empirical Moroccan voter mind"
-          git push origin HEAD:morocco26-agent-society-v2-front-vote-llm
+      - name: Empirical mind tests
+        run: python -m unittest discover -v -s morocco26/agent_society_v4/tests -p 'test_empirical_*.py'
