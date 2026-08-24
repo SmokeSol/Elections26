@@ -1,0 +1,97 @@
+{
+  "schema_version": "ATLAS_P3_R3_LOCAL_ONLY_PILOT_PROTOCOL_V1",
+  "protocol_id": "M26-P3-R3-LOCAL-ONLY-PILOT-V1",
+  "status": "PREREGISTERED_BEFORE_ANY_R3_MODEL_CALL",
+  "registered_on": "2026-08-24",
+  "question": "With a real multitude of human characteristics and a real local candidate offer, does the model produce a behaviourally structured population on the LOCAL ballot alone?",
+  "why_local_only": "BR1-REGIONAL and BR4 are NOT_TESTABLE_MISSING_DATA under the R0 certificate. Spending model calls on a ballot the environment cannot describe tests the packet, not the voter mind. R3 runs before R4/R5 precisely because it does not need them.",
+  "preconditions": {
+    "R0_certificate_present": true,
+    "R0_certificate_not_blocking": true,
+    "R1_V9_1_EM2_measured_clean": true,
+    "R2_rich_population_bridged": true,
+    "regional_simulation_allowed": false,
+    "forecast_lambda": 0.0
+  },
+  "arms": [
+    {
+      "arm_id": "A0_MINIMAL_V8_1",
+      "population": "named 2026 pipeline, seven columns per voter",
+      "mind_layer": "V8.1 only",
+      "role": "the 'before' reference. NOT paired with the other arms: the seven-column archetypes have no traceable mapping to any rich archetype.",
+      "optional": true
+    },
+    {
+      "arm_id": "A_RICH_V8_1",
+      "population": "rich population bridged by R2",
+      "mind_layer": "V8.1 only",
+      "role": "paired control"
+    },
+    {
+      "arm_id": "B_RICH_V9_1",
+      "population": "identical to A_RICH_V8_1",
+      "mind_layer": "V8.1 + Empirical Moroccan Mind V9.1",
+      "role": "paired treatment. The only controlled difference from A is the mind layer."
+    },
+    {
+      "arm_id": "C_RICH_V9_1_SOLO",
+      "population": "identical to B_RICH_V9_1",
+      "mind_layer": "V8.1 + V9.1",
+      "protocol_difference": "one voter per work item, one fresh model context per voter",
+      "role": "measures intra-batch contamination: in the canonical protocol all 32 voters share one call and can condition on each other."
+    }
+  ],
+  "execution_rules": {
+    "model": "declare the exact model id in the run manifest; the same model for every arm",
+    "arm_order": "randomised, and each arm in a fresh context",
+    "cross_arm_contamination": "the 2026-08-23 pilot generated ARM B after ARM A in the same context, which makes its measured V9 effect an upper bound on sensitivity rather than a clean test. R3 must not repeat that.",
+    "retries": "only on schema-invalid output, with the identical prompt and no feedback beyond schema validity",
+    "prompt": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_PROMPT_V1_1_LOCAL_ONLY.md",
+    "output_schema": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_OUTPUT_SCHEMA_V1_1_LOCAL_ONLY.json",
+    "regional_vote_in_output": "forbidden; a row carrying regional_party_probabilities fails BR0"
+  },
+  "primary_measures": [
+    "unique LOCAL probability vectors out of N",
+    "mean pairwise L1 distance between voters on LOCAL",
+    "mean top1-top2 margin and exact-tie rate",
+    "turnout dispersion",
+    "unique POVs, first-person rate, analyst-jargon count, out-of-diet candidate mentions"
+  ],
+  "paired_measures": [
+    "A vs B: per-archetype L1 on LOCAL, turnout delta, change in the set of top options",
+    "B vs C: same measures, isolating intra-batch conditioning"
+  ],
+  "gates": {
+    "BR0_INTEGRITY": "TESTABLE",
+    "BR1_LOCAL": "TESTABLE",
+    "BR1_REGIONAL": "NOT_TESTABLE_MISSING_DATA",
+    "BR2_PERSONA": "TESTABLE",
+    "BR3_CANDIDATE": "TESTABLE",
+    "BR4_PROGRAMME": "NOT_TESTABLE_MISSING_DATA",
+    "BR5_PARTY_MEMORY": "NOT_TESTABLE_MISSING_DATA",
+    "BR6_TURNOUT": "TESTABLE",
+    "BR7_PLACEBO": "TESTABLE",
+    "BR8_POV": "TESTABLE"
+  },
+  "success_criterion": {
+    "statement": "R3 succeeds if the testable gates pass and the A-vs-B contrast is large enough to be a mechanism rather than second-pass noise.",
+    "mechanism_threshold": "mean paired L1 on LOCAL must exceed 20 percent of the mean pairwise L1 between voters. The 2026-08-23 pilot measured 4.3 percent, which is noise.",
+    "failure_is_informative": "If B does not separate from A, the voter mind does not use the added human substance, and no further data collection will fix that."
+  },
+  "forbidden": [
+    "any dual-ballot model call before R4 and R5 have collected the missing layers",
+    "repairing a gate inside the prompt",
+    "presenting a programme scaffold as a programme",
+    "reusing the local ballot as a regional surface",
+    "any forecast claim; agentic lambda stays 0"
+  ],
+  "artifacts_to_freeze": [
+    "the P3 data-layer certificate used to build the arms",
+    "the rich-named bridge certificate",
+    "the V8.1 and V9.1 environment manifests per arm",
+    "prompt, schema and per-arm context sha256",
+    "raw JSONL outputs per arm",
+    "the V8.1 testability-aware audit per arm and the paired comparison"
+  ],
+  "boundary": "R3 evaluates behavioural realism of a synthetic society. It is not an electoral forecast, and no historical out-of-sample validation has been performed."
+}

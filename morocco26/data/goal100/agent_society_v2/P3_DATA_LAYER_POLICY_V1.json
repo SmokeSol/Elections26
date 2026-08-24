@@ -1,0 +1,76 @@
+{
+  "schema_version": "ATLAS_P3_DATA_LAYER_POLICY_V1",
+  "policy_id": "M26-P3-DATA-LAYER-POLICY-V1",
+  "status": "FROZEN_R0_REMEDIATION",
+  "parent_findings": "V9 Ain Chock pilot 2026-08-23, section 14 bis",
+  "objective": "Stop the environment from presenting a placeholder to the model as if it were electoral information, and separate 'the model failed' from 'the environment could not feed the gate'.",
+  "layers": [
+    "LOCAL_CANDIDATES",
+    "PARTY_PROGRAMMES",
+    "REGIONAL_BALLOT",
+    "RICH_VOTER_STATE"
+  ],
+  "layer_states": {
+    "REAL": "collected, sourced and substantively populated",
+    "PARTIAL_REAL": "collected and sourced, honestly incomplete; unknown cells stay unknown",
+    "PLACEHOLDER": "structurally present but carrying no measured content",
+    "DISCONNECTED": "the data exists upstream and is not wired into this pipeline",
+    "MISSING": "never collected"
+  },
+  "usable_for_substantive_vote": ["REAL", "PARTIAL_REAL"],
+  "gate_verdicts": {
+    "TESTABLE": "the environment can feed this gate; the verdict is about the model",
+    "NOT_TESTABLE_MISSING_DATA": "the environment cannot feed this gate; this is not FAIL"
+  },
+  "hard_rules": {
+    "silent_regional_fallback_allowed": false,
+    "regional_surface_from_local_minus_candidate_allowed": false,
+    "placeholder_layer_model_visible_as_electoral_information": false,
+    "programme_scaffold_presented_as_programme": false,
+    "rejected_local_rows_promoted_to_regional_candidates": false,
+    "layer_embedded_without_canonical_snapshot_in_same_lineage": false
+  },
+  "regional_policy": {
+    "when_regional_ballot_cards_absent": {
+      "REGIONAL_SURFACE_STATUS": "MISSING",
+      "REGIONAL_SIMULATION_ALLOWED": false,
+      "BR1_REGIONAL": "NOT_TESTABLE_MISSING_DATA",
+      "SPLIT_TICKET": "NOT_TESTABLE_MISSING_DATA"
+    },
+    "rationale": "A ballot must never be fabricated to satisfy a schema. The V8 fallback PARTY_PROGRAMME_ONLY_LOCAL_CANDIDATE_STRIPPED produced a second ballot that was the first one amputated, then charged the model with a degeneracy the packet had guaranteed."
+  },
+  "programme_policy": {
+    "scaffold_detection": [
+      "every axis cell carries only a contentless direction such as VERIFIED_POSITION_AVAILABLE",
+      "axis salience orderings are alphabetical rotations shared by several parties"
+    ],
+    "on_detection": {
+      "reclassify_as": "SYNTHETIC_PROGRAMME_SCAFFOLD",
+      "MODEL_VISIBLE_FOR_SUBSTANTIVE_VOTE": false,
+      "BR4_PROGRAMME": "NOT_TESTABLE_MISSING_DATA"
+    },
+    "collection_rule": "NO SOURCE -> UNKNOWN. Never NO SOURCE -> synthetic rotation."
+  },
+  "lineage_rule": {
+    "statement": "A P3 environment may not embed a data layer whose canonical snapshot and certificate are not published together.",
+    "canonical_snapshots": {
+      "LOCAL_CANDIDATES": "morocco26/data/candidate_ballot_cells_2026.json (cell level, measured from the embedded named input)"
+    },
+    "advisory_snapshots": {
+      "LOCAL_CANDIDATES": "morocco26/data/candidate_coverage_2026.json (record level, collection coverage)"
+    },
+    "severity": {
+      "cell_census_absent_or_mismatched": "BLOCKED_LINEAGE_DIVERGENCE",
+      "record_coverage_stale_or_inconsistent": "LINEAGE_ADVISORY"
+    },
+    "rationale": "The pilot ran on 828 cells / 521 confirmed while the repository still advertised 414 records dated 2026-08-16. 'How many candidates do we have?' must have exactly one answer for the artifact the model sees."
+  },
+  "current_state_measured_2026_08_24": {
+    "LOCAL_CANDIDATES": "PARTIAL_REAL",
+    "PARTY_PROGRAMMES": "PLACEHOLDER",
+    "REGIONAL_BALLOT": "MISSING",
+    "RICH_VOTER_STATE": "DISCONNECTED"
+  },
+  "recompute_command": "python morocco26/scripts/p3_data_layer_certificate.py certify --named-input <named_input_current_vintage.json>",
+  "interpretation_boundary": "This policy certifies data layers, not realism. A fully REAL set of layers still proves nothing about Moroccan voter behaviour until the paired behavioural tests and historical out-of-sample validation pass."
+}

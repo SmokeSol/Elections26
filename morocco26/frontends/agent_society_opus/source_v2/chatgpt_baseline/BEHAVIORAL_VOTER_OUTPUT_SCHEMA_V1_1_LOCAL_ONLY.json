@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Society Behavioral Voter Mind V8.1 — one voter decision, LOCAL ballot only",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "anonymous_election_id",
+    "anonymous_territory_id",
+    "condition_id",
+    "batch_id",
+    "weighted_archetype_id",
+    "turnout_probability",
+    "local_party_probabilities",
+    "pov_fr"
+  ],
+  "properties": {
+    "anonymous_election_id": {"type": "string", "minLength": 1},
+    "anonymous_territory_id": {"type": "string", "minLength": 1},
+    "condition_id": {"type": "string", "minLength": 1},
+    "batch_id": {"type": "string", "minLength": 1},
+    "weighted_archetype_id": {"type": "string", "minLength": 1},
+    "turnout_probability": {"type": "number", "minimum": 0, "maximum": 1},
+    "local_party_probabilities": {
+      "type": "object",
+      "minProperties": 2,
+      "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+    },
+    "pov_fr": {"type": "string", "minLength": 40, "maxLength": 1600}
+  }
+}

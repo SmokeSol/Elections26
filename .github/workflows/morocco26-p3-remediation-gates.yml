@@ -1,0 +1,95 @@
+name: morocco26-p3-remediation-gates
+
+on:
+  push:
+    branches:
+      - morocco26-agent-society-v2-front-vote-llm
+    paths:
+      - 'morocco26/agent_society_v4/p3_data_layers_v1.py'
+      - 'morocco26/agent_society_v4/behavioral_*_v8_1.py'
+      - 'morocco26/agent_society_v4/empirical_*_v9_1.py'
+      - 'morocco26/agent_society_v4/rich_named_bridge_v1.py'
+      - 'morocco26/agent_society_v4/electoral_offer_2026_v1.py'
+      - 'morocco26/agent_society_v4/tests/test_p3_remediation.py'
+      - 'morocco26/scripts/p3_*.py'
+      - 'morocco26/scripts/agent_society_behavioral_v8_1.py'
+      - 'morocco26/scripts/agent_society_empirical_mind_v9_1.py'
+      - 'morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_MIND_DIMENSIONS_V9_1_AMENDMENT.json'
+      - 'morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_MIND_PROMPT_ADDENDUM_V1_1.md'
+      - 'morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_*_V1_1_LOCAL_ONLY.*'
+      - 'morocco26/data/goal100/agent_society_v2/P3_*.json'
+      - 'morocco26/data/goal100/agent_society_v2/party_programme_2026.json'
+      - 'morocco26/data/goal100/agent_society_v2/regional_ballot_2026.json'
+      - 'morocco26/data/candidate_ballot_cells_2026.json'
+      - 'AGENTS_P3_REMEDIATION_ADDENDUM.md'
+  workflow_dispatch:
+
+jobs:
+  p3-remediation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile remediation code
+        run: |
+          python -m py_compile \
+            morocco26/agent_society_v4/p3_data_layers_v1.py \
+            morocco26/agent_society_v4/behavioral_mind_v8_1.py \
+            morocco26/agent_society_v4/behavioral_environment_v8_1.py \
+            morocco26/agent_society_v4/behavioral_realism_v8_1.py \
+            morocco26/agent_society_v4/empirical_mind_v9_1.py \
+            morocco26/agent_society_v4/empirical_validation_v9_1.py \
+            morocco26/agent_society_v4/empirical_environment_v9_1.py \
+            morocco26/agent_society_v4/rich_named_bridge_v1.py \
+            morocco26/agent_society_v4/electoral_offer_2026_v1.py \
+            morocco26/scripts/p3_data_layer_certificate.py \
+            morocco26/scripts/p3_rich_named_bridge.py \
+            morocco26/scripts/p3_electoral_offer_2026.py \
+            morocco26/scripts/p3_r3_local_pilot.py \
+            morocco26/scripts/agent_society_behavioral_v8_1.py \
+            morocco26/scripts/agent_society_empirical_mind_v9_1.py
+
+      - name: R0 - the stored data-layer certificate still verifies
+        run: |
+          python morocco26/scripts/p3_data_layer_certificate.py verify --fail-on-block
+
+      - name: R1 - the V9.1 amendment applies to the frozen V9 registry
+        run: |
+          python morocco26/scripts/agent_society_empirical_mind_v9_1.py validate-amendment \
+            --snapshot-date 2026-08-24
+
+      - name: R1 - the frozen V9 payload files are untouched
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, sys
+          manifest = json.loads(pathlib.Path(
+              "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/"
+              "FREEZE_MANIFEST_V9_EMPIRICAL_MIND.json").read_text(encoding="utf-8"))
+          failures = []
+          for row in manifest["frozen_files_excluding_this_manifest"]:
+              path = pathlib.Path(row["path"])
+              if not path.is_file():
+                  failures.append((row["path"], "MISSING"))
+                  continue
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              if digest != row["sha256"]:
+                  failures.append((row["path"], digest))
+          if failures:
+              print("V9 frozen files changed:", failures)
+              sys.exit(1)
+          print(f"PASS_V9_FROZEN_FILES_UNCHANGED files={len(manifest['frozen_files_excluding_this_manifest'])}")
+          PY
+
+      - name: R4/R5 - the electoral-offer datasets validate while still empty
+        run: |
+          python morocco26/scripts/p3_electoral_offer_2026.py validate-programmes --snapshot-date 2026-08-24
+          python morocco26/scripts/p3_electoral_offer_2026.py validate-regional --snapshot-date 2026-08-24
+
+      - name: Remediation unit tests
+        run: python -m unittest discover -v -s morocco26/agent_society_v4/tests -p 'test_p3_remediation.py'
+
+      - name: Behavioral and empirical regression tests
+        run: python -m unittest discover -s morocco26/agent_society_v4/tests -p 'test_*.py'

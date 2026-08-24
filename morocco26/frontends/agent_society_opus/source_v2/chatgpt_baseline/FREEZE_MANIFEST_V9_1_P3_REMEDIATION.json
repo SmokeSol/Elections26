@@ -1,0 +1,205 @@
+{
+  "amendment_id": "V9_AMENDMENT_01",
+  "branch": "morocco26-agent-society-v2-front-vote-llm",
+  "data_layer_states_measured_2026_08_24": {
+    "LOCAL_CANDIDATES": "PARTIAL_REAL",
+    "PARTY_PROGRAMMES": "PLACEHOLDER",
+    "REGIONAL_BALLOT": "MISSING",
+    "RICH_VOTER_STATE": "DISCONNECTED"
+  },
+  "dimension_catalogue": {
+    "after_amendment": 121,
+    "base": 108,
+    "families_after_amendment": 12
+  },
+  "forecast_lambda_before_historical_oos_validation": 0.0,
+  "frozen_files_excluding_this_manifest": [
+    {
+      "bytes": 4597,
+      "path": ".github/workflows/morocco26-p3-remediation-gates.yml",
+      "sha256": "077730c70de5ab02bfb6f6d183bca051ca5ed6f3dd4c8fdaa112e3598c1ffcfc"
+    },
+    {
+      "bytes": 4691,
+      "path": "AGENTS_P3_REMEDIATION_ADDENDUM.md",
+      "sha256": "5e4a9742331d04e66a968db4758df713068a0fea3d78cfc596a919b310276e7c"
+    },
+    {
+      "bytes": 6171,
+      "path": "morocco26/agent_society_v4/EMPIRICAL_MOROCCAN_MIND_V9_1.md",
+      "sha256": "2685ecb479045e171c502ccedc5ebd8974f73a9811319d4e9eb6fd59f04bf147"
+    },
+    {
+      "bytes": 29893,
+      "path": "morocco26/agent_society_v4/p3_data_layers_v1.py",
+      "sha256": "59d1c9569877440adb1e61ff0306fb7ebe001b5bc5f6341ce681b1add0d7abf2"
+    },
+    {
+      "bytes": 9529,
+      "path": "morocco26/agent_society_v4/behavioral_mind_v8_1.py",
+      "sha256": "27bd5bb7adecd38482c37d8c715b8220c26907128b098a9b582e8c6f529ef195"
+    },
+    {
+      "bytes": 13019,
+      "path": "morocco26/agent_society_v4/behavioral_environment_v8_1.py",
+      "sha256": "4652058884322d2b22b9c3756f94961f3148c15888d0aded982166c9af94ff8a"
+    },
+    {
+      "bytes": 11406,
+      "path": "morocco26/agent_society_v4/behavioral_realism_v8_1.py",
+      "sha256": "7b0c9ac7313d6ccdab7f3448305820e38dce8f63a0c5c14d4af68f5ba630cf0d"
+    },
+    {
+      "bytes": 35777,
+      "path": "morocco26/agent_society_v4/empirical_mind_v9_1.py",
+      "sha256": "86f147def03b72a739e555436b87f9c29b76f4fa0ce5729110240e589854036d"
+    },
+    {
+      "bytes": 11115,
+      "path": "morocco26/agent_society_v4/empirical_validation_v9_1.py",
+      "sha256": "558700834f5c0c39121d94bd7a4ce6f20981368526b1d3b37ca4716b86e030a5"
+    },
+    {
+      "bytes": 13545,
+      "path": "morocco26/agent_society_v4/empirical_environment_v9_1.py",
+      "sha256": "4c04e6f2ffb37423e4efe6a9376424954050ffe924b391a53da268a3a3a2a522"
+    },
+    {
+      "bytes": 19006,
+      "path": "morocco26/agent_society_v4/rich_named_bridge_v1.py",
+      "sha256": "c021422f1fdfe73ca0cb7cdd3dd2ec7a443d1ce91d9f1be215f66b11378f2ad5"
+    },
+    {
+      "bytes": 16372,
+      "path": "morocco26/agent_society_v4/electoral_offer_2026_v1.py",
+      "sha256": "aaa4727f985d9a1cc221b00e3467b2b50733552316da9b76bba17f39a2eee585"
+    },
+    {
+      "bytes": 33294,
+      "path": "morocco26/agent_society_v4/tests/test_p3_remediation.py",
+      "sha256": "41906b05639ab5a11ab9514ee638db13646c5a6210801011a3b29985729bb233"
+    },
+    {
+      "bytes": 6791,
+      "path": "morocco26/scripts/p3_data_layer_certificate.py",
+      "sha256": "34f86485d70879ef7e25d01716cb6892cd400fafac0a42289790bc8b5b1250c5"
+    },
+    {
+      "bytes": 4901,
+      "path": "morocco26/scripts/p3_rich_named_bridge.py",
+      "sha256": "da143e576e00f25b7d664d872bdaff6291d27abc846063452781878a8af40e55"
+    },
+    {
+      "bytes": 5039,
+      "path": "morocco26/scripts/p3_electoral_offer_2026.py",
+      "sha256": "9167bc662610a54d46e98e999874769fa19086c53f34dd0803cfa3e7c06425c1"
+    },
+    {
+      "bytes": 14008,
+      "path": "morocco26/scripts/p3_r3_local_pilot.py",
+      "sha256": "226385442c6860e0684147b7ed4fd7ae4c5ac0911d7feb8ce2650a9cb469a540"
+    },
+    {
+      "bytes": 5980,
+      "path": "morocco26/scripts/agent_society_behavioral_v8_1.py",
+      "sha256": "c8cbaf947558b08a676d93ca3d6379824dc4b8c6487f1275a3d1a1dc0b37ec5c"
+    },
+    {
+      "bytes": 7808,
+      "path": "morocco26/scripts/agent_society_empirical_mind_v9_1.py",
+      "sha256": "5dfd59edb552141e99ce573c076f1ce32359ab4d9f977aa4dea926746c5e3da5"
+    },
+    {
+      "bytes": 29366,
+      "path": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_MIND_DIMENSIONS_V9_1_AMENDMENT.json",
+      "sha256": "d2f5f091ac079da3a9a22312bfc61824fcdb9e712d8c8555214e8935875ad6cd"
+    },
+    {
+      "bytes": 4251,
+      "path": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/EMPIRICAL_MIND_PROMPT_ADDENDUM_V1_1.md",
+      "sha256": "bf5805302158b23a398cb99cbe831daa60bba8aec2bd8c6011ba8bbb5db0c8e4"
+    },
+    {
+      "bytes": 4661,
+      "path": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_PROMPT_V1_1_LOCAL_ONLY.md",
+      "sha256": "c89237624f2fdf3c3c8326a0ce2a27606fb8926a6f64b873c9975e0c8978253f"
+    },
+    {
+      "bytes": 1072,
+      "path": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/BEHAVIORAL_VOTER_OUTPUT_SCHEMA_V1_1_LOCAL_ONLY.json",
+      "sha256": "fc39a363bb62230765dd539e01e66862769a1f710f8a19b9ed1d1ed6304294c7"
+    },
+    {
+      "bytes": 2288,
+      "path": "morocco26/data/goal100/agent_society_v2/EMPIRICAL_MOROCCAN_MIND_STATE_V9_1.json",
+      "sha256": "db7ed509a80f87932ac01dfaab5e35a0ec45fe3c59798ac8f2a9619be1a01b81"
+    },
+    {
+      "bytes": 4036,
+      "path": "morocco26/data/goal100/agent_society_v2/P3_DATA_LAYER_POLICY_V1.json",
+      "sha256": "64591a60f5ddad4d9c00c99a6f0521eedceaf468be79ae8c867ef5859c858d11"
+    },
+    {
+      "bytes": 6307,
+      "path": "morocco26/data/goal100/agent_society_v2/P3_DATA_LAYER_CERTIFICATE_V1.json",
+      "sha256": "1096ef1f44c6690c3ff1b4f2f58499fa6df233c0b2add806a09fc4bac98641b6"
+    },
+    {
+      "bytes": 4840,
+      "path": "morocco26/data/goal100/agent_society_v2/P3_RICH_NAMED_BRIDGE_CONTRACT_V1.json",
+      "sha256": "b296544ec0f77b2b2ee14d72b9bdfe5a535e6078ce8f3cdfacc48a0a3079462c"
+    },
+    {
+      "bytes": 5099,
+      "path": "morocco26/data/goal100/agent_society_v2/P3_R3_LOCAL_ONLY_PILOT_PROTOCOL_V1.json",
+      "sha256": "082f60c4b9a7cc2b45c1730fc3bea464adb5cfdcacbad313352a2faf91e2bb23"
+    },
+    {
+      "bytes": 5279,
+      "path": "morocco26/data/goal100/agent_society_v2/party_programme_2026.json",
+      "sha256": "4df7d2c9e573c12ff4035748fe0e671c5374af318c5c920b9ff57c9373e583da"
+    },
+    {
+      "bytes": 998,
+      "path": "morocco26/data/goal100/agent_society_v2/regional_ballot_2026.json",
+      "sha256": "54de5476c35cc0469c0e04e04fcfdcb9eb957c379514997837275bcc60353a15"
+    },
+    {
+      "bytes": 1710,
+      "path": "morocco26/data/candidate_ballot_cells_2026.json",
+      "sha256": "d13299b9e4ba22b31b203c4d0332d6ed996ad3ee6582cb2692c011bff87e5e1c"
+    },
+    {
+      "bytes": 9396,
+      "path": "morocco26/docs/P3_REMEDIATION_R0_R7.md",
+      "sha256": "2c6a3d7efa97f6fa7c048c2f1c5c14d9921462aa4f3eb182543b172822d83b0f"
+    }
+  ],
+  "line_endings": "LF for every file listed here; hashes are computed over the committed bytes",
+  "manifest_id": "M26-P3-REMEDIATION-FREEZE-V9-1-V1",
+  "model_calls_during_remediation": 0,
+  "new_epistemic_statuses": [
+    "SURVEY_STRATUM_PRIOR",
+    "MATCHED_DONOR_LATENT_STATE"
+  ],
+  "new_gates": [
+    "EM11_STRATUM_DISPERSION_RETAINED",
+    "EM12_MANIFEST_ASSERTIONS_MEASURED"
+  ],
+  "next_gate": "R2_PRODUCE_A_2026_RICH_POPULATION_ARTIFACT_THEN_RUN_R3_LOCAL_ONLY",
+  "parent_v9_freeze_manifest": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/FREEZE_MANIFEST_V9_EMPIRICAL_MIND.json",
+  "parent_v9_payload_sha256": "3cdda05d95ef387c85ef8919fe3ea188226f21c0ccc9d5ef9eb7bf35c7d32df0",
+  "regional_fallback_allowed": false,
+  "scale_override_allowed": false,
+  "schema_version": "ATLAS_P3_REMEDIATION_FREEZE_V9_1_V1",
+  "startup_work_item_cap": 1,
+  "status": "FROZEN_BEFORE_ANY_R3_MODEL_OUTPUT",
+  "tests": {
+    "remediation_tests": 35,
+    "status": "PASS",
+    "total_agent_society_v4_tests": 66
+  },
+  "three_regime_core_edited": false,
+  "v8_source_modules_edited": false,
+  "v9_frozen_files_verified_unchanged": 17
+}

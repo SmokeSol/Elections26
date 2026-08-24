@@ -1,0 +1,28 @@
+{
+  "as_of": "2026-08-24",
+  "collection_rule": "NO SOURCE -> UNKNOWN. An absent regional offer stays absent.",
+  "collection_started": false,
+  "consequence_while_missing": {
+    "BR1_REGIONAL": "NOT_TESTABLE_MISSING_DATA",
+    "REGIONAL_SIMULATION_ALLOWED": false,
+    "REGIONAL_SURFACE_STATUS": "MISSING",
+    "SPLIT_TICKET": "NOT_TESTABLE_MISSING_DATA"
+  },
+  "dataset_id": "M26-REGIONAL-BALLOT-2026-V1",
+  "forbidden_sources": {
+    "REGIONAL_OR_MISSING": "The REGIONAL_OR_MISSING rows of the medias24 snapshot are a rejection label for candidates that could not be attached to a local constituency. They are not regional candidacies and must never be promoted into regional_ballot_cards."
+  },
+  "required_fields_per_row": [
+    "region_id",
+    "region_name",
+    "party_id",
+    "list_name",
+    "list_head_name",
+    "verification_state",
+    "known_as_of",
+    "sources"
+  ],
+  "rows": [],
+  "schema_version": "ATLAS_REGIONAL_BALLOT_2026_V1",
+  "status": "MISSING_REGIONAL_BALLOT_2026"
+}

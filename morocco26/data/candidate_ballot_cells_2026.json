@@ -1,0 +1,66 @@
+{
+  "artifact_id": "M26-P3-CANDIDATE-BALLOT-CELL-CENSUS-V1",
+  "as_of": "2026-08-22",
+  "ballot_cells": 828,
+  "census_sha256": "0b25f041ef83c3adbb68c9a26e136e9f7bb1e8f44708166753bde63303a2a0f5",
+  "method_note": "Counts are measured from the named 2026 input the environment embeds. Nothing is imputed. Cells are not records: see candidate_coverage_2026.json for the record-level collection coverage.",
+  "named_input_artifact_id": "M26_CURRENT_VINTAGE_2026-08-22",
+  "named_input_sha256": "9a4e3c121e01363354c88dd5582e392a26decf54316836fb80d5f96975b0b706",
+  "parties": [
+    "FGD",
+    "MP",
+    "PAM",
+    "PI",
+    "PJD",
+    "PPS",
+    "RNI",
+    "UC",
+    "USFP"
+  ],
+  "resolved_cells": 521,
+  "schema_version": "ATLAS_P3_CANDIDATE_BALLOT_CELL_CENSUS_V1",
+  "state_census": {
+    "OFFICIAL_CONFIRMED": 521,
+    "UNKNOWN_AS_OF_SNAPSHOT": 307
+  },
+  "state_census_by_party": {
+    "FGD": {
+      "OFFICIAL_CONFIRMED": 42,
+      "UNKNOWN_AS_OF_SNAPSHOT": 50
+    },
+    "MP": {
+      "OFFICIAL_CONFIRMED": 1,
+      "UNKNOWN_AS_OF_SNAPSHOT": 91
+    },
+    "PAM": {
+      "OFFICIAL_CONFIRMED": 89,
+      "UNKNOWN_AS_OF_SNAPSHOT": 3
+    },
+    "PI": {
+      "OFFICIAL_CONFIRMED": 79,
+      "UNKNOWN_AS_OF_SNAPSHOT": 13
+    },
+    "PJD": {
+      "OFFICIAL_CONFIRMED": 90,
+      "UNKNOWN_AS_OF_SNAPSHOT": 2
+    },
+    "PPS": {
+      "OFFICIAL_CONFIRMED": 60,
+      "UNKNOWN_AS_OF_SNAPSHOT": 32
+    },
+    "RNI": {
+      "OFFICIAL_CONFIRMED": 83,
+      "UNKNOWN_AS_OF_SNAPSHOT": 9
+    },
+    "UC": {
+      "OFFICIAL_CONFIRMED": 14,
+      "UNKNOWN_AS_OF_SNAPSHOT": 78
+    },
+    "USFP": {
+      "OFFICIAL_CONFIRMED": 63,
+      "UNKNOWN_AS_OF_SNAPSHOT": 29
+    }
+  },
+  "territories": 92,
+  "unknown_cells": 307
+}
