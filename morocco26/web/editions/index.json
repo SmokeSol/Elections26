@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1",
-  "current_edition": "2026-08-23",
-  "current_edition_date": "2026-08-23",
+  "current_edition": "2026-08-24",
+  "current_edition_date": "2026-08-24",
   "editions": [
     {
       "edition_id": "2026-08-17",
@@ -68,6 +68,22 @@
       "supersedes_edition_id": null,
       "product_version": "V0.5",
       "published_at": "2026-08-23T06:50:57+01:00",
+      "science_ref": "540802f08cd2ac565ea59d531d51ac3f58d83d38",
+      "forecast_snapshot": "F0",
+      "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
+      "projection_changed": false,
+      "territories_changed": 0,
+      "new_documented_signals": 26,
+      "source_policy_changed": false,
+      "summary_fr": "26 nouveau(x) signal(aux) documenté(s) depuis l’édition précédente, sans modification chiffrée de la projection."
+    },
+    {
+      "edition_id": "2026-08-24",
+      "edition_date": "2026-08-24",
+      "correction_number": 0,
+      "supersedes_edition_id": null,
+      "product_version": "V0.5",
+      "published_at": "2026-08-24T06:58:23+01:00",
       "science_ref": "540802f08cd2ac565ea59d531d51ac3f58d83d38",
       "forecast_snapshot": "F0",
       "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
