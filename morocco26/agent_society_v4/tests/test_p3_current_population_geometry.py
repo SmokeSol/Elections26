@@ -5,7 +5,7 @@ import sys
 import unittest
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
-SCRIPTS = REPO_ROOT / "scripts"
+SCRIPTS = REPO_ROOT / "morocco26" / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
