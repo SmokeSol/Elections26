@@ -15,17 +15,33 @@
 # Expected result: 92/92 territories, zero failures, certificate PASS, geometry
 # lineage PASS, no political memory. That output is what freeze revision 3 will
 # record, and what R2 will bridge before R3 runs.
-
+#
+# ---------------------------------------------------------------------------
+# Failure history, read from the public check-run annotations, because Actions
+# logs and artifacts both need a signed-in session.
+#
+#   32742167166  exit 2 in the build step
+#                The parallel fetch called bare `wait`, which returns 0 whatever
+#                the downloads did. A truncated transfer reached the builder and
+#                failed its sha256 check. Genuine truncation.
+#
+#   32742873701  exit 1 in the preflight step
+#                Sequential curl fixed the download. The preflight then crashed:
+#                an uncaught AttributeError of its own making, not a data fault.
+#
+#   32743858862  exit 1 in the preflight step
+#                p3_fetch_microdata.py proved all three files complete and
+#                correctly hashed, so the transfer question is closed. Same
+#                preflight crash: b.age2014 reads pro, MEN_PRO, NOR_MEN, AGE1
+#                and AGE5, and the preflight requested only four of the five.
+#
 # Verified independently on 2026-08-24, from a client outside CI: all three
-# source files download complete and hash exactly as recorded.
+# source files download complete and hash exactly as recorded, so HCP never
+# republished anything.
 #
 #   rgph_individual.dta  200,532,997 bytes  62dbbfc6...  match
 #   rgph_household.dta    39,442,553 bytes  0c630cfa...  match
 #   encdm_household.sav   33,254,643 bytes  6a3d6bbb...  match
-#
-# So HCP did not republish: runs 32742167166 and 32742873701 died on a truncated
-# transfer inside CI, which neither the bare `wait` nor a 1 MB size floor could
-# detect. p3_fetch_microdata.py now compares received bytes to Content-Length per
-# file and retries a short read.
+# ---------------------------------------------------------------------------
 
-request: 2026-08-24 rebuild with per-file completeness verification
+request: 2026-08-24 rebuild with the preflight column fix

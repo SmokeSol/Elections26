@@ -3,10 +3,11 @@ from __future__ import annotations
 
 """Fetch the HCP source microdata, completely, and prove it.
 
-The inline shell fetch could not tell a truncated download from upstream data
-that had genuinely changed: both surfaced later as a sha256 mismatch, and an
-arbitrary size floor let a partial 200 MB file through. This fetcher checks the
-two things separately, per file:
+Run 32742167166 died because the inline fetch launched three curls in the
+background and called bare `wait`, which returns 0 whatever they did: a
+truncated transfer reached the builder and failed its sha256 check half an hour
+later, indistinguishable from upstream having republished the data. This fetcher
+checks the two things separately, per file:
 
     received bytes == Content-Length      the transfer finished
     sha256 == the recorded digest         the bytes are the expected ones
@@ -31,6 +32,8 @@ SCRIPTS = REPO_ROOT / "morocco26" / "scripts"
 for candidate in (str(REPO_ROOT), str(SCRIPTS)):
     if candidate not in sys.path:
         sys.path.insert(0, candidate)
+
+from p3_ci_annotate import emit_error, emit_notice  # noqa: E402
 
 SOURCES = {
     "ind": ("rgph_individual.dta", "https://www.rgph2014.hcp.ma/file/210749/"),
@@ -163,12 +166,24 @@ def main(argv: Sequence[str] | None = None) -> int:
             json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8"
         )
     print(json.dumps({k: v for k, v in report.items() if k != "files"}, ensure_ascii=False, indent=2))
-    return 0 if not failures else 2
+    if failures:
+        emit_error(
+            "source microdata fetch failed",
+            "; ".join(
+                f"{row['file']}: {row['reason']} "
+                f"({row.get('bytes')} of {row.get('content_length')} bytes)"
+                for row in failures
+            ),
+        )
+        return 2
+    emit_notice(
+        "source microdata fetched",
+        "; ".join(f"{row['file']}: {row['bytes']} bytes" for row in rows),
+    )
+    return 0
 
 
 if __name__ == "__main__":
-    try:
-        raise SystemExit(main())
-    except (FetchError, OSError, ValueError) as exc:
-        print(f"ERROR: {exc}", file=sys.stderr)
-        raise SystemExit(2)
+    from p3_ci_annotate import run_guarded
+
+    raise SystemExit(run_guarded(main))

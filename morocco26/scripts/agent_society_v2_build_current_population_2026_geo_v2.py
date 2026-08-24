@@ -220,8 +220,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    try:
-        raise SystemExit(main())
-    except (CurrentPopulationError, OSError, ValueError) as exc:
-        print(f"ERROR: {exc}", file=sys.stderr)
-        raise SystemExit(2)
+    # Actions logs and artifacts need a signed-in session, so any escape is also
+    # emitted as a check-run annotation, which is public.
+    from p3_ci_annotate import run_guarded
+
+    raise SystemExit(run_guarded(main))

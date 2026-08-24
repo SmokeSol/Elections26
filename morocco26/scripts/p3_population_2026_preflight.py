@@ -31,10 +31,8 @@ for candidate in (str(REPO_ROOT), str(SCRIPTS)):
     if candidate not in sys.path:
         sys.path.insert(0, candidate)
 
-from morocco26.agent_society_v4.current_population_2026_v1 import (  # noqa: E402
-    AGING_YEARS,
-    CurrentPopulationError,
-)
+from morocco26.agent_society_v4.current_population_2026_v1 import AGING_YEARS  # noqa: E402
+from p3_ci_annotate import emit_error, emit_notice  # noqa: E402
 
 MIN_POOL = 256
 
@@ -56,7 +54,6 @@ def main(argv: Sequence[str] | None = None) -> int:
     ap.add_argument("--output", type=pathlib.Path)
     args = ap.parse_args(argv)
 
-    import pandas as pd
     import pyreadstat
 
     import agent_society_v2_build_rich_populations as b
@@ -88,12 +85,25 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(json.dumps(report, ensure_ascii=False, indent=2))
         if args.output:
             write_json(args.output, report)
+        emit_error(
+            "source microdata digest mismatch",
+            "; ".join(
+                f"{row['file']}: {row['bytes']} bytes, sha256 {row['sha256'][:16]} != "
+                f"expected {row['expected'][:16]}"
+                for row in mismatches
+            ),
+        )
         return 2
 
     # 2. every certified parent must exist in the RGPH parent space
     geometry_index, geometry_sha256, _ = geo_v2.load_geometry()
+    # b.age2014 reads AGE1, AGE5 and, for the within-band offset, pro, MEN_PRO
+    # and NOR_MEN. Reading fewer columns than the helper touches is what made
+    # run 32743858862 die with an uncaught AttributeError.
     frame, meta = pyreadstat.read_dta(
-        args.ind, usecols=["pro", "AGE1", "AGE5", "pds"], apply_value_formats=False
+        args.ind,
+        usecols=["pro", "MEN_PRO", "NOR_MEN", "AGE1", "AGE5"],
+        apply_value_formats=False,
     )
     frame["age2014"] = [b.age2014(row) for row in frame.itertuples(index=False)]
     frame = frame[frame.age2014.notna()].copy()
@@ -163,13 +173,24 @@ def main(argv: Sequence[str] | None = None) -> int:
                 f"rows={row['eligible_rows']}",
                 file=sys.stderr,
             )
+        emit_error(
+            "certified parents unreachable in the RGPH parent space",
+            "; ".join(
+                f"{row['constituency_id']} -> {row['certified_parent']} "
+                f"({row['resolution_mode']}, rows={row['eligible_rows']})"
+                for row in (unresolved + insufficient)[:20]
+            ),
+        )
         return 2
+    emit_notice(
+        "population 2026 preflight",
+        f"{len(rows)} territories resolved, modes {report['resolution_modes']}, "
+        f"parent space {len(available)}",
+    )
     return 0
 
 
 if __name__ == "__main__":
-    try:
-        raise SystemExit(main())
-    except (CurrentPopulationError, OSError, ValueError) as exc:
-        print(f"ERROR: {exc}", file=sys.stderr)
-        raise SystemExit(2)
+    from p3_ci_annotate import run_guarded
+
+    raise SystemExit(run_guarded(main))
