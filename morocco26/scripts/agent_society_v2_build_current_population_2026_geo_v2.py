@@ -13,6 +13,14 @@ constituency_id -> prefecture_or_province relation.
 This wrapper leaves both the historical builders and V1 untouched. It replaces
 only V1's territory-spec resolver at runtime with the certified relation and
 adds the geometry-certificate SHA256 to the population/certificate lineage.
+
+A second boundary is made explicit rather than hidden: the person-level
+microdata are RGPH 2014 aged by +12 years. HCP EMO2026 supplies current labour
+context, but the five demographic raking marginals are not calibrated to RGPH
+2024. That is sufficient for the paired R3 mechanism experiment because all
+four cells use the identical population; it is NOT a final 2026
+poststratification and is blocked for scale/forecast use until an RGPH2024 (or
+equivalent) calibration is added.
 """
 
 import hashlib
@@ -29,6 +37,8 @@ for candidate in (str(REPO_ROOT), str(SCRIPTS)):
 
 import agent_society_v2_build_current_population_2026 as v1  # noqa: E402
 from morocco26.agent_society_v4.current_population_2026_v1 import (  # noqa: E402
+    AGING_YEARS,
+    RGPH_REFERENCE_YEAR,
     CurrentPopulationError,
     normalize_place,
 )
@@ -54,6 +64,23 @@ def sha256_file(path: pathlib.Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def demographic_projection_boundary() -> dict[str, Any]:
+    return {
+        "person_microdata_reference_year": RGPH_REFERENCE_YEAR,
+        "deterministic_age_shift_years": AGING_YEARS,
+        "rgph2024_demographic_marginals_calibrated": False,
+        "hpc_current_labour_context_applied": True,
+        "hcp_activity_rate_used_as_raking_target": False,
+        "r3_paired_mechanism_use": "ALLOWED_IDENTICAL_POPULATION_ACROSS_ALL_2X2_CELLS",
+        "scale_or_forecast_population_use": "BLOCKED_UNTIL_RGPH2024_OR_EQUIVALENT_POSTSTRATIFICATION",
+        "reason": (
+            "R3 identifies a within-population mechanism contrast, so current-population external "
+            "representativeness is not the estimand. National/territorial forecast weighting is a "
+            "different estimand and must not treat RGPH2014 aged by +12 as a final 2026 population."
+        ),
+    }
 
 
 def load_geometry(path: pathlib.Path = GEOMETRY_PATH) -> tuple[dict[str, dict[str, Any]], str, dict[str, Any]]:
@@ -138,6 +165,7 @@ def _outdir(argv: Sequence[str]) -> pathlib.Path | None:
 
 def main(argv: Sequence[str] | None = None) -> int:
     geometry_index, geometry_sha256, geometry = load_geometry()
+    projection = demographic_projection_boundary()
 
     def resolver(named_input: Mapping[str, Any]) -> list[dict[str, Any]]:
         return territory_specs_from_certified_geometry(
@@ -158,7 +186,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             "sha256": geometry_sha256,
             "territories": len(geometry_index),
         }
-        # The V1 helper hashes before this wrapper adds geometry metadata.
+        certificate["demographic_projection_boundary"] = projection
+        # The V1 helper hashes before this wrapper adds V2 metadata.
         # Recompute over the final object with the previous digest removed.
         certificate.pop("certificate_sha256", None)
         certificate["certificate_sha256"] = v1.sha256_json(certificate)
@@ -185,6 +214,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "sha256": geometry_sha256,
                 "territories": len(geometry_index),
             }
+            population["demographic_projection_boundary"] = projection
             write_json(population_path, population)
     return result
 
