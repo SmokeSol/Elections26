@@ -83,6 +83,28 @@ jobs:
           print(f"PASS_V9_FROZEN_FILES_UNCHANGED files={len(manifest['frozen_files_excluding_this_manifest'])}")
           PY
 
+      - name: R1 - the V9.1 remediation freeze manifest still matches
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, sys
+          manifest = json.loads(pathlib.Path(
+              "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/"
+              "FREEZE_MANIFEST_V9_1_P3_REMEDIATION.json").read_text(encoding="utf-8"))
+          failures = []
+          for row in manifest["frozen_files_excluding_this_manifest"]:
+              path = pathlib.Path(row["path"])
+              if not path.is_file():
+                  failures.append((row["path"], "MISSING"))
+                  continue
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              if digest != row["sha256"]:
+                  failures.append((row["path"], digest))
+          if failures:
+              print("V9.1 remediation files changed without a manifest update:", failures)
+              sys.exit(1)
+          print(f"PASS_V9_1_REMEDIATION_FILES_UNCHANGED files={len(manifest['frozen_files_excluding_this_manifest'])}")
+          PY
+
       - name: R4/R5 - the electoral-offer datasets validate while still empty
         run: |
           python morocco26/scripts/p3_electoral_offer_2026.py validate-programmes --snapshot-date 2026-08-24

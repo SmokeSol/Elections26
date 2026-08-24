@@ -15,9 +15,9 @@
   "forecast_lambda_before_historical_oos_validation": 0.0,
   "frozen_files_excluding_this_manifest": [
     {
-      "bytes": 4597,
+      "bytes": 5677,
       "path": ".github/workflows/morocco26-p3-remediation-gates.yml",
-      "sha256": "077730c70de5ab02bfb6f6d183bca051ca5ed6f3dd4c8fdaa112e3598c1ffcfc"
+      "sha256": "0d16968b381ffe7a015635e80de466fdf15320a9044a7d611887f7711792f218"
     },
     {
       "bytes": 4691,
