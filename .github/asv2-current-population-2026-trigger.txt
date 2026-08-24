@@ -16,4 +16,6 @@
 # lineage PASS, no political memory. That output is what freeze revision 3 will
 # record, and what R2 will bridge before R3 runs.
 
-request: 2026-08-24 build current-vintage 2026 population V2, snapshot 2026-08-24
+request: 2026-08-24 rebuild after run 32742167166 failed in the build step with exit 2
+note: the log is not publicly readable, so this run verifies each download
+      individually and runs a parent-resolution preflight before the 92 fits

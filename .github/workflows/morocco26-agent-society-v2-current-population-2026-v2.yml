@@ -4,11 +4,18 @@ name: Morocco26 Agent Society V2 current-vintage 2026 population V2
 # 2026 geometry instead of re-inferring it from the electoral constituency name.
 # The HCP EMO2026 Q2 labour context is committed and source-audited in the repo.
 #
-# The named current-vintage input is now committed too, so the build no longer
-# depends on an operator uploading an Actions artifact first: it reads the repo
-# copy, checks its sha256 against NAMED_INPUT_2026_LINEAGE_V1.json, and refuses
-# to build on any other bytes. `named_input_artifact_id` remains available as an
+# The named current-vintage input is committed too, so the build does not depend
+# on an operator uploading an Actions artifact first: it reads the repo copy,
+# checks its sha256 against NAMED_INPUT_2026_LINEAGE_V1.json, and refuses to
+# build on any other bytes. `named_input_artifact_id` remains available as an
 # override for a future snapshot that is not yet committed.
+#
+# Run 32742167166 failed inside the build step with exit 2 and its log is not
+# publicly readable, so this revision makes the two plausible causes visible
+# before the expensive part: every download is verified individually, and a
+# preflight resolves all 92 certified parents against the RGPH parent space and
+# prints the whole table instead of dying on the first territory. Outputs upload
+# even on failure.
 
 on:
   workflow_dispatch:
@@ -21,6 +28,10 @@ on:
         description: 'Optional: Actions artifact id overriding the committed named input'
         required: false
         default: ''
+      preflight_only:
+        description: 'Set to true to stop after the parent-resolution preflight'
+        required: false
+        default: 'false'
   push:
     branches:
       - morocco26-agent-society-v2-front-vote-llm
@@ -30,13 +41,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     permissions:
       actions: read
       contents: read
     env:
       SNAPSHOT_DATE: ${{ github.event.inputs.snapshot_date || '2026-08-24' }}
       NAMED_INPUT_ARTIFACT_ID: ${{ github.event.inputs.named_input_artifact_id || '' }}
+      PREFLIGHT_ONLY: ${{ github.event.inputs.preflight_only || 'false' }}
       COMMITTED_NAMED_INPUT: morocco26/data/goal100/agent_society_v2/named_input_current_vintage_2026-08-22.json
     steps:
       - uses: actions/checkout@v4
@@ -45,7 +57,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install readers
-        run: python -m pip install -q pyreadstat pandas numpy
+        run: python -m pip install -q pyreadstat pandas numpy scikit-learn
 
       - name: Resolve the named current-vintage input
         env:
@@ -72,21 +84,38 @@ jobs:
             --named-input "$(cat /tmp/pop2026/named_path.txt)" \
             --allow-override "${NAMED_INPUT_ARTIFACT_ID:-}"
 
-      - name: Fetch source microdata
+      - name: Fetch source microdata, one download at a time, each checked
         run: |
           set -euo pipefail
-          cat >/tmp/pop2026/urls.txt <<'EOF'
-          rgph_individual.dta|https://www.rgph2014.hcp.ma/file/210749/
-          rgph_household.dta|https://www.rgph2014.hcp.ma/file/210748/
-          encdm_household.sav|https://www.hcp.ma/file/231078/
-          EOF
-          while IFS='|' read -r name url; do
-            (curl -fL --retry 4 --retry-delay 2 --connect-timeout 30 --max-time 900 \
-              -A 'Mozilla/5.0 (ASV2 academic build)' -o "/tmp/pop2026/data/$name" "$url") &
-          done </tmp/pop2026/urls.txt
-          wait
+          fetch () {
+            name="$1"; url="$2"
+            echo "--- $name"
+            curl -fL --retry 4 --retry-delay 2 --connect-timeout 30 --max-time 1200 \
+              -A 'Mozilla/5.0 (ASV2 academic build)' -o "/tmp/pop2026/data/$name" "$url"
+            size=$(stat -c%s "/tmp/pop2026/data/$name")
+            echo "$name: $size bytes"
+            # An HTML error page is a few kilobytes and would otherwise reach the
+            # sha check as a confusing mismatch half an hour later.
+            if [ "$size" -lt 1000000 ]; then
+              echo "$name is only $size bytes; the download did not return microdata" >&2
+              head -c 400 "/tmp/pop2026/data/$name" >&2 || true
+              exit 1
+            fi
+          }
+          fetch rgph_individual.dta  https://www.rgph2014.hcp.ma/file/210749/
+          fetch rgph_household.dta   https://www.rgph2014.hcp.ma/file/210748/
+          fetch encdm_household.sav  https://www.hcp.ma/file/231078/
+
+      - name: Preflight - source digests and 92 certified parents
+        run: |
+          python morocco26/scripts/p3_population_2026_preflight.py \
+            --ind /tmp/pop2026/data/rgph_individual.dta \
+            --hh /tmp/pop2026/data/rgph_household.dta \
+            --encdm /tmp/pop2026/data/encdm_household.sav \
+            --output /tmp/pop2026/out/population_2026_preflight.json
 
       - name: Build geometry-bound current-vintage 2026 population
+        if: env.PREFLIGHT_ONLY != 'true'
         run: |
           set -euo pipefail
           python morocco26/scripts/agent_society_v2_build_current_population_2026_geo_v2.py \
@@ -99,15 +128,20 @@ jobs:
             --outdir /tmp/pop2026/out
 
       - name: Assert politically empty population and certified geometry lineage
+        if: env.PREFLIGHT_ONLY != 'true'
         run: |
           python morocco26/scripts/p3_verify_named_input.py \
             --population-certificate /tmp/pop2026/out/current_population_2026_certificate_v1.json
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload whatever was produced, including on failure
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: asv2-current-population-2026-v2
           retention-days: 90
+          if-no-files-found: warn
           path: |
+            /tmp/pop2026/out/population_2026_preflight.json
             /tmp/pop2026/out/2026_current_population_v1.json
             /tmp/pop2026/out/current_population_2026_certificate_v1.json
             morocco26/data/goal100/agent_society_v2/LABOUR_CONTEXT_2026_Q2_HCP.json
