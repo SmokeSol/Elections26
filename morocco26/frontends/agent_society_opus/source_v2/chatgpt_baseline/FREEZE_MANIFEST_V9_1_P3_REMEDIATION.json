@@ -1,6 +1,7 @@
 {
   "amendment_id": "V9_AMENDMENT_01",
   "branch": "morocco26-agent-society-v2-front-vote-llm",
+  "chain_note": "git_commit_sha names the commit that established this revision's file set. The manifest's own hash update lands in the immediately following commit, since a manifest cannot contain the sha of the commit that contains it.",
   "chain_rule": "A new revision must record supersedes_manifest_sha256, git_commit_sha and reason. A manifest is never silently replaced by a new truth.",
   "ci_freeze_gate_path_filtered": false,
   "data_layer_states_measured_2026_08_24": {
@@ -23,7 +24,7 @@
       "revision": 1
     },
     {
-      "git_commit_sha": "08d4b6255ed805989d0eef7bf680132ca86d107e",
+      "git_commit_sha": "9d382dfe3b4640033b8e2f199fcfde61a49009a7",
       "reason": "review corrections before the first R3 model call",
       "revision": 2
     }
@@ -221,7 +222,7 @@
       "sha256": "30db6cdb22016ad92679fc64b868bb688c2e69bb9a4db94aaaef5dc87e18a07d"
     }
   ],
-  "git_commit_sha": "08d4b6255ed805989d0eef7bf680132ca86d107e",
+  "git_commit_sha": "9d382dfe3b4640033b8e2f199fcfde61a49009a7",
   "line_endings": "LF for every file listed here; hashes are computed over the committed bytes",
   "manifest_id": "M26-P3-REMEDIATION-FREEZE-V9-1-V1",
   "model_calls_during_remediation": 0,
