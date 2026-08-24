@@ -1,0 +1,110 @@
+name: Morocco26 Agent Society V2 current-vintage 2026 population V2
+
+# V2 binds every constituency_id to the administrative parent in the certified
+# 2026 geometry instead of re-inferring it from the electoral constituency name.
+# The HCP EMO2026 Q2 labour context is committed and source-audited in the repo.
+
+on:
+  workflow_dispatch:
+    inputs:
+      named_input_artifact_id:
+        description: 'Actions artifact id holding named_input_current_vintage.json'
+        required: true
+      snapshot_date:
+        description: 'Snapshot cutoff, ISO date'
+        required: true
+        default: '2026-08-24'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install readers
+        run: python -m pip install -q pyreadstat pandas numpy
+
+      - name: Fetch named current-vintage input and source microdata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pop2026/data /tmp/pop2026/in/named_input /tmp/pop2026/out
+          curl -fsSL -L -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            -o /tmp/pop2026/named_input.zip \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ github.event.inputs.named_input_artifact_id }}/zip"
+          unzip -q -o /tmp/pop2026/named_input.zip -d /tmp/pop2026/in/named_input
+          cat >/tmp/pop2026/urls.txt <<'EOF'
+          rgph_individual.dta|https://www.rgph2014.hcp.ma/file/210749/
+          rgph_household.dta|https://www.rgph2014.hcp.ma/file/210748/
+          encdm_household.sav|https://www.hcp.ma/file/231078/
+          EOF
+          while IFS='|' read -r name url; do
+            (curl -fL --retry 4 --retry-delay 2 --connect-timeout 30 --max-time 900 \
+              -A 'Mozilla/5.0 (ASV2 academic build)' -o "/tmp/pop2026/data/$name" "$url") &
+          done </tmp/pop2026/urls.txt
+          wait
+
+      - name: Build geometry-bound current-vintage 2026 population
+        run: |
+          set -euo pipefail
+          named=$(find /tmp/pop2026/in/named_input -name '*.json' | head -1)
+          test -n "$named"
+          python morocco26/scripts/agent_society_v2_build_current_population_2026_geo_v2.py \
+            --ind /tmp/pop2026/data/rgph_individual.dta \
+            --hh /tmp/pop2026/data/rgph_household.dta \
+            --encdm /tmp/pop2026/data/encdm_household.sav \
+            --named-input "$named" \
+            --labour-context morocco26/data/goal100/agent_society_v2/LABOUR_CONTEXT_2026_Q2_HCP.json \
+            --snapshot-date '${{ github.event.inputs.snapshot_date }}' \
+            --outdir /tmp/pop2026/out
+
+      - name: Assert politically empty population and certified geometry lineage
+        run: |
+          python - <<'PY'
+          import json, pathlib, sys
+          cert = json.loads(pathlib.Path(
+              '/tmp/pop2026/out/current_population_2026_certificate_v1.json'
+          ).read_text(encoding='utf-8'))
+          required_false = [
+              'historical_outcome_read',
+              'prior_election_raking_dimension',
+              'sealed_mapping_read',
+              'atlas_prior_reinjected',
+              'target_outcome_used',
+              'dummy_unknown_marginal_used',
+          ]
+          bad = [name for name in required_false if cert.get(name) is not False]
+          geometry = cert.get('geometry_certificate') or {}
+          source_hashes = cert.get('source_hashes') or {}
+          if bad or cert.get('political_memory_population_source') != 'NONE':
+              print('certificate does not declare a politically empty population:', bad)
+              sys.exit(1)
+          if geometry.get('gate') != 'PASS' or geometry.get('territories') != 92:
+              print('geometry lineage failed:', geometry)
+              sys.exit(1)
+          if source_hashes.get('geometry_2026_certificate') != geometry.get('sha256'):
+              print('geometry source hash mismatch')
+              sys.exit(1)
+          if not str(cert.get('status') or '').startswith('PASS'):
+              print('certificate status:', cert.get('status'), cert.get('gates'))
+              sys.exit(1)
+          print('PASS_CURRENT_VINTAGE_POPULATION_2026_V2', cert.get('territories'), 'territories')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asv2-current-population-2026-v2
+          retention-days: 90
+          path: |
+            /tmp/pop2026/out/2026_current_population_v1.json
+            /tmp/pop2026/out/current_population_2026_certificate_v1.json
+            morocco26/data/goal100/agent_society_v2/LABOUR_CONTEXT_2026_Q2_HCP.json
+            morocco26/data/goal100/geometry_2026_certificate.json
