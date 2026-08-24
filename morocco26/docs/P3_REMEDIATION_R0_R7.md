@@ -2,9 +2,10 @@
 
 > **Revision 2.** Three corrections landed after review, before any R3 model
 > call: the CI freeze gate had a path filter that excluded the workflow and its
-> own manifest; `attention_score` turned out to be an engine composite, not
-> evidence; and R3's three-arm design could not identify contamination. See
-> *Revision 2 corrections* at the end.
+> own manifest, so its coverage depended on what else was in the push;
+> `attention_score` turned out to be an engine composite, not evidence; and R3's
+> three-arm design could not identify contamination. See *Revision 2
+> corrections* at the end.
 
 Remediation of the V9 Aïn Chock pilot (2026-08-23). The pilot's `FAIL` was
 localised to the environment, not to the voter mind: three of four data layers
@@ -295,12 +296,20 @@ Not verified, and stated as such:
 
 Three findings from the pre-R3 review, all fixed here.
 
-### The freeze gate did not run on its own commit
+### The freeze gate's coverage depended on the push, not on the change
 
 `morocco26-p3-remediation-gates.yml` had a `paths` filter listing neither the
 workflow nor `FREEZE_MANIFEST_V9_1_P3_REMEDIATION.json`. Commit `08d4b62`
-changed exactly those two files, so the check it introduced never fired. The
-filter is gone — the gate runs on every push to the branch — and the inline
+changed exactly those two files.
+
+Checked rather than assumed: run `32731849859` **did** fire on `08d4b62` and
+concluded success — because GitHub evaluates `paths` over every commit in the
+push, and that push also carried `d25b793`, which touched many listed paths.
+Pushed alone, which is the normal shape of a follow-up fix, `08d4b62` would have
+been skipped. A gate whose coverage depends on what else happens to be in the
+push is not a gate.
+
+The filter is gone — the gate runs on every push to the branch — and the inline
 heredocs moved into `morocco26/scripts/p3_verify_freeze.py`.
 
 The branch is not protected and has no required status check, so the freeze is a

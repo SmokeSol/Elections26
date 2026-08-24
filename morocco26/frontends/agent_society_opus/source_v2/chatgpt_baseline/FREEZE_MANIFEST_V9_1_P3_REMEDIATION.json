@@ -3,6 +3,12 @@
   "branch": "morocco26-agent-society-v2-front-vote-llm",
   "chain_note": "git_commit_sha names the commit that established this revision's file set. The manifest's own hash update lands in the immediately following commit, since a manifest cannot contain the sha of the commit that contains it.",
   "chain_rule": "A new revision must record supersedes_manifest_sha256, git_commit_sha and reason. A manifest is never silently replaced by a new truth.",
+  "ci_evidence": {
+    "commit": "08d4b6255ed805989d0eef7bf680132ca86d107e",
+    "conclusion": "success",
+    "note": "The run fired because the push also carried d25b793, which touched listed paths. Pushed alone, 08d4b62 would have been skipped. Verified, not assumed.",
+    "run_id": 32731849859
+  },
   "ci_freeze_gate_path_filtered": false,
   "data_layer_states_measured_2026_08_24": {
     "LOCAL_CANDIDATES": "PARTIAL_REAL",
@@ -37,9 +43,9 @@
       "sha256": "25c858692e3483c42638851bcc3b0a2268c9af0b840ec3d127482408d0be4d8f"
     },
     {
-      "bytes": 3312,
+      "bytes": 3478,
       "path": ".github/workflows/morocco26-p3-remediation-gates.yml",
-      "sha256": "f28191a1286418ecf8d1932f5c888a3af0a26d2ec659b431ee8d21303ea2ece6"
+      "sha256": "5629fd10bf2649f507e791fe7d3f3c7644a0224bd551c1acbfdaf6c56589e7bc"
     },
     {
       "bytes": 6013,
@@ -157,9 +163,9 @@
       "sha256": "54de5476c35cc0469c0e04e04fcfdcb9eb957c379514997837275bcc60353a15"
     },
     {
-      "bytes": 15352,
+      "bytes": 15805,
       "path": "morocco26/docs/P3_REMEDIATION_R0_R7.md",
-      "sha256": "5c3db36d5bce4707e04040f6cb69945daa11c6796297f615560549252df68576"
+      "sha256": "7bf87563465d18a786a6770992d9cb843ffd00d05ecaad8d4b01ffe7e2d602ad"
     },
     {
       "bytes": 1072,
@@ -241,7 +247,7 @@
   "parent_v9_payload_sha256": "3cdda05d95ef387c85ef8919fe3ea188226f21c0ccc9d5ef9eb7bf35c7d32df0",
   "r3_design": "2x2 mind_layer x context with same-condition replication",
   "r3_protocol_revision": 2,
-  "reason": "CI trigger fix (the freeze gate had a paths filter that excluded the workflow and this manifest), ENGINE_DERIVED_COMPOSITE for the attention_score composite, the current-vintage 2026 population builder, and the R3 2x2 design amendment.",
+  "reason": "CI trigger fix (the freeze gate's paths filter excluded the workflow and this manifest, so its coverage depended on what else was in the push), ENGINE_DERIVED_COMPOSITE for the attention_score composite, the current-vintage 2026 population builder, and the R3 2x2 design amendment.",
   "regional_fallback_allowed": false,
   "scale_override_allowed": false,
   "schema_version": "ATLAS_P3_REMEDIATION_FREEZE_V9_1_V1",

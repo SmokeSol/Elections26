@@ -1,10 +1,12 @@
 name: morocco26-p3-remediation-gates
 
 on:
-  # No `paths` filter. A freeze gate that only runs when it feels concerned is
-  # not a gate: commit 08d4b62 changed this workflow and the V9.1 freeze
-  # manifest, neither path was listed, and the check it introduced never ran on
-  # its own push. Every push to the branch is now covered.
+  # No `paths` filter. A freeze gate whose coverage depends on what else is in
+  # the push is not a gate. Commit 08d4b62 changed only this workflow and
+  # FREEZE_MANIFEST_V9_1_P3_REMEDIATION.json, neither of which was listed: run
+  # 32731849859 fired only because that push also carried d25b793, which touched
+  # listed paths. Pushed alone - the normal case for a follow-up fix - it would
+  # have been skipped. Every push to the branch is now covered.
   push:
     branches:
       - morocco26-agent-society-v2-front-vote-llm
