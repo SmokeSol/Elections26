@@ -29,13 +29,17 @@ jobs:
             morocco26/scripts/p3_verify_named_input.py \
             morocco26/scripts/p3_r3_ci_preflight_v2.py \
             morocco26/scripts/agent_society_v2_build_current_population_2026_geo_v2.py \
-            morocco26/scripts/p3_population_2026_preflight.py
+            morocco26/scripts/p3_population_2026_preflight.py \
+            morocco26/scripts/p3_fetch_microdata.py
 
       - name: The committed named input matches every published digest
         run: python morocco26/scripts/p3_verify_named_input.py --named-input morocco26/data/goal100/agent_society_v2/named_input_current_vintage_2026-08-22.json
 
       - name: The certified 2026 geometry still resolves 92 constituencies
         run: python -m unittest -v morocco26.agent_society_v4.tests.test_p3_current_population_geometry
+
+      - name: The recorded source digests are still readable from the builder
+        run: python -m unittest -v morocco26.agent_society_v4.tests.test_p3_source_microdata
 
       - name: Named-input lineage tests
         run: python -m unittest -v morocco26.agent_society_v4.tests.test_p3_remediation_named_input

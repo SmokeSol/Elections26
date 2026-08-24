@@ -10,12 +10,13 @@ name: Morocco26 Agent Society V2 current-vintage 2026 population V2
 # build on any other bytes. `named_input_artifact_id` remains available as an
 # override for a future snapshot that is not yet committed.
 #
-# Run 32742167166 failed inside the build step with exit 2 and its log is not
-# publicly readable, so this revision makes the two plausible causes visible
-# before the expensive part: every download is verified individually, and a
-# preflight resolves all 92 certified parents against the RGPH parent space and
-# prints the whole table instead of dying on the first territory. Outputs upload
-# even on failure.
+# Runs 32742167166 and 32742873701 both died on the source digests. The fetch
+# step now proves each file separately - received bytes == Content-Length, then
+# sha256 == the digest the historical builder records - so a truncated transfer
+# is retried and never mistaken for upstream republishing the data. A preflight
+# then resolves all 92 certified parents against the RGPH parent space and prints
+# the whole table instead of dying on the first territory. Outputs upload even on
+# failure, so the diagnosis survives the run.
 
 on:
   workflow_dispatch:
@@ -84,27 +85,11 @@ jobs:
             --named-input "$(cat /tmp/pop2026/named_path.txt)" \
             --allow-override "${NAMED_INPUT_ARTIFACT_ID:-}"
 
-      - name: Fetch source microdata, one download at a time, each checked
+      - name: Fetch source microdata, completeness and digest checked per file
         run: |
-          set -euo pipefail
-          fetch () {
-            name="$1"; url="$2"
-            echo "--- $name"
-            curl -fL --retry 4 --retry-delay 2 --connect-timeout 30 --max-time 1200 \
-              -A 'Mozilla/5.0 (ASV2 academic build)' -o "/tmp/pop2026/data/$name" "$url"
-            size=$(stat -c%s "/tmp/pop2026/data/$name")
-            echo "$name: $size bytes"
-            # An HTML error page is a few kilobytes and would otherwise reach the
-            # sha check as a confusing mismatch half an hour later.
-            if [ "$size" -lt 1000000 ]; then
-              echo "$name is only $size bytes; the download did not return microdata" >&2
-              head -c 400 "/tmp/pop2026/data/$name" >&2 || true
-              exit 1
-            fi
-          }
-          fetch rgph_individual.dta  https://www.rgph2014.hcp.ma/file/210749/
-          fetch rgph_household.dta   https://www.rgph2014.hcp.ma/file/210748/
-          fetch encdm_household.sav  https://www.hcp.ma/file/231078/
+          python morocco26/scripts/p3_fetch_microdata.py \
+            --outdir /tmp/pop2026/data \
+            --report /tmp/pop2026/out/source_microdata_fetch.json
 
       - name: Preflight - source digests and 92 certified parents
         run: |
@@ -141,6 +126,7 @@ jobs:
           retention-days: 90
           if-no-files-found: warn
           path: |
+            /tmp/pop2026/out/source_microdata_fetch.json
             /tmp/pop2026/out/population_2026_preflight.json
             /tmp/pop2026/out/2026_current_population_v1.json
             /tmp/pop2026/out/current_population_2026_certificate_v1.json
