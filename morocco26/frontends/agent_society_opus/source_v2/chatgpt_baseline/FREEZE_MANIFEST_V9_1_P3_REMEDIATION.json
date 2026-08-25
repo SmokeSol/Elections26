@@ -4,10 +4,10 @@
   "chain_note": "git_commit_sha names the commit that established this revision's file set. The manifest's own hash update lands in the immediately following commit, since a manifest cannot contain the sha of the commit that contains it.",
   "chain_rule": "A new revision must record supersedes_manifest_sha256, git_commit_sha and reason. A manifest is never silently replaced by a new truth.",
   "ci_evidence": {
-    "commit": "08d4b6255ed805989d0eef7bf680132ca86d107e",
+    "commit": "0fa6259",
     "conclusion": "success",
-    "note": "The run fired because the push also carried d25b793, which touched listed paths. Pushed alone, 08d4b62 would have been skipped. Verified, not assumed.",
-    "run_id": 32731849859
+    "note": "The population build and the R2 measurement in one job, because the population is an Actions artifact and downloading one needs a signed-in session. The numbers were published as check-run annotations, which are public, and the three digests were then verified against the downloaded bytes.",
+    "run_id": 32843920733
   },
   "ci_freeze_gate_path_filtered": false,
   "data_layer_states_measured_2026_08_24": {
@@ -16,11 +16,20 @@
     "REGIONAL_BALLOT": "MISSING",
     "RICH_VOTER_STATE": "DISCONNECTED"
   },
+  "data_layer_states_measured_2026_08_25": {
+    "LOCAL_CANDIDATES": "PARTIAL_REAL",
+    "PARTY_PROGRAMMES": "PLACEHOLDER",
+    "REGIONAL_BALLOT": "MISSING",
+    "RICH_VOTER_STATE": "PARTIAL_REAL"
+  },
   "dimension_catalogue": {
     "after_amendment": 121,
     "base": 108,
     "families_after_amendment": 12,
-    "independent_evidence_on_named_pipeline": 3
+    "fixture_figure_no_longer_quoted": "30 of 121, on a shape-faithful synthetic population",
+    "independent_evidence_on_named_pipeline": 3,
+    "measured_independent_per_voter_ain_chock": 17.0625,
+    "measured_populated_per_voter_ain_chock": 17.0625
   },
   "forecast_lambda_before_historical_oos_validation": 0.0,
   "freeze_chain": [
@@ -33,19 +42,35 @@
       "git_commit_sha": "9d382dfe3b4640033b8e2f199fcfde61a49009a7",
       "reason": "review corrections before the first R3 model call",
       "revision": 2
+    },
+    {
+      "git_commit_sha": "3a2802a74f658ffad75bdf76acb92692682d6eb2",
+      "reason": "the produced 2026 population, the R2 measurement taken on it, and the post-rev2 files that could not add themselves to a frozen list",
+      "revision": 3,
+      "supersedes_manifest_sha256": "341ad08699267859b11b3ad50715918362432009200a84dfdeb441d37db65058"
     }
   ],
-  "freeze_revision": 2,
+  "freeze_revision": 3,
   "frozen_files_excluding_this_manifest": [
+    {
+      "bytes": 7337,
+      "path": ".github/workflows/morocco26-agent-society-v2-current-population-2026-v2.yml",
+      "sha256": "8fefea544c96db7d5ac623f1689ab052dd838c49bd4d62a6b9cc2577d95cf69e"
+    },
     {
       "bytes": 4540,
       "path": ".github/workflows/morocco26-agent-society-v2-current-population-2026.yml",
       "sha256": "25c858692e3483c42638851bcc3b0a2268c9af0b840ec3d127482408d0be4d8f"
     },
     {
-      "bytes": 3478,
+      "bytes": 2649,
+      "path": ".github/workflows/morocco26-p3-named-input-lineage.yml",
+      "sha256": "7cc6835880952d22354abe74b847a6083cc7621a8c45881b39b0e5a289399ab1"
+    },
+    {
+      "bytes": 4069,
       "path": ".github/workflows/morocco26-p3-remediation-gates.yml",
-      "sha256": "5629fd10bf2649f507e791fe7d3f3c7644a0224bd551c1acbfdaf6c56589e7bc"
+      "sha256": "6603a531dceee25cde2feab64f02c8ede36e57f8459271fd548cd79563f55aee"
     },
     {
       "bytes": 6013,
@@ -103,9 +128,24 @@
       "sha256": "59d1c9569877440adb1e61ff0306fb7ebe001b5bc5f6341ce681b1add0d7abf2"
     },
     {
-      "bytes": 19006,
+      "bytes": 19396,
       "path": "morocco26/agent_society_v4/rich_named_bridge_v1.py",
-      "sha256": "c021422f1fdfe73ca0cb7cdd3dd2ec7a443d1ce91d9f1be215f66b11378f2ad5"
+      "sha256": "45456c0175c8a33985975be972251d431d371fcf4b72a14af886af2e51d21e74"
+    },
+    {
+      "bytes": 4454,
+      "path": "morocco26/agent_society_v4/tests/test_p3_current_population_geometry.py",
+      "sha256": "c5cd9800d8ef0e2713c65f17b46ce1bda1d9ebf115be4d65173baf9f60e70d31"
+    },
+    {
+      "bytes": 5029,
+      "path": "morocco26/agent_society_v4/tests/test_p3_r2_committed_outputs.py",
+      "sha256": "7bd4f580167abab1b087483d2b8f8e04480d7aa7f961559d891fb592d53a3cee"
+    },
+    {
+      "bytes": 9329,
+      "path": "morocco26/agent_society_v4/tests/test_p3_r2_measure.py",
+      "sha256": "f245e817acf8ed7c7eeb9073978db85de90e2d5d313f0555bb544f74211c5db7"
     },
     {
       "bytes": 33669,
@@ -113,9 +153,19 @@
       "sha256": "481889624d12ba30e9c6774f8a8744e6d5fede9f807e2041a3207c703df5f00b"
     },
     {
+      "bytes": 6589,
+      "path": "morocco26/agent_society_v4/tests/test_p3_remediation_named_input.py",
+      "sha256": "904f72b9b94fc1589326212df6886564c09c49bf25f5ea73f6bc0a99277d171b"
+    },
+    {
       "bytes": 12067,
       "path": "morocco26/agent_society_v4/tests/test_p3_remediation_r3.py",
       "sha256": "b1c3133eab7fe0ac822a52a14b1dc4ba275115c312ca9e274f622e85157ec81b"
+    },
+    {
+      "bytes": 13807,
+      "path": "morocco26/agent_society_v4/tests/test_p3_source_microdata.py",
+      "sha256": "e5db033e43056d17fcc9deb0ac44edd6696adc45b9d0d04420f403fe6d06a52a"
     },
     {
       "bytes": 1710,
@@ -123,14 +173,34 @@
       "sha256": "d13299b9e4ba22b31b203c4d0332d6ed996ad3ee6582cb2692c011bff87e5e1c"
     },
     {
+      "bytes": 5793,
+      "path": "morocco26/data/goal100/agent_society_v2/CURRENT_POPULATION_2026_CERTIFICATE_V1.json",
+      "sha256": "2eb2a000c8c9bbdd50c466a21498d3b2717189ba8c13f50110a1fdacf3eee491"
+    },
+    {
       "bytes": 2288,
       "path": "morocco26/data/goal100/agent_society_v2/EMPIRICAL_MOROCCAN_MIND_STATE_V9_1.json",
       "sha256": "db7ed509a80f87932ac01dfaab5e35a0ec45fe3c59798ac8f2a9619be1a01b81"
     },
     {
+      "bytes": 2867,
+      "path": "morocco26/data/goal100/agent_society_v2/LABOUR_CONTEXT_2026_Q2_HCP.json",
+      "sha256": "1b337542bd23f1c549604063c43d13b4e7167dc03a3780ca4fed0e489c3232fb"
+    },
+    {
       "bytes": 835,
       "path": "morocco26/data/goal100/agent_society_v2/LABOUR_CONTEXT_2026_TEMPLATE.json",
       "sha256": "8e4a35a23d7ec30d6acd32ed345f90e1dd43f1244b0a337a0ed374e5b4ec3c48"
+    },
+    {
+      "bytes": 2962,
+      "path": "morocco26/data/goal100/agent_society_v2/NAMED_INPUT_2026_LINEAGE_V1.json",
+      "sha256": "846af2b048ad41cfa69bc3c76cb5160d04458f152af763f233bf6e09bf694f21"
+    },
+    {
+      "bytes": 6796,
+      "path": "morocco26/data/goal100/agent_society_v2/P3_DATA_LAYER_CERTIFICATE_RICH_AIN_CHOCK_V1.json",
+      "sha256": "0fc9e72398e08d1ccb3bb5988d203721c625697fcf388d5e8f2742867d6abedc"
     },
     {
       "bytes": 6307,
@@ -143,6 +213,11 @@
       "sha256": "64591a60f5ddad4d9c00c99a6f0521eedceaf468be79ae8c867ef5859c858d11"
     },
     {
+      "bytes": 2828,
+      "path": "morocco26/data/goal100/agent_society_v2/P3_R2_MEASUREMENT_AIN_CHOCK_V1.json",
+      "sha256": "750b482800c2d8e69532ea30ea1174cfe16f8a28c76e481ea1329f80c09e939b"
+    },
+    {
       "bytes": 8297,
       "path": "morocco26/data/goal100/agent_society_v2/P3_R3_LOCAL_ONLY_PILOT_PROTOCOL_V1.json",
       "sha256": "aa421a89980b223b5e8c413d464c66bb5a624ca95d9858001033357c9a5b7b37"
@@ -151,6 +226,31 @@
       "bytes": 7555,
       "path": "morocco26/data/goal100/agent_society_v2/P3_RICH_NAMED_BRIDGE_CONTRACT_V1.json",
       "sha256": "5bef079d12291fed70fcae73dc783d1c83baed0c4bef5dd027e9c79be9c4e5cf"
+    },
+    {
+      "bytes": 23686,
+      "path": "morocco26/data/goal100/agent_society_v2/POPULATION_2026_PREFLIGHT_V1.json",
+      "sha256": "9725d02dc10e1d9718edb96587e0173b58489941bae0b76553d990d8dce913be"
+    },
+    {
+      "bytes": 4381,
+      "path": "morocco26/data/goal100/agent_society_v2/RICH_NAMED_BRIDGE_CERTIFICATE_AIN_CHOCK_V1.json",
+      "sha256": "5cdf20c80c63171020392dc9d4f5f1398eaf585226ddd9dd40428c802be97493"
+    },
+    {
+      "bytes": 1769,
+      "path": "morocco26/data/goal100/agent_society_v2/SOURCE_MICRODATA_FETCH_2026_V1.json",
+      "sha256": "4622967c98d77b4f03edb45fba1cc267a7b60788acb2442e56a2446145686693"
+    },
+    {
+      "bytes": 1188738,
+      "path": "morocco26/data/goal100/agent_society_v2/named_input_current_vintage_2026-08-22.json",
+      "sha256": "9a4e3c121e01363354c88dd5582e392a26decf54316836fb80d5f96975b0b706"
+    },
+    {
+      "bytes": 189011,
+      "path": "morocco26/data/goal100/agent_society_v2/named_input_rich_ain_chock_2026.json",
+      "sha256": "b6ad0254dfceeba3776b3e57b968a477e60c85c2cd9a28391216f4f8c2927a6b"
     },
     {
       "bytes": 5279,
@@ -163,9 +263,14 @@
       "sha256": "54de5476c35cc0469c0e04e04fcfdcb9eb957c379514997837275bcc60353a15"
     },
     {
-      "bytes": 15805,
+      "bytes": 28036,
+      "path": "morocco26/data/goal100/geometry_2026_certificate.json",
+      "sha256": "71b70f575c87221d45a80d3eb9b3dbb668d0884943e05084506ba2bbeaf911ba"
+    },
+    {
+      "bytes": 18987,
       "path": "morocco26/docs/P3_REMEDIATION_R0_R7.md",
-      "sha256": "7bf87563465d18a786a6770992d9cb843ffd00d05ecaad8d4b01ffe7e2d602ad"
+      "sha256": "3ec816ec7212f9c98718c30df370dec4d6980b4a657a48f1c942270c8594326a"
     },
     {
       "bytes": 1072,
@@ -203,6 +308,16 @@
       "sha256": "7969719a48d21df8fe150bd5a298d81afd659c5b177629e718458bb7e63c8535"
     },
     {
+      "bytes": 18745,
+      "path": "morocco26/scripts/agent_society_v2_build_current_population_2026_geo_v2.py",
+      "sha256": "5e5743b8d3b195cb931f490c3ceded5a4b5750c6bdee7a0291cfe26146c716f4"
+    },
+    {
+      "bytes": 2901,
+      "path": "morocco26/scripts/p3_ci_annotate.py",
+      "sha256": "005c8abd1724de1421a6d859e10cdd65b255fae471ce6b32024b95de2ef7ae73"
+    },
+    {
       "bytes": 6791,
       "path": "morocco26/scripts/p3_data_layer_certificate.py",
       "sha256": "34f86485d70879ef7e25d01716cb6892cd400fafac0a42289790bc8b5b1250c5"
@@ -213,22 +328,47 @@
       "sha256": "9167bc662610a54d46e98e999874769fa19086c53f34dd0803cfa3e7c06425c1"
     },
     {
+      "bytes": 7523,
+      "path": "morocco26/scripts/p3_fetch_microdata.py",
+      "sha256": "1b3f3334829bba8fa8ed8bd44cc2c4e3973aebde0c833b25d0e9a5490c2d4d4b"
+    },
+    {
+      "bytes": 16307,
+      "path": "morocco26/scripts/p3_population_2026_preflight.py",
+      "sha256": "4521af55f26d381c40eb18ff1ac4592041feac59fe903c5406f96fa9489236f7"
+    },
+    {
+      "bytes": 10882,
+      "path": "morocco26/scripts/p3_r2_measure.py",
+      "sha256": "731b17d955fd8a5a8289552df24b9d129007e5c3584504de655b2cac2826a879"
+    },
+    {
+      "bytes": 6515,
+      "path": "morocco26/scripts/p3_r3_ci_preflight_v2.py",
+      "sha256": "599b3dcbd5090d8aa6fcec51c1b0ed12442a3b53f1cde3cb4e1eb516b50ff706"
+    },
+    {
       "bytes": 21717,
       "path": "morocco26/scripts/p3_r3_local_pilot.py",
       "sha256": "63fafaca566d3a0a02fb42b76eb71219276e04fdbcbdbb572e0a988b1b331653"
     },
     {
-      "bytes": 4901,
+      "bytes": 5130,
       "path": "morocco26/scripts/p3_rich_named_bridge.py",
-      "sha256": "da143e576e00f25b7d664d872bdaff6291d27abc846063452781878a8af40e55"
+      "sha256": "3ccf8d456a7d7f04fad6fe6fb0028e889d6b6ff6aaa87992bc6f9209fe3a8b69"
     },
     {
       "bytes": 4062,
       "path": "morocco26/scripts/p3_verify_freeze.py",
       "sha256": "30db6cdb22016ad92679fc64b868bb688c2e69bb9a4db94aaaef5dc87e18a07d"
+    },
+    {
+      "bytes": 6328,
+      "path": "morocco26/scripts/p3_verify_named_input.py",
+      "sha256": "c130f4992e33e710c5f345399d29175ba22a80710c9a5763c6bd709c7b31715d"
     }
   ],
-  "git_commit_sha": "9d382dfe3b4640033b8e2f199fcfde61a49009a7",
+  "git_commit_sha": "3a2802a74f658ffad75bdf76acb92692682d6eb2",
   "line_endings": "LF for every file listed here; hashes are computed over the committed bytes",
   "manifest_id": "M26-P3-REMEDIATION-FREEZE-V9-1-V1",
   "model_calls_during_remediation": 0,
@@ -242,22 +382,72 @@
     "EM12_MANIFEST_ASSERTIONS_MEASURED",
     "EM13_NO_ENGINE_COMPOSITE_COUNTED_AS_EVIDENCE"
   ],
-  "next_gate": "R2_BUILD_THE_2026_CURRENT_VINTAGE_POPULATION_THEN_RUN_R3_LOCAL_ONLY",
+  "next_gate": "R3_RUN_THE_134_PREREGISTERED_LOCAL_ONLY_CALLS",
   "parent_v9_freeze_manifest": "morocco26/frontends/agent_society_opus/source_v2/chatgpt_baseline/FREEZE_MANIFEST_V9_EMPIRICAL_MIND.json",
   "parent_v9_payload_sha256": "3cdda05d95ef387c85ef8919fe3ea188226f21c0ccc9d5ef9eb7bf35c7d32df0",
+  "produced_population_2026": {
+    "bytes": 91588370,
+    "digest_verified_against_downloaded_bytes": true,
+    "failures": 0,
+    "named_input_sha256": "d63e48b79026a6a822f3e4aaabf5bdbbe59fe09f3ff3faa80e110bc4490c1337",
+    "not_committed_reason": "91.6 MB of derived data; the digest and the certificate are the record",
+    "quality": {
+      "direct_microdata_admin_territories": 58,
+      "max_raking_abs_error": 1.9974552678547752e-08,
+      "max_single_archetype_weight": 0.01667277,
+      "min_effective_archetype_count": 229.369362,
+      "proxy_geography_territories": 34
+    },
+    "reproduce": "re-run the workflow at this commit and compare the digest published in the annotation",
+    "sha256": "734bee735e71d16a6d4f4848a49c1db002c3756b9045bede8a5877d00c2bb6da",
+    "source_hashes": {
+      "encdm": "6a3d6bbbde529254baa09a8a6171ea32c05aed1ca7e9568a3056eb69b8987dca",
+      "geometry_2026_certificate": "71b70f575c87221d45a80d3eb9b3dbb668d0884943e05084506ba2bbeaf911ba",
+      "hh": "0c630cfaf65d02e1b2e37d8b81c0c2704f28db80115f13942d3ac0e75665319f",
+      "ind": "62dbbfc69073d52841fc3a7096113ce1342a3baec2e7e620e0f3309393fdda77"
+    },
+    "status": "PASS_CURRENT_VINTAGE_POPULATION_2026",
+    "territories": 92
+  },
+  "r2_measurement": {
+    "dimensions_per_voter": 121,
+    "epistemic_totals": {
+      "ECOLOGICAL_CONTEXT_ONLY": 0,
+      "ENGINE_DERIVED_COMPOSITE": 0,
+      "MATCHED_DONOR_LATENT_STATE": 64,
+      "OBSERVED_HOUSEHOLD": 287,
+      "OBSERVED_INDIVIDUAL": 195,
+      "REGISTERED_EXPERIMENTAL_PRIOR": 0,
+      "SURVEY_STRATUM_PRIOR": 0,
+      "SYNTHETIC_POSTERIOR_DRAW_FROM_MOROCCAN_SURVEY": 0,
+      "UNKNOWN": 3326
+    },
+    "household_fields_per_voter": 48,
+    "individual_fields_per_voter": 32,
+    "measurement_artifact": "morocco26/data/goal100/agent_society_v2/P3_R2_MEASUREMENT_AIN_CHOCK_V1.json",
+    "no_attitude_overlay_for_2026": true,
+    "populated_dimensions_per_voter": 17.0625,
+    "run_id": 32843920733,
+    "survey_stratum_fields_per_voter": 0,
+    "territory": "ain-chock",
+    "territory_context_fields_per_voter": 6,
+    "voters": 32,
+    "why_lower_than_the_fixture": "twelve of the fixture's thirty were SURVEY_STRATUM_PRIOR dimensions fed by an Afrobarometer overlay that exists for 2016 and 2021 only; the rest is real records carrying missing and unmappable values where a constructed fixture had every field populated",
+    "workflow": ".github/workflows/morocco26-agent-society-v2-current-population-2026-v2.yml"
+  },
   "r3_design": "2x2 mind_layer x context with same-condition replication",
   "r3_protocol_revision": 2,
-  "reason": "CI trigger fix (the freeze gate's paths filter excluded the workflow and this manifest, so its coverage depended on what else was in the push), ENGINE_DERIVED_COMPOSITE for the attention_score composite, the current-vintage 2026 population builder, and the R3 2x2 design amendment.",
+  "reason": "R2 measured on the real current-vintage population instead of a fixture. Records the produced population by digest, the bridged Ain Chock input and its certificates by content, and freezes the post-rev2 CI and builder files that had been gated by the lineage workflow because a frozen file cannot be edited to add itself.",
   "regional_fallback_allowed": false,
   "scale_override_allowed": false,
   "schema_version": "ATLAS_P3_REMEDIATION_FREEZE_V9_1_V1",
   "startup_work_item_cap": 1,
   "status": "FROZEN_BEFORE_ANY_R3_MODEL_OUTPUT",
-  "supersedes_manifest_sha256": "d050a8bca6152906978822839a1540937694c983e82858fa5c0d87ea2a2f4613",
+  "supersedes_manifest_sha256": "341ad08699267859b11b3ad50715918362432009200a84dfdeb441d37db65058",
   "tests": {
-    "remediation_tests": 51,
+    "note": "141 discovered under morocco26/agent_society_v4/tests, plus 26 under morocco26/tests",
     "status": "PASS",
-    "total_agent_society_v4_tests": 82
+    "total_agent_society_v4_tests": 141
   },
   "three_regime_core_edited": false,
   "v8_source_modules_edited": false,
