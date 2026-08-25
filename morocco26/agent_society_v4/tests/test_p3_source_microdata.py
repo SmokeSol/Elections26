@@ -108,5 +108,80 @@ class AnnotationTests(unittest.TestCase):
         self.assertEqual(annotate._escape("a:b,c" + chr(10) + "d"), "a%3Ab%2Cc%0Ad")
 
 
+class MarginCoverageTests(unittest.TestCase):
+    """b.ipf dies the moment a target category has mass but no sampled row.
+
+    Run 32826524442 lost 49 of 92 territories that way while the 43 that built
+    were comfortable on every quality gate, so the diagnosis has to name the
+    unreachable category rather than report non-convergence.
+    """
+
+    class _Builder:
+        @staticmethod
+        def labour_multiplier(activity, milieu, year, base_rates):
+            return 1.0
+
+        @staticmethod
+        def margins(pool, weights):
+            return {
+                "age_band": {"18_24": 0.5, "60_PLUS": 0.4999, "RARE": 0.0001},
+                "sex": {"M": 0.5, "F": 0.5},
+                "not_a_raking_dimension": {"X": 0.00001},
+            }
+
+    def _pool(self, size=300):
+        import pandas as pd
+
+        return pd.DataFrame(
+            {
+                "pro_norm": ["p"] * size,
+                "pds": [1.0] * size,
+                "activity_status": ["ACTIVE_EMPLOYED"] * size,
+                "urban_rural": ["URBAN"] * size,
+            }
+        )
+
+    def test_a_category_too_rare_to_draw_is_named(self):
+        rows = [
+            {"constituency_id": "t1", "resolved_rgph_parent": "p"},
+            {"constituency_id": "t2", "resolved_rgph_parent": "p"},
+        ]
+        coverage = preflight.margin_coverage(
+            self._pool(), rows, sample_size=256, attempts=48, b=self._Builder
+        )
+        self.assertEqual(coverage["territories_at_risk"], ["t1", "t2"])
+        self.assertIn("age_band=RARE", coverage["culprit_categories"])
+        record = coverage["culprit_categories"]["age_band=RARE"]
+        self.assertAlmostEqual(record["min_mass"], 0.0001)
+        self.assertGreater(record["max_probability_all_attempts_miss"], 0.2)
+
+    def test_well_populated_categories_are_not_flagged(self):
+        rows = [{"constituency_id": "t1", "resolved_rgph_parent": "p"}]
+        coverage = preflight.margin_coverage(
+            self._pool(), rows, sample_size=256, attempts=48, b=self._Builder
+        )
+        flagged = set(coverage["culprit_categories"])
+        self.assertNotIn("age_band=18_24", flagged)
+        self.assertNotIn("sex=M", flagged)
+
+    def test_only_the_five_raking_dimensions_are_examined(self):
+        rows = [{"constituency_id": "t1", "resolved_rgph_parent": "p"}]
+        coverage = preflight.margin_coverage(
+            self._pool(), rows, sample_size=256, attempts=48, b=self._Builder
+        )
+        self.assertNotIn("not_a_raking_dimension=X", coverage["culprit_categories"])
+        self.assertEqual(
+            preflight.RAKING_DIMENSIONS,
+            ("age_band", "sex", "urban_rural", "education_band", "activity_status"),
+        )
+
+    def test_a_pool_smaller_than_the_sample_is_skipped_not_crashed(self):
+        rows = [{"constituency_id": "t1", "resolved_rgph_parent": "p"}]
+        coverage = preflight.margin_coverage(
+            self._pool(size=10), rows, sample_size=256, attempts=48, b=self._Builder
+        )
+        self.assertEqual(coverage["territories_at_risk"], [])
+
+
 if __name__ == "__main__":
     unittest.main()

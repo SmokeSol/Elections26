@@ -175,13 +175,31 @@ def summarize_failures(failures: Sequence[Mapping[str, Any]], limit: int = 8) ->
     return " | ".join(parts[:limit]) or "no per-territory failure recorded"
 
 
+# Two gates in the frozen certificate are assertions of absence: they PASS when
+# they are False. Reading them as ordinary booleans reported a clean build as
+# having failed `historical_outcome_read` and `sealed_mapping_read`, which is the
+# opposite of what those gates mean. The frozen builder's own pass computation
+# already inverts them; this mirrors it.
+GATES_THAT_PASS_WHEN_FALSE = frozenset({"historical_outcome_read", "sealed_mapping_read"})
+
+
+def gate_holds(name: str, value: Any) -> bool:
+    if name in GATES_THAT_PASS_WHEN_FALSE:
+        return value is False
+    return bool(value)
+
+
+def failed_gates(gates: Mapping[str, Any]) -> list[str]:
+    return sorted(name for name, value in gates.items() if not gate_holds(name, value))
+
+
 def report_certificate(path: pathlib.Path, result: int) -> None:
     if not path.is_file():
         emit_error("population certificate missing", f"{path} was not written")
         return
     certificate = read_json(path)
     gates = certificate.get("gates") or {}
-    failed = sorted(name for name, ok in gates.items() if not ok)
+    failed = failed_gates(gates)
     quality = certificate.get("quality") or {}
     failures = certificate.get("failures") or []
     summary = (

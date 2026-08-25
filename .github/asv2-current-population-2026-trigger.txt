@@ -56,4 +56,20 @@
 # max weight, raking error, and the per-territory failures grouped by reason
 # - as check-run annotations.
 
-request: 2026-08-24 rebuild reporting the certificate verdict
+#   32826524442  exit 2 in the build step, now legible
+#                43 of 92 territories built; 49 failed IPF_GATE with
+#                best=None, meaning all 48 attempts returned (None, None).
+#                The 43 that built were comfortable: min ESS 222 (floor 128),
+#                max weight 0.017 (ceiling 0.05), raking error 2e-08 (5e-06).
+#                Convergence was never the problem: a target category carries
+#                positive mass and no sampled row.
+#
+#                Two of the four 'failed gates' it reported were my own
+#                reporting bug: historical_outcome_read and sealed_mapping_read
+#                PASS when False, and I read them as ordinary booleans.
+#                Genuinely failing: all_territories_built, no_failures.
+#
+# The preflight now names the unreachable categories per parent pool before
+# the build spends a minute proving it the expensive way.
+
+request: 2026-08-24 rebuild naming the unreachable raking categories
