@@ -97,6 +97,7 @@ jobs:
             --ind /tmp/pop2026/data/rgph_individual.dta \
             --hh /tmp/pop2026/data/rgph_household.dta \
             --encdm /tmp/pop2026/data/encdm_household.sav \
+            --labour-context morocco26/data/goal100/agent_society_v2/LABOUR_CONTEXT_2026_Q2_HCP.json \
             --output /tmp/pop2026/out/population_2026_preflight.json
 
       - name: Build geometry-bound current-vintage 2026 population

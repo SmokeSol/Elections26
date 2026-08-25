@@ -82,4 +82,12 @@
 # the margins it predicts are the multiplier-adjusted ones the builder rakes
 # to. A test parses V1's source and fails if the two mappings drift.
 
-request: 2026-08-24 rebuild with the labour context injected in the preflight
+#   32827454592  exit 2 in the build step; gate reporting now correct
+#                failed_gates=['all_territories_built', 'no_failures'] only, so
+#                the inverted-gate fix holds. But the coverage step reported
+#                "margin coverage skipped": the edit meant to add
+#                --labour-context to the preflight step matched nothing and
+#                failed silently, so the flag only ever reached the build step.
+#                A test now asserts both steps carry it.
+
+request: 2026-08-24 rebuild with the coverage step actually receiving the context

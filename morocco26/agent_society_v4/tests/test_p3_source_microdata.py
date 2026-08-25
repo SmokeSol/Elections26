@@ -124,6 +124,26 @@ class LabourInjectionTests(unittest.TestCase):
         declared = {line.split('"')[1] for line in block.splitlines() if '"' in line}
         self.assertEqual(declared, set(preflight.LABOUR_RATE_KEYS))
 
+    def test_the_workflow_actually_passes_the_labour_context_to_the_preflight(self):
+        """Run 32827454592 skipped the coverage step because the flag never landed.
+
+        The edit that was supposed to add it matched nothing and failed silently,
+        so the preflight ran without the context and reported the skip as a
+        notice. Asserting the wiring is cheaper than another eight-minute run.
+        """
+        workflow = (
+            REPO_ROOT
+            / ".github"
+            / "workflows"
+            / "morocco26-agent-society-v2-current-population-2026-v2.yml"
+        ).read_text(encoding="utf-8")
+        steps = workflow.split("- name: ")
+        preflight_step = next(s for s in steps if s.startswith("Preflight"))
+        self.assertIn("p3_population_2026_preflight.py", preflight_step)
+        self.assertIn("--labour-context", preflight_step)
+        build_step = next(s for s in steps if s.startswith("Build geometry-bound"))
+        self.assertIn("--labour-context", build_step)
+
     def test_injection_populates_the_target_year(self):
         holder = type("B", (), {"LABOR": {}})()
         injected = preflight.inject_labour_context(
