@@ -1,0 +1,781 @@
+{
+  "geometry_certificate_sha256": "71b70f575c87221d45a80d3eb9b3dbb668d0884943e05084506ba2bbeaf911ba",
+  "insufficient_pool": [],
+  "margin_coverage": {
+    "attempts": 48,
+    "culprit_categories": {},
+    "parents_examined": 72,
+    "parents_with_unreachable_categories": 0,
+    "per_parent": {},
+    "sample_size": 256,
+    "territories_at_risk": [],
+    "territories_at_risk_count": 0
+  },
+  "min_pool_required": 256,
+  "resolution_modes": {
+    "DIRECT_MICRODATA_ADMIN": 77,
+    "PARENT_PROXY_LEGACY_2014_ADMIN": 15
+  },
+  "rgph_parent_space_size": 73,
+  "rows": [
+    {
+      "certified_parent": "Agadir Ida-Outanan",
+      "constituency_id": "agadir-ida-outanane",
+      "eligible_rows": 52944,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "agadir ida outanane",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Aïn Chock",
+      "constituency_id": "ain-chock",
+      "eligible_rows": 298970,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "casablanca",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Aïn Sebaâ-Hay Mohammadi",
+      "constituency_id": "ain-sebaa-hay-mohammadi",
+      "eligible_rows": 298970,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "casablanca",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Al Fida-Mers Sultan",
+      "constituency_id": "al-fida-mers-sultan",
+      "eligible_rows": 298970,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "casablanca",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Al Haouz",
+      "constituency_id": "al-haouz",
+      "eligible_rows": 48851,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "al haouz",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Al Hoceïma",
+      "constituency_id": "al-hoceima",
+      "eligible_rows": 35179,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "al hoceima",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Aousserd",
+      "constituency_id": "aousserd",
+      "eligible_rows": 9382,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "oued ed dahab aousserd",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Assa-Zag",
+      "constituency_id": "assa-zag",
+      "eligible_rows": 9444,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "tan tan assa zag",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Azilal",
+      "constituency_id": "azilal-demnate",
+      "eligible_rows": 46710,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "azilal",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Ben M'sick",
+      "constituency_id": "ben-m-sick",
+      "eligible_rows": 298970,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "casablanca",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Béni-Mellal",
+      "constituency_id": "beni-mellal",
+      "eligible_rows": 48301,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "beni mellal",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Benslimane",
+      "constituency_id": "benslimane",
+      "eligible_rows": 19890,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "benslimane",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Berkane",
+      "constituency_id": "berkane",
+      "eligible_rows": 25712,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "berkane",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Berrechid",
+      "constituency_id": "berrechid",
+      "eligible_rows": 41956,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "berrechid",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Boujdour",
+      "constituency_id": "boujdour",
+      "eligible_rows": 3709,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "boujdour",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Boulemane",
+      "constituency_id": "boulemane",
+      "eligible_rows": 17074,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "boulemane",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Azilal",
+      "constituency_id": "bzou-ouaouizeght",
+      "eligible_rows": 46710,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "azilal",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Casablanca-Anfa",
+      "constituency_id": "casablanca-anfa",
+      "eligible_rows": 298970,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "casablanca",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Chefchaouen",
+      "constituency_id": "chefchaouen",
+      "eligible_rows": 39389,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "chefchaouen",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Chichaoua",
+      "constituency_id": "chichaoua",
+      "eligible_rows": 31646,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "chichaoua",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Chtouka-Aït Baha",
+      "constituency_id": "chtouka-ait-baha",
+      "eligible_rows": 32063,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "chtouka ait baha",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Driouch",
+      "constituency_id": "driouch",
+      "eligible_rows": 18952,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "driouch",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Kénitra",
+      "constituency_id": "el-gharb",
+      "eligible_rows": 90915,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "kenitra",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "El Hajeb",
+      "constituency_id": "el-hajeb",
+      "eligible_rows": 21549,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "el hajeb",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "El Jadida",
+      "constituency_id": "el-jadida",
+      "eligible_rows": 68801,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "el jadida",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "El Kelâa des Sraghna",
+      "constituency_id": "el-kelaa-des-sraghna",
+      "eligible_rows": 45654,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "el kelaa des sraghna",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Errachidia",
+      "constituency_id": "errachidia",
+      "eligible_rows": 34967,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "errachidia",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Es-Semara",
+      "constituency_id": "es-semara",
+      "eligible_rows": 5334,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "es semara tarfaya",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Essaouira",
+      "constituency_id": "essaouira",
+      "eligible_rows": 39101,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "essaouira",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Fahs-Anjra",
+      "constituency_id": "fahs-anjra",
+      "eligible_rows": 6535,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "fahs anjra",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Fès",
+      "constituency_id": "fes-nord",
+      "eligible_rows": 100949,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "fes",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Fès",
+      "constituency_id": "fes-sud",
+      "eligible_rows": 100949,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "fes",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Figuig",
+      "constituency_id": "figuig",
+      "eligible_rows": 11206,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "figuig",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Fquih Ben Salah",
+      "constituency_id": "fquih-ben-salah",
+      "eligible_rows": 42856,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "fquih ben salah",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Marrakech",
+      "constituency_id": "gueliz-nakhil",
+      "eligible_rows": 115834,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "marrakech",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Guelmim",
+      "constituency_id": "guelmim",
+      "eligible_rows": 16315,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "guelmim",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Guercif",
+      "constituency_id": "guercif",
+      "eligible_rows": 18535,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "guercif",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Hay Hassani",
+      "constituency_id": "hay-hassani",
+      "eligible_rows": 298970,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "casablanca",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Ifrane",
+      "constituency_id": "ifrane",
+      "eligible_rows": 13554,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "ifrane",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Inezgane-Aït Melloul",
+      "constituency_id": "inezgane-ait-melloul",
+      "eligible_rows": 46764,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "inezgane ait melloul",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Jerada",
+      "constituency_id": "jerada",
+      "eligible_rows": 9049,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "jerada",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Taounate",
+      "constituency_id": "karia-ghafsay",
+      "eligible_rows": 58122,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "taounate",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Kénitra",
+      "constituency_id": "kenitra",
+      "eligible_rows": 90915,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "kenitra",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Khémisset",
+      "constituency_id": "khemisset-oulmes",
+      "eligible_rows": 47981,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "khemisset",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Khénifra",
+      "constituency_id": "khenifra",
+      "eligible_rows": 32904,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "khenifra",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Khouribga",
+      "constituency_id": "khouribga",
+      "eligible_rows": 47286,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "khouribga",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Laâyoune",
+      "constituency_id": "laayoune",
+      "eligible_rows": 20250,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "laayoune",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Larache",
+      "constituency_id": "larache",
+      "eligible_rows": 43339,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "larache",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "M'diq-Fnideq",
+      "constituency_id": "m-diq-fnideq",
+      "eligible_rows": 18201,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "m diq fnideq",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Marrakech",
+      "constituency_id": "medina-sidi-youssef",
+      "eligible_rows": 115834,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "marrakech",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Médiouna",
+      "constituency_id": "mediouna",
+      "eligible_rows": 14672,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "mediouna",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Meknès",
+      "constituency_id": "meknes",
+      "eligible_rows": 73485,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "meknes",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Marrakech",
+      "constituency_id": "menara",
+      "eligible_rows": 115834,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "marrakech",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Midelt",
+      "constituency_id": "midelt",
+      "eligible_rows": 24469,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "midelt",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Mohammédia",
+      "constituency_id": "mohammedia",
+      "eligible_rows": 35169,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "mohammadia",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Moulay Rachid",
+      "constituency_id": "moulay-rachid",
+      "eligible_rows": 298970,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "casablanca",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Moulay Yaâcoub",
+      "constituency_id": "moulay-yaacoub",
+      "eligible_rows": 14560,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "moulay yaacoub",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Nador",
+      "constituency_id": "nador",
+      "eligible_rows": 49413,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "nador",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Nouaceur",
+      "constituency_id": "nouaceur",
+      "eligible_rows": 27903,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "nouaceur",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Ouarzazate",
+      "constituency_id": "ouarzazate",
+      "eligible_rows": 25303,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "ouarzazate",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Oued Eddahab",
+      "constituency_id": "oued-eddahab",
+      "eligible_rows": 9382,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "oued ed dahab aousserd",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Ouezzane",
+      "constituency_id": "ouezzane",
+      "eligible_rows": 26281,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "ouezzane",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Oujda-Angad",
+      "constituency_id": "oujda-angad",
+      "eligible_rows": 48872,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "oujda angad",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Rabat",
+      "constituency_id": "rabat-chellah",
+      "eligible_rows": 51771,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "rabat",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Rabat",
+      "constituency_id": "rabat-ocean",
+      "eligible_rows": 51771,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "rabat",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Rehamna",
+      "constituency_id": "rehamna",
+      "eligible_rows": 26167,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "rehamna",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Safi",
+      "constituency_id": "safi",
+      "eligible_rows": 60084,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "safi",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Salé",
+      "constituency_id": "sale-el-jadida",
+      "eligible_rows": 86052,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "sale",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Salé",
+      "constituency_id": "sale-medina",
+      "eligible_rows": 86052,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "sale",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Séfrou",
+      "constituency_id": "sefrou",
+      "eligible_rows": 25310,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "sefrou",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Settat",
+      "constituency_id": "settat",
+      "eligible_rows": 54088,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "settat",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Sidi Bennour",
+      "constituency_id": "sidi-bennour",
+      "eligible_rows": 39342,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "sidi bennour",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Sidi Bernoussi",
+      "constituency_id": "sidi-bernoussi",
+      "eligible_rows": 298970,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "casablanca",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Sidi Ifni",
+      "constituency_id": "sidi-ifni",
+      "eligible_rows": 10085,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "sidi ifni",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Sidi Kacem",
+      "constituency_id": "sidi-kacem",
+      "eligible_rows": 44793,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "sidi kacem",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Sidi Slimane",
+      "constituency_id": "sidi-slimane",
+      "eligible_rows": 27302,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "sidi slimane",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Skhirate-Témara",
+      "constituency_id": "skhirate-temara",
+      "eligible_rows": 50312,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "skhirate temara",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Tan-Tan",
+      "constituency_id": "tan-tan",
+      "eligible_rows": 9444,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "tan tan assa zag",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Tanger-Assilah",
+      "constituency_id": "tanger-assilah",
+      "eligible_rows": 93079,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "tanger assilah",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Taounate",
+      "constituency_id": "taounate-tissa",
+      "eligible_rows": 58122,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "taounate",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Taourirt",
+      "constituency_id": "taourirt",
+      "eligible_rows": 19776,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "taourirt",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Tarfaya",
+      "constituency_id": "tarfaya",
+      "eligible_rows": 5334,
+      "resolution_mode": "PARENT_PROXY_LEGACY_2014_ADMIN",
+      "resolved_rgph_parent": "es semara tarfaya",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Taroudant",
+      "constituency_id": "taroudant-nord",
+      "eligible_rows": 72543,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "taroudant",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Taroudant",
+      "constituency_id": "taroudant-sud",
+      "eligible_rows": 72543,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "taroudant",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Tata",
+      "constituency_id": "tata",
+      "eligible_rows": 9540,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "tata",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Taza",
+      "constituency_id": "taza",
+      "eligible_rows": 46791,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "taza",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Tétouan",
+      "constituency_id": "tetouan",
+      "eligible_rows": 48654,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "tetouan",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Khémisset",
+      "constituency_id": "tiflet-rommani",
+      "eligible_rows": 47981,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "khemisset",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Tinghir",
+      "constituency_id": "tinghir",
+      "eligible_rows": 25763,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "tinghir",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Tiznit",
+      "constituency_id": "tiznit",
+      "eligible_rows": 18465,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "tiznit",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Youssoufia",
+      "constituency_id": "youssoufia",
+      "eligible_rows": 21431,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "youssoufia",
+      "sufficient": true
+    },
+    {
+      "certified_parent": "Zagora",
+      "constituency_id": "zagora",
+      "eligible_rows": 22660,
+      "resolution_mode": "DIRECT_MICRODATA_ADMIN",
+      "resolved_rgph_parent": "zagora",
+      "sufficient": true
+    }
+  ],
+  "source_hashes": {
+    "encdm": {
+      "bytes": 33254643,
+      "expected": "6a3d6bbbde529254baa09a8a6171ea32c05aed1ca7e9568a3056eb69b8987dca",
+      "match": true,
+      "sha256": "6a3d6bbbde529254baa09a8a6171ea32c05aed1ca7e9568a3056eb69b8987dca"
+    },
+    "hh": {
+      "bytes": 39442553,
+      "expected": "0c630cfaf65d02e1b2e37d8b81c0c2704f28db80115f13942d3ac0e75665319f",
+      "match": true,
+      "sha256": "0c630cfaf65d02e1b2e37d8b81c0c2704f28db80115f13942d3ac0e75665319f"
+    },
+    "ind": {
+      "bytes": 200532997,
+      "expected": "62dbbfc69073d52841fc3a7096113ce1342a3baec2e7e620e0f3309393fdda77",
+      "match": true,
+      "sha256": "62dbbfc69073d52841fc3a7096113ce1342a3baec2e7e620e0f3309393fdda77"
+    }
+  },
+  "status": "PASS_POPULATION_2026_PREFLIGHT",
+  "territories": 92,
+  "unresolved": []
+}

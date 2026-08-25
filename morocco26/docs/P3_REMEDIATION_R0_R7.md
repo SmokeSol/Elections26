@@ -153,6 +153,66 @@ an operator fills it from a published HCP release with a URL and a known_as_of.
 python morocco26/scripts/agent_society_v2_build_current_population_2026.py --ind rgph_individual.dta --hh rgph_household.dta --encdm encdm_household.sav --named-input named_input_current_vintage.json --labour-context LABOUR_CONTEXT_2026.json --snapshot-date 2026-08-24 --outdir out
 ```
 
+### R2, measured
+
+Run `32843920733` built the population and measured the bridge in the same job.
+It had to be the same job: the population is an Actions artifact, and
+downloading one requires a signed-in session, so a measurement taken anywhere
+else could not have been published. Check-run annotations are public, and that
+is where the numbers went.
+
+**17.0625 of 121 dimensions populated per voter**, min 16, max 18, on 32 voters
+in Aïn Chock. This is the observed figure. It replaces the 30 of 121 that every
+earlier document reported, which was always labelled a fixture result and now
+has no reason to be quoted again.
+
+| layer | fields per voter |
+|---|---|
+| individual | 32 |
+| `household_context` | 48 |
+| `survey_stratum` | **0** |
+| `territory_context` | 6 |
+
+The drop from 30 to 17 is the missing attitude layer. Twelve of the fixture's
+thirty were `SURVEY_STRATUM_PRIOR` dimensions fed by the Afrobarometer overlay,
+which the repo holds for 2016 and 2021. No equivalent has been collected for the
+current vintage, so those twelve have no source here and read UNKNOWN. Running
+the same code on the fixture with the overlay withheld gives 18, which is where
+the remaining gap comes from: real records carry missing and unmappable values
+where a constructed fixture has every field populated, so a voter can land at 16.
+
+`RICH_VOTER_STATE` therefore reads `PARTIAL_REAL`, not `REAL` — every voter has
+an individual and a household block, none has a stratum block. The certificate
+reports that without being asked to, which is the whole point of R0.
+
+`prior_election_anchors_dropped` is 0, not 32 as on the fixture: the 2026
+builder's `strip_political_memory` had already removed the field before the
+bridge ever saw it.
+
+**What is committed.** The 91.6 MB population is not in git; its sha256 is
+(`734bee73…`, 91 588 370 bytes), together with the build certificate and the
+preflight. The bridged 32-voter input and its three certificates are committed,
+so R3 builds from a frozen HEAD without anyone needing an authenticated session:
+
+```bash
+python morocco26/scripts/p3_r3_local_pilot.py build-arms \
+  --rich-named-input morocco26/data/goal100/agent_society_v2/named_input_rich_ain_chock_2026.json \
+  --minimal-named-input morocco26/data/goal100/agent_society_v2/named_input_current_vintage_2026-08-22.json \
+  --certificate morocco26/data/goal100/agent_society_v2/P3_DATA_LAYER_CERTIFICATE_RICH_AIN_CHOCK_V1.json \
+  --snapshot-date 2026-08-24 --output-root <run_root>
+```
+
+`test_p3_r2_committed_outputs.py` recomputes the three digests from the
+committed bytes and fails if any of them stops agreeing with the measurement, so
+a hand-edited copy or a half-refreshed set cannot pass unnoticed.
+
+**The number is not a target.** 17 of 121 is neither good nor bad on its own; it
+is how much true information the environment currently carries. Four of the
+remaining families are empty because their data has not been collected (R4, R5),
+and one is empty because importing it would smuggle a historical outcome into a
+current-vintage snapshot. Raising the count by filling any of those with
+plausible values would make the number better and the experiment worthless.
+
 ---
 
 ## R3 — the LOCAL-only pilot (preregistered, not run)

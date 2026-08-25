@@ -1,0 +1,178 @@
+{
+  "advisory_findings": [
+    "record-level candidate_coverage_2026.json is dated 2026-08-16 while the environment snapshot is 2026-08-22: republish the collection coverage so a single answer exists to 'how many candidates do we have?'",
+    "record-level active_local_records 413 != environment resolved cells 6",
+    "record-level dataset reports 12 regional records; these are rejected local rows, not a regional ballot, and must never be promoted into regional_ballot_cards"
+  ],
+  "blocking_findings": [],
+  "certificate_id": "M26-P3-DATA-LAYER-CERTIFICATE-V1",
+  "certificate_sha256": "180cb7fa7cca3702ad3eb36d61ff6b49896026b76bfe5fa7dc77a5e954672bd9",
+  "disconnected_layers": [],
+  "dual_ballot_simulation_allowed": false,
+  "environment_id": "M26_P3_R2_AIN-CHOCK",
+  "gate_testability": {
+    "BR0_INTEGRITY": "TESTABLE",
+    "BR1_LOCAL": "TESTABLE",
+    "BR1_REGIONAL": "NOT_TESTABLE_MISSING_DATA",
+    "BR2_PERSONA": "TESTABLE",
+    "BR3_CANDIDATE": "TESTABLE",
+    "BR4_PROGRAMME": "NOT_TESTABLE_MISSING_DATA",
+    "BR5_PARTY_MEMORY": "NOT_TESTABLE_MISSING_DATA",
+    "BR6_TURNOUT": "TESTABLE",
+    "BR7_PLACEBO": "TESTABLE",
+    "BR8_POV": "TESTABLE",
+    "SPLIT_TICKET": "NOT_TESTABLE_MISSING_DATA"
+  },
+  "inputs": {
+    "candidate_ballot_cell_census_path": "derived from the bridged input",
+    "candidate_coverage_path": "morocco26/data/candidate_coverage_2026.json",
+    "rich_population_certificate_path": null
+  },
+  "interpretation_boundary": "NOT_TESTABLE_MISSING_DATA is not a model failure. It states that the environment cannot feed the gate, so the gate carries no information about the voter mind.",
+  "layer_states": {
+    "LOCAL_CANDIDATES": "PARTIAL_REAL",
+    "PARTY_PROGRAMMES": "PLACEHOLDER",
+    "REGIONAL_BALLOT": "MISSING",
+    "RICH_VOTER_STATE": "PARTIAL_REAL"
+  },
+  "layers": {
+    "LOCAL_CANDIDATES": {
+      "cells": 9,
+      "declared_territories": 1,
+      "fabricated_named_unknown_cells": 0,
+      "named_candidates": 6,
+      "parties": 9,
+      "reason": "6/9 cells verified, 3 honestly unknown",
+      "resolved_cells": 6,
+      "state": "PARTIAL_REAL",
+      "state_census": {
+        "OFFICIAL_CONFIRMED": 6,
+        "UNKNOWN_AS_OF_SNAPSHOT": 3
+      },
+      "territories": 1,
+      "unknown_cells": 3
+    },
+    "PARTY_PROGRAMMES": {
+      "all_programmes_are_alphabetical_rotations": true,
+      "alphabetical_rotation_offsets": {
+        "FGD": 6,
+        "MP": 11,
+        "PAM": 11,
+        "PI": 14,
+        "PJD": 3,
+        "PPS": 17,
+        "RNI": 8,
+        "UC": 14,
+        "USFP": 4
+      },
+      "axis_cells": 162,
+      "canonical_axes": 18,
+      "direction_census": {
+        "VERIFIED_POSITION_AVAILABLE": 162
+      },
+      "distinct_axis_orderings": 7,
+      "parties": 9,
+      "parties_with_measured_positions": [],
+      "reason": "every axis cell carries only the existence of a position ['VERIFIED_POSITION_AVAILABLE'], never its content",
+      "shared_rotation_offsets_detected": true,
+      "state": "PLACEHOLDER",
+      "substantive_position_cells": 0
+    },
+    "REGIONAL_BALLOT": {
+      "explicit_regional_ballot_cards": 0,
+      "reason": "no regional_ballot_cards anywhere in the named input and no regional_ballot_2026 dataset rows; the V8 slot exists and is empty",
+      "regional_dataset_rows": 0,
+      "regional_dataset_status": null,
+      "state": "MISSING",
+      "top_level_regional_rows": 0
+    },
+    "RICH_VOTER_STATE": {
+      "distinct_voter_keys": [
+        "activity_status",
+        "age_band",
+        "age_years",
+        "children_ever_living",
+        "commute_mode",
+        "diploma_group",
+        "education_detailed",
+        "education_level",
+        "household_context",
+        "industry_section",
+        "industry_sector",
+        "latent_education_culture_budget_share",
+        "latent_food_budget_share",
+        "latent_health_hygiene_budget_share",
+        "latent_housing_energy_budget_share",
+        "latent_poverty_risk",
+        "latent_ses_decile",
+        "latent_transport_communications_budget_share",
+        "latent_vulnerability_risk",
+        "literacy_status",
+        "marital_status",
+        "occupation_detailed",
+        "occupation_group",
+        "prior_election_anchor_withheld",
+        "prior_vote_or_abstention",
+        "professional_status",
+        "relationship_to_household_head",
+        "rich_archetype_id",
+        "schooling_status",
+        "sex",
+        "territory_context",
+        "urban_rural",
+        "weight",
+        "weighted_archetype_id",
+        "workplace_geography"
+      ],
+      "mean_individual_fields_per_voter": 33.0,
+      "named_pipeline_baseline_only": false,
+      "reason": "rich individual fields present, household/stratum blocks incomplete",
+      "state": "PARTIAL_REAL",
+      "stratum_labelled_fields": 0,
+      "upstream_rich_population_certificate_pass": true,
+      "voters": 32,
+      "voters_with_household_block": 32,
+      "voters_with_survey_stratum_block": 0,
+      "voters_with_territory_block": 32
+    }
+  },
+  "lineage": {
+    "advisories": [
+      "record-level candidate_coverage_2026.json is dated 2026-08-16 while the environment snapshot is 2026-08-22: republish the collection coverage so a single answer exists to 'how many candidates do we have?'",
+      "record-level active_local_records 413 != environment resolved cells 6",
+      "record-level dataset reports 12 regional records; these are rejected local rows, not a regional ballot, and must never be promoted into regional_ballot_cards"
+    ],
+    "cell_census_as_of": "2026-08-22",
+    "cell_census_path": "derived from the bridged input",
+    "coverage_path": "morocco26/data/candidate_coverage_2026.json",
+    "divergences": [],
+    "environment_as_of": "2026-08-22",
+    "environment_candidate_cells": 9,
+    "environment_resolved_cells": 6,
+    "record_coverage_as_of": "2026-08-16",
+    "status": "PASS_LINEAGE_PUBLISHED_TOGETHER_WITH_ADVISORY"
+  },
+  "missing_layers": [
+    "REGIONAL_BALLOT"
+  ],
+  "model_visibility": {
+    "LOCAL_CANDIDATES": "MODEL_VISIBLE_AS_ELECTORAL_INFORMATION",
+    "PARTY_PROGRAMMES": "MODEL_VISIBLE_FOR_SUBSTANTIVE_VOTE_FALSE",
+    "REGIONAL_BALLOT": "MODEL_VISIBLE_FOR_SUBSTANTIVE_VOTE_FALSE",
+    "RICH_VOTER_STATE": "MODEL_VISIBLE_AS_ELECTORAL_INFORMATION"
+  },
+  "named_input_sha256": "e94aa99bea433f22bea1c1d320f9be64a5b461a2243ffebb087eb1fd6cc37e6b",
+  "party_memory": {
+    "voters": 32,
+    "voters_with_prior_vote_memory": 0
+  },
+  "placeholder_layers": [
+    "PARTY_PROGRAMMES"
+  ],
+  "placeholder_presented_as_data": false,
+  "regime_gate": "P3_CURRENT_VINTAGE_2026",
+  "regional_surface_fallback_allowed": false,
+  "schema_version": "ATLAS_P3_DATA_LAYER_CERTIFICATE_V1",
+  "snapshot_known_as_of": "2026-08-22",
+  "status": "PASS_P3_DATA_LAYERS_CERTIFIED_WITH_LINEAGE_ADVISORY"
+}

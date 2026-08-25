@@ -1,0 +1,119 @@
+{
+  "archetypes_per_constituency": 256,
+  "atlas_prior_reinjected": false,
+  "certificate_id": "M26-ASV2-CURRENT-VINTAGE-POPULATION-2026-CERTIFICATE-V1",
+  "certificate_sha256": "2bddaf17aaa2a49f923020992462297c2aa50528a6e69551f77a043f542d6976",
+  "consequences": {
+    "BR5_PARTY_MEMORY": "NOT_TESTABLE_MISSING_DATA",
+    "rationale": "Political memory is absent from the population by contract. It is not imputed, not defaulted and not taken from a past result.",
+    "turnout_memory": "UNKNOWN"
+  },
+  "demographic_projection_boundary": {
+    "deterministic_age_shift_years": 12,
+    "hcp_activity_rate_used_as_raking_target": false,
+    "hpc_current_labour_context_applied": true,
+    "person_microdata_reference_year": 2014,
+    "r3_paired_mechanism_use": "ALLOWED_IDENTICAL_POPULATION_ACROSS_ALL_2X2_CELLS",
+    "reason": "R3 identifies a within-population mechanism contrast, so current-population external representativeness is not the estimand. National/territorial forecast weighting is a different estimand and must not treat RGPH2014 aged by +12 as a final 2026 population.",
+    "rgph2024_demographic_marginals_calibrated": false,
+    "scale_or_forecast_population_use": "BLOCKED_UNTIL_RGPH2024_OR_EQUIVALENT_POSTSTRATIFICATION"
+  },
+  "dummy_unknown_marginal_used": false,
+  "failures": [],
+  "forbidden_raking_dimensions_present": [],
+  "gates": {
+    "all_territories_built": true,
+    "historical_outcome_read": false,
+    "labour_context_sourced": true,
+    "max_weight_le_0_05": true,
+    "min_ess_ge_128": true,
+    "no_electoral_raking_dimension": true,
+    "no_failures": true,
+    "no_political_memory_in_records": true,
+    "raking_converged": true,
+    "sealed_mapping_read": false
+  },
+  "geometry_certificate": {
+    "as_of": "2026-08-16",
+    "certificate_id": "M26-GOAL100-GEOMETRY-2026-CERTIFICATE-V1",
+    "gate": "PASS",
+    "sha256": "71b70f575c87221d45a80d3eb9b3dbb668d0884943e05084506ba2bbeaf911ba",
+    "territories": 92
+  },
+  "historical_outcome_read": false,
+  "interpretation_boundary": "This certificate says the population is demographically raked and politically empty. It says nothing about behavioural realism.",
+  "labour_context": {
+    "known_as_of": "2026-08-03",
+    "labour_context_sha256": "e4079f27545ec78a2f0c9ad5be65b1341bed2f56af0600a0d22ce6a8ce6268c2",
+    "publisher": "Haut-Commissariat au Plan (HCP), Royaume du Maroc",
+    "rates": {
+      "activity": 0.422,
+      "female_unemployment": 0.148,
+      "rural_unemployment": 0.054,
+      "underemployment": 0.04951611387766607,
+      "unemployment": 0.095,
+      "urban_unemployment": 0.119,
+      "youth_unemployment": 0.272
+    },
+    "source_url": "https://www.hcp.ma/attachment/2897232/",
+    "status": "PASS_LABOUR_CONTEXT_2026"
+  },
+  "named_input_sha256": "d63e48b79026a6a822f3e4aaabf5bdbbe59fe09f3ff3faa80e110bc4490c1337",
+  "political_memory_contract": {
+    "party_memory": "UNKNOWN",
+    "political_memory_population_source": "NONE",
+    "prior_vote_or_abstention": "ABSENT",
+    "turnout_memory": "UNKNOWN"
+  },
+  "political_memory_population_source": "NONE",
+  "prior_election_raking_dimension": false,
+  "quality": {
+    "direct_microdata_admin_territories": 58,
+    "max_raking_abs_error": 1.9974552678547752e-08,
+    "max_single_archetype_weight": 0.01667277,
+    "min_effective_archetype_count": 229.369362,
+    "proxy_geography_territories": 34
+  },
+  "raking_dimensions": [
+    "age_band",
+    "sex",
+    "urban_rural",
+    "education_band",
+    "activity_status"
+  ],
+  "raking_search_effort": {
+    "frozen_v1_default": 48,
+    "ipf_attempts": 320,
+    "reason": "es-semara and tarfaya share the pool `es semara tarfaya`. In run 32831683586 the first converged and the second did not, at a best error of 1e-03 with ESS 245 and max weight 0.008 both comfortable. A marginal pool is answered by drawing more samples, not by relaxing a gate: min_ess 128, max_weight 0.05 and raking error 5e-06 are exactly as the historical builders set them.",
+    "thresholds_unchanged": true
+  },
+  "real_llm_outputs_used": false,
+  "regime": "P3_CURRENT_VINTAGE_2026",
+  "safe_feature_count": 80,
+  "schema_version": "ATLAS_CURRENT_VINTAGE_POPULATION_2026_CERTIFICATE_V1",
+  "sealed_mapping_read": false,
+  "source_hashes": {
+    "encdm": "6a3d6bbbde529254baa09a8a6171ea32c05aed1ca7e9568a3056eb69b8987dca",
+    "geometry_2026_certificate": "71b70f575c87221d45a80d3eb9b3dbb668d0884943e05084506ba2bbeaf911ba",
+    "hh": "0c630cfaf65d02e1b2e37d8b81c0c2704f28db80115f13942d3ac0e75665319f",
+    "ind": "62dbbfc69073d52841fc3a7096113ce1342a3baec2e7e620e0f3309393fdda77"
+  },
+  "status": "PASS_CURRENT_VINTAGE_POPULATION_2026",
+  "target_election_year": 2026,
+  "target_outcome_used": false,
+  "territories": 92,
+  "unknown_margin_policy": {
+    "category": "MISSING",
+    "decision_owner": "repository owner, 2026-08-24",
+    "dropped_categories": {
+      "activity_status=MISSING": 80,
+      "urban_rural=MISSING": 79
+    },
+    "historical_comparability": "The 2016 and 2021 builds effectively had the same targets: their higher eligibility floor left these cells empty and b.margins drops anything below 1e-12. The +12 shift admits the 2014 cohorts aged 6-10, where the unmappable codes live.",
+    "margins_calls": 92,
+    "policy": "DROP_UNKNOWN_CATEGORY_FROM_RAKING_TARGETS",
+    "reason": "MISSING is what the band helpers return for an unmappable code. Raking to it asks a 256-row sample to represent 'we do not know', and at a mass around 1.4e-05 that is unreachable, so b.ipf returned (None, None) for 83 of 92 territories in run 32828008051. The rows are still eligible and can still be drawn; only the unknown cell leaves the target vector.",
+    "reversible": "remove the margins patch in this wrapper; V1 is untouched",
+    "rows_remain_in_the_sampling_pool": true
+  }
+}

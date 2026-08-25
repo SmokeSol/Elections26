@@ -1,0 +1,47 @@
+{
+  "failures": [],
+  "files": [
+    {
+      "attempt": 1,
+      "bytes": 200532997,
+      "complete": true,
+      "content_length": 200532997,
+      "digest_match": true,
+      "expected_sha256": "62dbbfc69073d52841fc3a7096113ce1342a3baec2e7e620e0f3309393fdda77",
+      "file": "rgph_individual.dta",
+      "key": "ind",
+      "sha256": "62dbbfc69073d52841fc3a7096113ce1342a3baec2e7e620e0f3309393fdda77",
+      "url": "https://www.rgph2014.hcp.ma/file/210749/"
+    },
+    {
+      "attempt": 1,
+      "bytes": 39442553,
+      "complete": true,
+      "content_length": 39442553,
+      "digest_match": true,
+      "expected_sha256": "0c630cfaf65d02e1b2e37d8b81c0c2704f28db80115f13942d3ac0e75665319f",
+      "file": "rgph_household.dta",
+      "key": "hh",
+      "sha256": "0c630cfaf65d02e1b2e37d8b81c0c2704f28db80115f13942d3ac0e75665319f",
+      "url": "https://www.rgph2014.hcp.ma/file/210748/"
+    },
+    {
+      "attempt": 1,
+      "bytes": 33254643,
+      "complete": true,
+      "content_length": 33254643,
+      "digest_match": true,
+      "expected_sha256": "6a3d6bbbde529254baa09a8a6171ea32c05aed1ca7e9568a3056eb69b8987dca",
+      "file": "encdm_household.sav",
+      "key": "encdm",
+      "sha256": "6a3d6bbbde529254baa09a8a6171ea32c05aed1ca7e9568a3056eb69b8987dca",
+      "url": "https://www.hcp.ma/file/231078/"
+    }
+  ],
+  "interpretation": {
+    "TRUNCATED_TRANSFER": "the network stopped short; safe to re-run",
+    "UPSTREAM_DIGEST_CHANGED": "the file downloaded completely but is not the one the build lineage records. Do not silently adopt the new bytes: decide explicitly whether the population may be rebuilt on a different source vintage, and record that decision."
+  },
+  "outdir": "/tmp/pop2026/data",
+  "status": "PASS_SOURCE_MICRODATA_FETCHED"
+}

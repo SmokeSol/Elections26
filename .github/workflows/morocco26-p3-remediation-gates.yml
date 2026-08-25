@@ -21,6 +21,15 @@ jobs:
         with:
           python-version: '3.12'
 
+      # The last step here discovers every test_*.py in the directory, and the
+      # set has grown since revision 2. test_p3_source_microdata builds a pandas
+      # DataFrame to exercise the margin-coverage helper. Until revision 3 the
+      # freeze step failed first, so the discovery step never reached it and the
+      # missing dependency stayed invisible. pyreadstat is still not installed:
+      # no test here reads a .dta.
+      - name: Install what the discovered tests import
+        run: python -m pip install -q pandas numpy
+
       - name: Compile remediation code
         run: |
           python -m py_compile \
@@ -41,7 +50,8 @@ jobs:
             morocco26/scripts/p3_verify_freeze.py \
             morocco26/scripts/agent_society_behavioral_v8_1.py \
             morocco26/scripts/agent_society_empirical_mind_v9_1.py \
-            morocco26/scripts/agent_society_v2_build_current_population_2026.py
+            morocco26/scripts/agent_society_v2_build_current_population_2026.py \
+            morocco26/scripts/p3_r2_measure.py
 
       - name: R0 - the stored data-layer certificate still verifies
         run: |
