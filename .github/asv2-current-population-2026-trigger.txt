@@ -168,4 +168,28 @@
 # the body on the way out. Fixed, with the two escapings now separate and
 # tested. This run republishes the same measurement legibly, and in full.
 
-request: 2026-08-25 republish the R2 measurement with the escaping fixed
+#   32843508521  success, and the record is legible
+#                Same population, same quality figures. R2's annotation now
+#                reads as prose instead of percent-escapes, and carries the
+#                whole measurement:
+#
+#                  populated       17.0625 of 121 (min 16, max 18)
+#                  individual      32 fields   household  48 fields
+#                  survey stratum   0 fields   territory   6 fields
+#                  anchors dropped  0, the builder had already stripped it
+#                  epistemic       OBSERVED_INDIVIDUAL 195
+#                                  OBSERVED_HOUSEHOLD 287
+#                                  MATCHED_DONOR_LATENT_STATE 64
+#                                  UNKNOWN 3326
+#
+# The spread is the real data showing through. The fixture gave 18 for every
+# voter because every field was populated by construction; real records carry
+# missing and unmappable values, so a voter can land at 16.
+#
+# This run adds the digests. Revision 3 has to name the bytes R3 will run on,
+# and the population is an artifact that needs a signed-in session to fetch, so
+# the measurement step hashes the file it already has open and publishes the
+# result. That makes the freeze checkable by re-running the workflow rather
+# than by trusting the writer.
+
+request: 2026-08-25 publish the produced population digest for revision 3
