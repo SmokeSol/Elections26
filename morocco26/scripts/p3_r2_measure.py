@@ -44,6 +44,7 @@ from morocco26.agent_society_v4.p3_data_layers_v1 import (  # noqa: E402
     build_certificate,
     sha256_json,
 )
+from morocco26.agent_society_v4.rich_named_bridge_v1 import sha256_file  # noqa: E402
 from morocco26.agent_society_v4.rich_named_bridge_v1 import (  # noqa: E402
     bridge_rich_population,
     read_json,
@@ -168,6 +169,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         },
         "no_attitude_overlay_for_2026": not overlay,
         "sample_voter_keys": sorted(sample),
+        # Published so a freeze revision can name the produced bytes rather than
+        # only the inputs that made them. The population artifact needs a
+        # signed-in session to download; this digest does not.
+        "produced_population_sha256": sha256_file(args.rich_population),
+        "produced_population_bytes": args.rich_population.stat().st_size,
+        "bridged_named_input_sha256": sha256_json(bridged),
+        "bridge_certificate_sha256": sha256_json(bridge_certificate),
+        "data_layer_certificate_sha256": sha256_json(certificate),
     }
     write_json(outdir / "p3_r2_measurement.json", summary)
     print(json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2))
@@ -206,6 +215,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         f"Ballots simulated: {summary['ballots_simulated']}. "
         f"Regional surface: {summary['regional_surface_status']}. "
         "EM2 holds: no stratum prior surfaced as an individual fact.",
+        "",
+        "DIGESTS  population "
+        f"{summary['produced_population_sha256']} "
+        f"({summary['produced_population_bytes']} bytes); "
+        f"bridged named input {summary['bridged_named_input_sha256']}; "
+        f"data-layer certificate {summary['data_layer_certificate_sha256']}.",
     ]
     emit_notice("R2 measured on the real 2026 population", "\n".join(lines))
     return 0
