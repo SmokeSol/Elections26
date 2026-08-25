@@ -44,4 +44,16 @@
 #   encdm_household.sav   33,254,643 bytes  6a3d6bbb...  match
 # ---------------------------------------------------------------------------
 
-request: 2026-08-24 rebuild with the preflight column fix
+#   32744551173  exit 2 in the build step
+#                Preflight PASSED on real microdata: 92 territories, 77
+#                DIRECT_MICRODATA_ADMIN + 15 PARENT_PROXY_LEGACY_2014_ADMIN,
+#                no unresolved parent, no insufficient pool. The certified
+#                geometry binding is therefore validated. The build then
+#                returned 2, which is V1 saying its certificate gates failed
+#                and nothing more, because V1 is frozen at revision 2.
+#
+# The wrapper now republishes V1's verdict - status, failed gates, min ESS,
+# max weight, raking error, and the per-territory failures grouped by reason
+# - as check-run annotations.
+
+request: 2026-08-24 rebuild reporting the certificate verdict

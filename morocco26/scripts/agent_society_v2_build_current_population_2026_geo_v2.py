@@ -42,6 +42,7 @@ from morocco26.agent_society_v4.current_population_2026_v1 import (  # noqa: E40
     CurrentPopulationError,
     normalize_place,
 )
+from p3_ci_annotate import emit_error, emit_notice  # noqa: E402
 
 GEOMETRY_PATH = REPO_ROOT / "morocco26" / "data" / "goal100" / "geometry_2026_certificate.json"
 EXPECTED_TERRITORIES = 92
@@ -154,6 +155,50 @@ def territory_specs_from_certified_geometry(
     return specs
 
 
+def summarize_failures(failures: Sequence[Mapping[str, Any]], limit: int = 8) -> str:
+    """Group the builder's per-territory failures by reason, with examples."""
+    by_reason: dict[str, list[Mapping[str, Any]]] = {}
+    for failure in failures:
+        by_reason.setdefault(str(failure.get("reason") or "UNKNOWN"), []).append(failure)
+    parts = []
+    for reason, rows in sorted(by_reason.items(), key=lambda item: -len(item[1])):
+        examples = []
+        for row in rows[:3]:
+            best = row.get("best") or {}
+            detail = (
+                f"err={best.get('err'):.2g} ess={best.get('ess'):.0f} maxw={best.get('max_weight'):.3f}"
+                if best.get("err") is not None
+                else f"parent={row.get('parent')} rows={row.get('rows')}"
+            )
+            examples.append(f"{row.get('constituency_id')} [{detail}]")
+        parts.append(f"{reason} x{len(rows)}: " + ", ".join(examples))
+    return " | ".join(parts[:limit]) or "no per-territory failure recorded"
+
+
+def report_certificate(path: pathlib.Path, result: int) -> None:
+    if not path.is_file():
+        emit_error("population certificate missing", f"{path} was not written")
+        return
+    certificate = read_json(path)
+    gates = certificate.get("gates") or {}
+    failed = sorted(name for name, ok in gates.items() if not ok)
+    quality = certificate.get("quality") or {}
+    failures = certificate.get("failures") or []
+    summary = (
+        f"status={certificate.get('status')} territories={certificate.get('territories')} "
+        f"failures={len(failures)} failed_gates={failed} "
+        f"min_ess={quality.get('min_effective_archetype_count')} "
+        f"max_weight={quality.get('max_single_archetype_weight')} "
+        f"max_raking_error={quality.get('max_raking_abs_error')}"
+    )
+    if result == 0 and not failed:
+        emit_notice("current-vintage 2026 population built", summary)
+        return
+    emit_error("current-vintage 2026 population certificate failed", summary)
+    if failures:
+        emit_error("per-territory failures", summarize_failures(failures))
+
+
 def _outdir(argv: Sequence[str]) -> pathlib.Path | None:
     args = list(argv)
     try:
@@ -216,6 +261,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             }
             population["demographic_projection_boundary"] = projection
             write_json(population_path, population)
+
+        # V1 is frozen at remediation revision 2, so it cannot be taught to
+        # report. It returns 2 when its certificate gates fail and says nothing
+        # else, which in CI is an exit code and no more: logs and artifacts both
+        # need a signed-in session. The verdict is therefore republished here as
+        # a check-run annotation, which is public.
+        report_certificate(outdir / "current_population_2026_certificate_v1.json", result)
     return result
 
 
