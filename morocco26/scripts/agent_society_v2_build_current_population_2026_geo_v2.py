@@ -188,6 +188,19 @@ def summarize_failures(failures: Sequence[Mapping[str, Any]], limit: int = 8) ->
 # already drops categories below 1e-12.
 UNKNOWN_MARGIN_CATEGORY = "MISSING"
 
+# es-semara and tarfaya draw from the same RGPH parent pool, `es semara
+# tarfaya`. In run 32831683586 es-semara converged and tarfaya did not, with a
+# best raking error of 1e-03 against a 5e-06 ceiling while its ESS (245) and max
+# weight (0.008) were both comfortable. Same pool, different seed sequence: the
+# pool is marginal, not infeasible, so some draws admit weights matching all
+# five marginals and some do not.
+#
+# The answer to a marginal pool is to search longer, not to lower the bar. This
+# raises the number of draws attempted; it changes no threshold, no data and no
+# policy. Territories that converge still break out on their first good draw, so
+# the extra attempts are spent only where they are needed.
+IPF_ATTEMPTS_FOR_MARGINAL_POOLS = 320
+
 
 def drop_unknown_categories(margins: Mapping[str, Any]) -> tuple[dict[str, Any], list[str]]:
     """Remove the unknown cell from each margin and renormalise the rest."""
@@ -323,6 +336,18 @@ def main(argv: Sequence[str] | None = None) -> int:
             "decision_owner": "repository owner, 2026-08-24",
             "reversible": "remove the margins patch in this wrapper; V1 is untouched",
         }
+        certificate["raking_search_effort"] = {
+            "ipf_attempts": IPF_ATTEMPTS_FOR_MARGINAL_POOLS,
+            "frozen_v1_default": 48,
+            "thresholds_unchanged": True,
+            "reason": (
+                "es-semara and tarfaya share the pool `es semara tarfaya`. In run 32831683586 the "
+                "first converged and the second did not, at a best error of 1e-03 with ESS 245 and "
+                "max weight 0.008 both comfortable. A marginal pool is answered by drawing more "
+                "samples, not by relaxing a gate: min_ess 128, max_weight 0.05 and raking error "
+                "5e-06 are exactly as the historical builders set them."
+            ),
+        }
         # The V1 helper hashes before this wrapper adds V2 metadata.
         # Recompute over the final object with the previous digest removed.
         certificate.pop("certificate_sha256", None)
@@ -338,6 +363,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     import agent_society_v2_build_rich_populations as b  # noqa: E402
 
     b.margins = margins_without_unknown(b, unknown_record)
+    v1.IPF_ATTEMPTS = IPF_ATTEMPTS_FOR_MARGINAL_POOLS
     result = int(v1.main(actual_argv))
 
     outdir = _outdir(actual_argv)

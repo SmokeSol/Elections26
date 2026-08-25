@@ -77,6 +77,15 @@ class CertificateReportingTests(unittest.TestCase):
     def test_an_empty_failure_list_still_produces_a_sentence(self):
         self.assertIn("no per-territory failure", geo_v2.summarize_failures([]))
 
+    def test_more_search_effort_never_relaxes_a_quality_threshold(self):
+        """A marginal pool is answered by drawing more samples, not a lower bar."""
+        import agent_society_v2_build_current_population_2026 as v1
+
+        self.assertGreater(geo_v2.IPF_ATTEMPTS_FOR_MARGINAL_POOLS, v1.IPF_ATTEMPTS)
+        self.assertEqual(v1.MIN_ESS, 128.0)
+        self.assertEqual(v1.MAX_WEIGHT, 0.05)
+        self.assertEqual(v1.MAX_RAKING_ERROR, 5e-06)
+
     def test_a_missing_certificate_is_reported_not_swallowed(self):
         import io
         import contextlib

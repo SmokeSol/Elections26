@@ -107,4 +107,17 @@
 # live. Applied by patching b.margins in the wrapper; V1 stays frozen, and the
 # policy is recorded in the certificate with its reason and how to reverse it.
 
-request: 2026-08-24 rebuild with the unknown raking cell dropped
+#   32831683586  exit 2 in the build step; 49 failures down to 1
+#                91 of 92 built. Dropping the unknown cell was the right answer.
+#                Remaining: tarfaya [err=1e-03 ess=245 maxw=0.008] - a raking
+#                that did not converge, not an unreachable category. es-semara
+#                draws from the same pool `es semara tarfaya` and converged, so
+#                the pool is marginal rather than infeasible: some draws admit
+#                weights matching all five marginals, some do not.
+#
+# Answer: draw more samples. IPF attempts 48 -> 320 via the wrapper. No
+# threshold moves - min ESS 128, max weight 0.05, raking error 5e-06 stay as the
+# historical builders set them - and territories that converge still break out
+# on their first good draw, so the extra effort is spent only where needed.
+
+request: 2026-08-24 rebuild searching harder on the marginal pool
