@@ -31,7 +31,7 @@ import argparse
 import json
 import pathlib
 import sys
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
 SCRIPTS = REPO_ROOT / "morocco26" / "scripts"
@@ -39,10 +39,18 @@ for candidate in (str(REPO_ROOT), str(SCRIPTS)):
     if candidate not in sys.path:
         sys.path.insert(0, candidate)
 
-from morocco26.agent_society_v4.current_population_2026_v1 import AGING_YEARS  # noqa: E402
+from morocco26.agent_society_v4.current_population_2026_v1 import (  # noqa: E402
+    AGING_YEARS,
+    TARGET_YEAR,
+    validate_labour_context,
+)
 from p3_ci_annotate import emit_error, emit_notice  # noqa: E402
 
 MIN_POOL = 256
+
+
+def read_json_file(path: pathlib.Path) -> Any:
+    return json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
 
 
 def write_json(path: pathlib.Path, value: Any) -> None:
@@ -54,6 +62,27 @@ def write_json(path: pathlib.Path, value: Any) -> None:
 
 
 RAKING_DIMENSIONS = ("age_band", "sex", "urban_rural", "education_band", "activity_status")
+
+# Mirrors the injection the frozen V1 builder performs in its own main(). The
+# preflight has to reproduce it, because b.labour_multiplier reads b.LABOR[year]
+# and the margins it predicts are the multiplier-adjusted ones the builder will
+# actually rake to. Duplicated rather than imported because V1 is frozen at
+# remediation revision 2; a test asserts the two mappings do not drift.
+LABOUR_RATE_KEYS = (
+    "unemployment",
+    "urban_unemployment",
+    "rural_unemployment",
+    "youth_unemployment",
+    "female_unemployment",
+    "underemployment",
+    "activity",
+)
+
+
+def inject_labour_context(b, labour_report: Mapping[str, Any]) -> dict[str, Any]:
+    rates = labour_report["rates"]
+    b.LABOR[TARGET_YEAR] = {key: rates.get(key) for key in LABOUR_RATE_KEYS}
+    return b.LABOR[TARGET_YEAR]
 
 
 def margin_coverage(eligible, rows, *, sample_size: int, attempts: int, b) -> dict[str, Any]:
@@ -146,6 +175,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     ap.add_argument("--min-pool", type=int, default=MIN_POOL)
     ap.add_argument("--sample-size", type=int, default=256)
     ap.add_argument("--attempts", type=int, default=48)
+    ap.add_argument(
+        "--labour-context",
+        type=pathlib.Path,
+        help="sourced HCP labour context; required for the margin-coverage step",
+    )
     ap.add_argument("--output", type=pathlib.Path)
     args = ap.parse_args(argv)
 
@@ -237,6 +271,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
 
     # 3. every raking category must be reachable in a 256-row sample
+    if args.labour_context:
+        labour_report = validate_labour_context(read_json_file(args.labour_context))
+        injected = inject_labour_context(b, labour_report)
+    else:
+        emit_notice(
+            "margin coverage skipped",
+            "no --labour-context supplied, so the multiplier-adjusted margins cannot be predicted",
+        )
+        injected = None
     #
     # b.ipf returns (None, None) as soon as a target category carries positive
     # mass but no sampled row. When that is systematic rather than unlucky, all
@@ -245,12 +288,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     # category too rare to be drawn, not a convergence problem: the 43 that did
     # build were comfortable (min ESS 222 against a 128 floor, max weight 0.017
     # against 0.05, raking error 2e-08 against 5e-06).
-    coverage = margin_coverage(
-        eligible,
-        rows,
-        sample_size=args.sample_size,
-        attempts=args.attempts,
-        b=b,
+    coverage = (
+        margin_coverage(
+            eligible, rows, sample_size=args.sample_size, attempts=args.attempts, b=b
+        )
+        if injected is not None
+        else {"status": "SKIPPED_NO_LABOUR_CONTEXT", "territories_at_risk": [], "territories_at_risk_count": 0, "culprit_categories": {}}
     )
 
     unresolved = [row for row in rows if row["resolution_mode"] == "UNRESOLVED"]

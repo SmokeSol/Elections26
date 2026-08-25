@@ -108,6 +108,33 @@ class AnnotationTests(unittest.TestCase):
         self.assertEqual(annotate._escape("a:b,c" + chr(10) + "d"), "a%3Ab%2Cc%0Ad")
 
 
+class LabourInjectionTests(unittest.TestCase):
+    """The preflight has to reproduce the frozen builder's LABOR injection.
+
+    b.labour_multiplier reads b.LABOR[year]; V1 populates it inside its own
+    main(), so a preflight that calls the multiplier without injecting first
+    raises KeyError - which is what run 32827184796 did.
+    """
+
+    def test_the_preflight_mapping_matches_the_frozen_builder(self):
+        v1 = (SCRIPTS / "agent_society_v2_build_current_population_2026.py").read_text(
+            encoding="utf-8"
+        )
+        block = v1.split("b.LABOR[TARGET_YEAR] = {", 1)[1].split("}", 1)[0]
+        declared = {line.split('"')[1] for line in block.splitlines() if '"' in line}
+        self.assertEqual(declared, set(preflight.LABOUR_RATE_KEYS))
+
+    def test_injection_populates_the_target_year(self):
+        holder = type("B", (), {"LABOR": {}})()
+        injected = preflight.inject_labour_context(
+            holder, {"rates": {"unemployment": 0.095, "activity": 0.422}}
+        )
+        self.assertEqual(holder.LABOR[preflight.TARGET_YEAR], injected)
+        self.assertEqual(injected["unemployment"], 0.095)
+        self.assertIsNone(injected["urban_unemployment"])
+        self.assertEqual(sorted(injected), sorted(preflight.LABOUR_RATE_KEYS))
+
+
 class MarginCoverageTests(unittest.TestCase):
     """b.ipf dies the moment a target category has mass but no sampled row.
 

@@ -72,4 +72,14 @@
 # The preflight now names the unreachable categories per parent pool before
 # the build spends a minute proving it the expensive way.
 
-request: 2026-08-24 rebuild naming the unreachable raking categories
+#   32827184796  exit 1 in the preflight step
+#                KeyError: 2026 in b.labour_multiplier. The frozen V1 builder
+#                injects b.LABOR[2026] inside its own main(); the preflight
+#                called the multiplier without injecting first. Mine again,
+#                and the traceback came straight from the annotation.
+#
+# The preflight now takes --labour-context and reproduces V1's injection, so
+# the margins it predicts are the multiplier-adjusted ones the builder rakes
+# to. A test parses V1's source and fails if the two mappings drift.
+
+request: 2026-08-24 rebuild with the labour context injected in the preflight
