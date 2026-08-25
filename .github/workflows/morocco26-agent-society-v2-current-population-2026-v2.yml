@@ -119,6 +119,21 @@ jobs:
           python morocco26/scripts/p3_verify_named_input.py \
             --population-certificate /tmp/pop2026/out/current_population_2026_certificate_v1.json
 
+      # R2 runs here rather than in a job of its own because the population it
+      # needs is an Actions artifact, and downloading one requires a signed-in
+      # session. Measuring in the job that produced it keeps the result public:
+      # the numbers land in a check-run annotation, which anyone can read.
+      - name: R2 - bridge the real population and measure the V9.1 dimensions
+        if: env.PREFLIGHT_ONLY != 'true'
+        run: |
+          python morocco26/scripts/p3_r2_measure.py \
+            --named-input "$(cat /tmp/pop2026/named_path.txt)" \
+            --rich-population /tmp/pop2026/out/2026_current_population_v1.json \
+            --territory ain-chock \
+            --voters-per-territory 32 \
+            --snapshot-date "$SNAPSHOT_DATE" \
+            --outdir /tmp/pop2026/r2
+
       - name: Upload whatever was produced, including on failure
         if: always()
         uses: actions/upload-artifact@v4
@@ -131,6 +146,10 @@ jobs:
             /tmp/pop2026/out/population_2026_preflight.json
             /tmp/pop2026/out/2026_current_population_v1.json
             /tmp/pop2026/out/current_population_2026_certificate_v1.json
+            /tmp/pop2026/r2/p3_r2_measurement.json
+            /tmp/pop2026/r2/rich_named_bridge_certificate.json
+            /tmp/pop2026/r2/p3_data_layer_certificate_rich.json
+            /tmp/pop2026/r2/named_input_rich_2026.json
             morocco26/data/goal100/agent_society_v2/LABOUR_CONTEXT_2026_Q2_HCP.json
             morocco26/data/goal100/agent_society_v2/NAMED_INPUT_2026_LINEAGE_V1.json
             morocco26/data/goal100/geometry_2026_certificate.json

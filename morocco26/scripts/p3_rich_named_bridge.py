@@ -55,6 +55,7 @@ def command_bridge(args: argparse.Namespace) -> int:
         voters_per_territory=args.voters_per_territory,
         allow_prior_election_anchor=args.allow_prior_election_anchor,
         snapshot_id=args.snapshot_id,
+        only_territories=args.only_territory,
     )
     write_json(args.output, result)
     write_json(args.certificate_output, certificate)
@@ -97,6 +98,12 @@ def parser() -> argparse.ArgumentParser:
         help="JSON object mapping named territory_id to rich constituency_id",
     )
     bridge.add_argument("--voters-per-territory", type=int, default=32)
+    bridge.add_argument(
+        "--only-territory",
+        action="append",
+        default=[],
+        help="restrict the bridge to these territory ids; repeat for several",
+    )
     bridge.add_argument("--snapshot-id")
     bridge.add_argument(
         "--allow-prior-election-anchor",

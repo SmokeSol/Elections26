@@ -120,4 +120,24 @@
 # historical builders set them - and territories that converge still break out
 # on their first good draw, so the extra effort is spent only where needed.
 
-request: 2026-08-24 rebuild searching harder on the marginal pool
+#   32833060434  success
+#                92 of 92 built, zero failures, no failed gates.
+#                min ESS 229.37 (floor 128), max weight 0.0167 (ceiling 0.05),
+#                raking error 2.0e-08 (ceiling 5e-06). The population step of
+#                the plan is done.
+#
+# The run now continues into R2. The population is an Actions artifact, and
+# downloading one needs a signed-in session, so the measurement runs in the job
+# that produced it and reports through check-run annotations, which are public.
+# R2 bridges ain-chock into the named pipeline, certifies the four data layers
+# on the bridged input, builds V8.1 then V9.1, and prints the observed dimension
+# count. That number replaces the fixture's 30 of 121.
+#
+# Expect it to be lower, and expect that to be correct. The 30 included twelve
+# SURVEY_STRATUM_PRIOR dimensions fed by the Afrobarometer attitude overlay,
+# which exists for 2016 and 2021 only. Nothing equivalent has been collected for
+# the current vintage, so those twelve have no source here. Running the same
+# code on the fixture with the overlay withheld gives 18 of 121, so 18 is the
+# figure to expect if the real population partitions like the fixture.
+
+request: 2026-08-25 R2 on the real population, measure the dimensions

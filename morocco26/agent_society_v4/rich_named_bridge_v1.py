@@ -354,6 +354,7 @@ def bridge_rich_population(
     voters_per_territory: int = 32,
     allow_prior_election_anchor: bool = False,
     snapshot_id: str | None = None,
+    only_territories: Sequence[str] = (),
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Return (named_input_with_rich_voters, bridge_certificate)."""
     snapshot_id = snapshot_id or str(named_input.get("vintage_snapshot_sha256") or "")
@@ -375,6 +376,12 @@ def bridge_rich_population(
     named_territories = [str(item.get("territory_id")) for item in named_input.get("territories") or []]
     if not named_territories:
         raise RichNamedBridgeError("named input declares no territory")
+    if only_territories:
+        wanted = {str(item) for item in only_territories}
+        unknown = sorted(wanted - set(named_territories))
+        if unknown:
+            raise RichNamedBridgeError(f"requested territories absent from the named input: {unknown}")
+        named_territories = [item for item in named_territories if item in wanted]
 
     batches: list[dict[str, Any]] = []
     matched: list[str] = []
