@@ -140,4 +140,32 @@
 # code on the fixture with the overlay withheld gives 18 of 121, so 18 is the
 # figure to expect if the real population partitions like the fixture.
 
-request: 2026-08-25 R2 on the real population, measure the dimensions
+#   32836936566  success, and R2 has its number
+#                92 of 92 built again, identical quality figures. R2 then ran
+#                on the real population and reported, for ain-chock:
+#
+#                  populated       17.0625 of 121 per voter
+#                  individual      32 fields
+#                  household       48 fields
+#                  survey stratum   0 fields
+#                  territory        6 fields
+#                  layers          LOCAL_CANDIDATES  PARTIAL_REAL
+#                                  PARTY_PROGRAMMES  PLACEHOLDER
+#                                  REGIONAL_BALLOT   MISSING
+#                                  RICH_VOTER_STATE  PARTIAL_REAL
+#
+# 17.0625 is the measured figure and it replaces the fixture's 30 of 121. The
+# drop is the missing attitude overlay: twelve of the fixture's thirty were
+# SURVEY_STRATUM_PRIOR dimensions fed by Afrobarometer, which the repo holds for
+# 2016 and 2021 only. RICH_VOTER_STATE reads PARTIAL_REAL for the same reason -
+# every voter has an individual and a household block, none has a stratum block.
+# The certificate says so without being asked to.
+#
+# One defect in the public record. The annotation printed
+# `'LOCAL_CANDIDATES'%3A 'PARTIAL_REAL'%2C`: p3_ci_annotate escaped colons and
+# commas in the message body as well as in the title. Only the title needs it,
+# because only the title sits in a key=value,key=value list, and nothing decodes
+# the body on the way out. Fixed, with the two escapings now separate and
+# tested. This run republishes the same measurement legibly, and in full.
+
+request: 2026-08-25 republish the R2 measurement with the escaping fixed

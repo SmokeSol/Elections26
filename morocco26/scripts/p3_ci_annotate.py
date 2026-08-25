@@ -20,16 +20,26 @@ from typing import Callable, Sequence
 MAX_MESSAGE = 3500
 
 
-def _escape(value: str) -> str:
-    """Workflow-command escaping: newlines and delimiters must be encoded."""
-    return (
-        str(value)
-        .replace("%", "%25")
-        .replace("\r", "%0D")
-        .replace("\n", "%0A")
-        .replace(":", "%3A")
-        .replace(",", "%2C")
-    )
+def _escape_message(value: str) -> str:
+    """Escaping for the part after `::`.
+
+    Only the three characters that would end or reflow the command need
+    encoding. Colons and commas are ordinary text here, and encoding them
+    anyway is what produced annotations reading `layers {'LOCAL_CANDIDATES'%3A
+    'PARTIAL_REAL'%2C ...}` in run 32836936566. Nothing decodes them on the way
+    out, and this is the one channel a reader without a session can see.
+    """
+    return str(value).replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+
+
+def _escape_property(value: str) -> str:
+    """Escaping for `title=...`, which lives in a `key=value,key=value` list.
+
+    A colon would end the property section and a comma would start another
+    property, so both have to be encoded here even though they must not be in
+    the message.
+    """
+    return _escape_message(value).replace(":", "%3A").replace(",", "%2C")
 
 
 def in_actions() -> bool:
@@ -39,7 +49,7 @@ def in_actions() -> bool:
 def emit(level: str, title: str, message: str) -> None:
     text = message if len(message) <= MAX_MESSAGE else message[:MAX_MESSAGE] + " [truncated]"
     if in_actions():
-        print(f"::{level} title={_escape(title)}::{_escape(text)}", flush=True)
+        print(f"::{level} title={_escape_property(title)}::{_escape_message(text)}", flush=True)
     print(f"[{level}] {title}: {text}", file=sys.stderr, flush=True)
 
 

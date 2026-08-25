@@ -175,18 +175,39 @@ def main(argv: Sequence[str] | None = None) -> int:
     if summary["population_prior_relabelled_as_individual_fact"]:
         emit_error("EM2 violated on the real population", "a stratum prior surfaced as an individual fact")
         return 2
-    emit_notice(
-        "R2 measured on the real 2026 population",
-        f"{summary['voters']} voters in {args.territory}; "
+    populated = [
+        int(row["mind_audit"]["populated_dimensions"]) for row in audit_index["voters"]
+    ]
+    totals = summary["epistemic_totals"]
+    lines = [
+        f"{summary['voters']} voters in {args.territory}, from {summary['population_id']}.",
+        "",
+        f"POPULATED  {summary['mean_populated_dimensions_per_voter']} of "
+        f"{summary['dimensions_per_voter']} per voter "
+        f"(min {min(populated)}, max {max(populated)}); "
+        f"independent evidence {summary['mean_independent_evidence_dimensions_per_voter']}.",
+        "This supersedes the fixture's 30 of 121. The fixture carried an "
+        "Afrobarometer attitude overlay; no equivalent exists for the current "
+        "vintage, so the twelve SURVEY_STRATUM_PRIOR dimensions have no source "
+        "here. A missing layer lowers the count rather than being filled in.",
+        "",
+        "LAYERS PER VOTER  "
         f"individual {summary['individual_fields_per_voter']}, "
         f"household {summary['household_fields_per_voter']}, "
-        f"stratum {summary['survey_stratum_fields_per_voter']}, "
-        f"territory {summary['territory_context_fields_per_voter']} fields; "
-        f"populated {summary['mean_populated_dimensions_per_voter']} of "
-        f"{summary['dimensions_per_voter']}, independent "
-        f"{summary['mean_independent_evidence_dimensions_per_voter']}; "
-        f"layers {summary['layer_states']}",
-    )
+        f"survey stratum {summary['survey_stratum_fields_per_voter']}, "
+        f"territory context {summary['territory_context_fields_per_voter']}. "
+        f"Prior-election anchors dropped: {summary['prior_election_anchors_dropped']}.",
+        "",
+        "EPISTEMIC STATUS  "
+        + ", ".join(f"{key} {value}" for key, value in sorted(totals.items()) if value),
+        "",
+        "DATA LAYERS  "
+        + ", ".join(f"{key} {value}" for key, value in sorted(summary["layer_states"].items())),
+        f"Ballots simulated: {summary['ballots_simulated']}. "
+        f"Regional surface: {summary['regional_surface_status']}. "
+        "EM2 holds: no stratum prior surfaced as an individual fact.",
+    ]
+    emit_notice("R2 measured on the real 2026 population", "\n".join(lines))
     return 0
 
 

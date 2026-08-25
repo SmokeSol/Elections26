@@ -105,8 +105,44 @@ class AnnotationTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertNotIn("::error", buffer.getvalue())
 
-    def test_workflow_command_delimiters_are_escaped(self):
-        self.assertEqual(annotate._escape("a:b,c" + chr(10) + "d"), "a%3Ab%2Cc%0Ad")
+    def test_the_title_escapes_the_property_delimiters(self):
+        """`title=` sits in a key=value,key=value list, so : and , must go."""
+        self.assertEqual(
+            annotate._escape_property("a:b,c" + chr(10) + "d"), "a%3Ab%2Cc%0Ad"
+        )
+
+    def test_the_message_leaves_colons_and_commas_alone(self):
+        """Run 32836936566 published `'LOCAL_CANDIDATES'%3A 'PARTIAL_REAL'%2C`.
+
+        Nothing decodes the message on the way out, so over-escaping it only
+        damages the one channel a reader without a session can see. Only the
+        three characters that would end or reflow the command are encoded.
+        """
+        self.assertEqual(
+            annotate._escape_message("layers {'A': 'REAL', 'B': 'MISSING'}"),
+            "layers {'A': 'REAL', 'B': 'MISSING'}",
+        )
+        self.assertEqual(annotate._escape_message("a" + chr(10) + "b"), "a%0Ab")
+        self.assertEqual(annotate._escape_message("100%"), "100%25")
+
+    def test_emit_puts_each_kind_of_escaping_where_it_belongs(self):
+        import contextlib
+        import io
+        import os
+
+        previous = os.environ.get("GITHUB_ACTIONS")
+        os.environ["GITHUB_ACTIONS"] = "true"
+        buffer = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buffer):
+                annotate.emit_notice("a: title, comma", "body: with, both")
+        finally:
+            if previous is None:
+                os.environ.pop("GITHUB_ACTIONS", None)
+            else:
+                os.environ["GITHUB_ACTIONS"] = previous
+        line = buffer.getvalue().strip()
+        self.assertEqual(line, "::notice title=a%3A title%2C comma::body: with, both")
 
 
 class LabourInjectionTests(unittest.TestCase):
