@@ -11,6 +11,7 @@ if str(SCRIPTS) not in sys.path:
 
 import p3_ci_annotate as annotate  # noqa: E402
 import p3_fetch_microdata as fetcher  # noqa: E402
+import agent_society_v2_build_current_population_2026_geo_v2 as geo_v2  # noqa: E402
 import p3_population_2026_preflight as preflight  # noqa: E402
 
 
@@ -155,6 +156,46 @@ class LabourInjectionTests(unittest.TestCase):
         self.assertEqual(sorted(injected), sorted(preflight.LABOUR_RATE_KEYS))
 
 
+class UnknownMarginPolicyTests(unittest.TestCase):
+    """MISSING is the band helpers' 'unmappable code', not a population group.
+
+    Run 32828008051 named it: activity_status=MISSING at mass 1.4e-05 in 61 of
+    73 parents, urban_rural=MISSING at 1.5e-04 in 47. Raking asks a 256-row
+    sample to represent it, which is unreachable, so all 48 attempts died.
+    """
+
+    def test_the_unknown_cell_is_dropped_and_the_rest_renormalised(self):
+        cleaned, dropped = geo_v2.drop_unknown_categories(
+            {
+                "activity_status": {
+                    "ACTIVE_EMPLOYED": 0.4,
+                    "UNEMPLOYED": 0.1,
+                    "INACTIVE": 0.4999855,
+                    "MISSING": 1.446e-05,
+                },
+                "sex": {"M": 0.5, "F": 0.5},
+            }
+        )
+        self.assertEqual(dropped, ["activity_status=MISSING"])
+        self.assertNotIn("MISSING", cleaned["activity_status"])
+        for dimension, categories in cleaned.items():
+            self.assertAlmostEqual(sum(categories.values()), 1.0, places=12, msg=dimension)
+
+    def test_rows_are_not_removed_only_the_target_cell(self):
+        source = pathlib.Path(geo_v2.__file__).read_text(encoding="utf-8")
+        self.assertIn("rows_remain_in_the_sampling_pool", source)
+        self.assertIn("DROP_UNKNOWN_CATEGORY_FROM_RAKING_TARGETS", source)
+
+    def test_a_margin_that_is_only_unknown_is_left_alone(self):
+        cleaned, dropped = geo_v2.drop_unknown_categories({"x": {"MISSING": 1.0}})
+        self.assertEqual(cleaned, {"x": {"MISSING": 1.0}})
+        self.assertEqual(dropped, [])
+
+    def test_the_preflight_predicts_the_same_targets_the_builder_rakes_to(self):
+        source = pathlib.Path(preflight.__file__).read_text(encoding="utf-8")
+        self.assertIn("drop_unknown_categories(b.margins(", source)
+
+
 class MarginCoverageTests(unittest.TestCase):
     """b.ipf dies the moment a target category has mass but no sampled row.
 
@@ -194,7 +235,12 @@ class MarginCoverageTests(unittest.TestCase):
             {"constituency_id": "t2", "resolved_rgph_parent": "p"},
         ]
         coverage = preflight.margin_coverage(
-            self._pool(), rows, sample_size=256, attempts=48, b=self._Builder
+            self._pool(),
+            rows,
+            sample_size=256,
+            attempts=48,
+            b=self._Builder,
+            drop_unknown_categories=geo_v2.drop_unknown_categories,
         )
         self.assertEqual(coverage["territories_at_risk"], ["t1", "t2"])
         self.assertIn("age_band=RARE", coverage["culprit_categories"])
@@ -205,7 +251,12 @@ class MarginCoverageTests(unittest.TestCase):
     def test_well_populated_categories_are_not_flagged(self):
         rows = [{"constituency_id": "t1", "resolved_rgph_parent": "p"}]
         coverage = preflight.margin_coverage(
-            self._pool(), rows, sample_size=256, attempts=48, b=self._Builder
+            self._pool(),
+            rows,
+            sample_size=256,
+            attempts=48,
+            b=self._Builder,
+            drop_unknown_categories=geo_v2.drop_unknown_categories,
         )
         flagged = set(coverage["culprit_categories"])
         self.assertNotIn("age_band=18_24", flagged)
@@ -214,7 +265,12 @@ class MarginCoverageTests(unittest.TestCase):
     def test_only_the_five_raking_dimensions_are_examined(self):
         rows = [{"constituency_id": "t1", "resolved_rgph_parent": "p"}]
         coverage = preflight.margin_coverage(
-            self._pool(), rows, sample_size=256, attempts=48, b=self._Builder
+            self._pool(),
+            rows,
+            sample_size=256,
+            attempts=48,
+            b=self._Builder,
+            drop_unknown_categories=geo_v2.drop_unknown_categories,
         )
         self.assertNotIn("not_a_raking_dimension=X", coverage["culprit_categories"])
         self.assertEqual(
@@ -225,7 +281,12 @@ class MarginCoverageTests(unittest.TestCase):
     def test_a_pool_smaller_than_the_sample_is_skipped_not_crashed(self):
         rows = [{"constituency_id": "t1", "resolved_rgph_parent": "p"}]
         coverage = preflight.margin_coverage(
-            self._pool(size=10), rows, sample_size=256, attempts=48, b=self._Builder
+            self._pool(size=10),
+            rows,
+            sample_size=256,
+            attempts=48,
+            b=self._Builder,
+            drop_unknown_categories=geo_v2.drop_unknown_categories,
         )
         self.assertEqual(coverage["territories_at_risk"], [])
 

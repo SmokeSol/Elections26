@@ -175,6 +175,57 @@ def summarize_failures(failures: Sequence[Mapping[str, Any]], limit: int = 8) ->
     return " | ".join(parts[:limit]) or "no per-territory failure recorded"
 
 
+# `MISSING` is what b.edu_band / b.act_band / b.ur_band return when a code
+# cannot be mapped. Raking to it asks the sample to represent "we do not know",
+# and with the +12 shift admitting the 2014 cohorts aged 6-10 it carries a mass
+# around 1.4e-05: about one row in seventy thousand. b.ipf returns (None, None)
+# the moment such a category has mass and no sampled row, so 83 of 92
+# territories failed all 48 attempts in run 32828008051.
+#
+# The rows stay in the pool and can still be drawn; only the unknown cell leaves
+# the target vector. That is what the historical 2016/2021 builds effectively
+# had: their higher eligibility floor left those cells empty, and b.margins
+# already drops categories below 1e-12.
+UNKNOWN_MARGIN_CATEGORY = "MISSING"
+
+
+def drop_unknown_categories(margins: Mapping[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    """Remove the unknown cell from each margin and renormalise the rest."""
+    cleaned: dict[str, Any] = {}
+    dropped: list[str] = []
+    for dimension, categories in margins.items():
+        kept = {
+            category: mass
+            for category, mass in categories.items()
+            if category != UNKNOWN_MARGIN_CATEGORY
+        }
+        total = sum(kept.values())
+        if not kept or total <= 0:
+            # A margin that is nothing but the unknown cell cannot be cleaned:
+            # keep it untouched, and do not claim a drop that did not happen.
+            cleaned[dimension] = dict(categories)
+            continue
+        if len(kept) != len(categories):
+            dropped.append(f"{dimension}={UNKNOWN_MARGIN_CATEGORY}")
+        cleaned[dimension] = {category: mass / total for category, mass in kept.items()}
+    return cleaned, sorted(set(dropped))
+
+
+def margins_without_unknown(b, record: dict[str, Any]):
+    """Wrap b.margins so the frozen builder rakes without the unknown cell."""
+    original = b.margins
+
+    def wrapped(frame, weights):
+        cleaned, dropped = original(frame, weights), None
+        cleaned, dropped = drop_unknown_categories(cleaned)
+        for name in dropped:
+            record["dropped_categories"][name] = record["dropped_categories"].get(name, 0) + 1
+        record["margins_calls"] += 1
+        return cleaned
+
+    return wrapped
+
+
 # Two gates in the frozen certificate are assertions of absence: they PASS when
 # they are False. Reading them as ordinary booleans reported a clean build as
 # having failed `historical_outcome_read` and `sealed_mapping_read`, which is the
@@ -229,6 +280,7 @@ def _outdir(argv: Sequence[str]) -> pathlib.Path | None:
 def main(argv: Sequence[str] | None = None) -> int:
     geometry_index, geometry_sha256, geometry = load_geometry()
     projection = demographic_projection_boundary()
+    unknown_record: dict[str, Any] = {"margins_calls": 0, "dropped_categories": {}}
 
     def resolver(named_input: Mapping[str, Any]) -> list[dict[str, Any]]:
         return territory_specs_from_certified_geometry(
@@ -250,6 +302,27 @@ def main(argv: Sequence[str] | None = None) -> int:
             "territories": len(geometry_index),
         }
         certificate["demographic_projection_boundary"] = projection
+        certificate["unknown_margin_policy"] = {
+            "policy": "DROP_UNKNOWN_CATEGORY_FROM_RAKING_TARGETS",
+            "category": UNKNOWN_MARGIN_CATEGORY,
+            "rows_remain_in_the_sampling_pool": True,
+            "margins_calls": unknown_record["margins_calls"],
+            "dropped_categories": dict(sorted(unknown_record["dropped_categories"].items())),
+            "reason": (
+                "MISSING is what the band helpers return for an unmappable code. Raking to it "
+                "asks a 256-row sample to represent 'we do not know', and at a mass around "
+                "1.4e-05 that is unreachable, so b.ipf returned (None, None) for 83 of 92 "
+                "territories in run 32828008051. The rows are still eligible and can still be "
+                "drawn; only the unknown cell leaves the target vector."
+            ),
+            "historical_comparability": (
+                "The 2016 and 2021 builds effectively had the same targets: their higher "
+                "eligibility floor left these cells empty and b.margins drops anything below 1e-12. "
+                "The +12 shift admits the 2014 cohorts aged 6-10, where the unmappable codes live."
+            ),
+            "decision_owner": "repository owner, 2026-08-24",
+            "reversible": "remove the margins patch in this wrapper; V1 is untouched",
+        }
         # The V1 helper hashes before this wrapper adds V2 metadata.
         # Recompute over the final object with the previous digest removed.
         certificate.pop("certificate_sha256", None)
@@ -260,6 +333,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     v1.build_population_certificate = certificate_builder
 
     actual_argv = list(sys.argv[1:] if argv is None else argv)
+    # The frozen builder calls b.margins once per territory; patching it here is
+    # the same additive technique already used for the territory resolver.
+    import agent_society_v2_build_rich_populations as b  # noqa: E402
+
+    b.margins = margins_without_unknown(b, unknown_record)
     result = int(v1.main(actual_argv))
 
     outdir = _outdir(actual_argv)

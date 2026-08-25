@@ -85,7 +85,9 @@ def inject_labour_context(b, labour_report: Mapping[str, Any]) -> dict[str, Any]
     return b.LABOR[TARGET_YEAR]
 
 
-def margin_coverage(eligible, rows, *, sample_size: int, attempts: int, b) -> dict[str, Any]:
+def margin_coverage(
+    eligible, rows, *, sample_size: int, attempts: int, b, drop_unknown_categories
+) -> dict[str, Any]:
     """Name the categories a 256-row sample cannot be expected to reach.
 
     Margins are computed per RGPH parent rather than per territory, because the
@@ -120,7 +122,10 @@ def margin_coverage(eligible, rows, *, sample_size: int, attempts: int, b) -> di
         )
         sample_weights = person_weights * multiplier
         at_risk = []
-        for dimension, categories in b.margins(pool, sample_weights).items():
+        # The builder rakes without the unknown cell, so the coverage question
+        # has to be asked about the same target vector it will actually use.
+        margins, _ = drop_unknown_categories(b.margins(pool, sample_weights))
+        for dimension, categories in margins.items():
             if dimension not in RAKING_DIMENSIONS:
                 continue
             for category, mass in categories.items():
@@ -290,7 +295,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     # against 0.05, raking error 2e-08 against 5e-06).
     coverage = (
         margin_coverage(
-            eligible, rows, sample_size=args.sample_size, attempts=args.attempts, b=b
+            eligible,
+            rows,
+            sample_size=args.sample_size,
+            attempts=args.attempts,
+            b=b,
+            drop_unknown_categories=geo_v2.drop_unknown_categories,
         )
         if injected is not None
         else {"status": "SKIPPED_NO_LABOUR_CONTEXT", "territories_at_risk": [], "territories_at_risk_count": 0, "culprit_categories": {}}

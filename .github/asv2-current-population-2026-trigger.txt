@@ -90,4 +90,21 @@
 #                failed silently, so the flag only ever reached the build step.
 #                A test now asserts both steps carry it.
 
-request: 2026-08-24 rebuild with the coverage step actually receiving the context
+#   32828008051  exit 2 in the preflight step; the culprit is named
+#                83 of 92 territories at risk.
+#                  activity_status=MISSING  61 parents  mass 1.446e-05
+#                  urban_rural=MISSING      47 parents  mass 1.518e-04
+#                MISSING is what the band helpers return for an unmappable
+#                code. Raking asks a 256-row sample to represent "we do not
+#                know", which at that mass is unreachable, so b.ipf returned
+#                (None, None) on every one of the 48 attempts.
+#
+# Owner decision, 2026-08-24: drop the unknown cell from the raking targets and
+# renormalise. The rows stay eligible and can still be drawn; only the unknown
+# cell leaves the target vector. The 2016/2021 builds effectively had the same
+# targets - their higher eligibility floor left those cells empty - and the +12
+# shift is what admits the 2014 cohorts aged 6-10 where the unmappable codes
+# live. Applied by patching b.margins in the wrapper; V1 stays frozen, and the
+# policy is recorded in the certificate with its reason and how to reverse it.
+
+request: 2026-08-24 rebuild with the unknown raking cell dropped
