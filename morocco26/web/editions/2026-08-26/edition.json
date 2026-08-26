@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.1",
+  "edition_id": "2026-08-26",
+  "edition_date": "2026-08-26",
+  "correction_number": 0,
+  "supersedes_edition_id": null,
+  "product_version": "V0.5",
+  "published_at": "2026-08-26T06:55:32+01:00",
+  "science_ref": "540802f08cd2ac565ea59d531d51ac3f58d83d38",
+  "forecast_snapshot": "F0",
+  "source_data_cutoff": "2026-08-17T16:14:58+01:00",
+  "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
+  "projection_changed_since_previous": false,
+  "territories_changed_since_previous": 0,
+  "new_documented_signals_since_previous": 29,
+  "source_policy_changed_since_previous": false,
+  "evidence_as_of": "2026-08-17T16:22:07+01:00",
+  "files": {
+    "current_snapshot.json": "9abd8fead7f7d7b7aec90eb864f440818076f65431395bf37882d1054bca48c1",
+    "national_projection.json": "03b2c0f7b1b1563fff7025d60f646e9cb46401adea7731155a5ffc3b348f9f27",
+    "constituency_cards.json": "faef6667bf4289216c748e947ff8d2cf8bbf2ba71be9fff3b1953297db4a0994",
+    "party_cards.json": "f1086ce7d1236ad839a31a1658dceeaf53fa70dde09274a24fa9a166fc908be8",
+    "evidence_index.json": "9c2e785c3a38321501426733ab7b302ff5d4db86db271b2d26ed3a28708e7465",
+    "methodology_state.json": "a97dc99df11122246fd207ce187641ef2659e28b38f6708a97cb7bef9070ef4c",
+    "change_log.json": "2bb32924ff7be8861d6e504247b9b15b679d0dffd0557dd9b201afc1dd042f33",
+    "snapshot_manifest.json": "cf24d22c9bcf4b43f9b08ea4f59ab856e57d20f307cc0dcf9402052904f40699"
+  },
+  "immutability": "OFFICIAL_EDITION_FILES_ARE_APPEND_ONLY_AND_NEVER_OVERWRITTEN",
+  "canonical_sha256": "e45b124cc17762a102f88975fb22f07c20993887498b78ef4f12f9ab3b7adb91"
+}
