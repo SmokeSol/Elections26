@@ -1,0 +1,102 @@
+{
+  "snapshot": {
+    "product": "ATLAS 395",
+    "snapshot_id": "F0",
+    "snapshot_class": "PRELIMINARY_PROBABILISTIC_FORECAST",
+    "created_at": "2026-08-17T16:22:07+01:00",
+    "data_cutoff": "2026-08-17T16:14:58+01:00",
+    "protocol_id": "M26-GOAL100-B2-PROTOCOL-V1",
+    "forecast_sha256": "fbe5197999f20d0612bc0c66e1954b5c611b11208e43a72eb5494a03b1e40d3f",
+    "status": "FROZEN",
+    "draws": 50000,
+    "geometry": {
+      "local_constituencies": 92,
+      "local_seats": 305,
+      "regional_constituencies": 12,
+      "regional_seats": 90,
+      "total_seats": 395
+    },
+    "evidence_state": {
+      "candidate": "B2_FROZEN_ZERO_ADMISSIBLE_MECHANICAL_CLAIMS",
+      "event": "B2_FROZEN_NO_PROMOTED_PREDICTIVE_EVENTS",
+      "registered_N": "LATENT_CONSTRAINED_NOT_OFFICIAL"
+    },
+    "timeline": [
+      {
+        "id": "F-1",
+        "status": "FROZEN",
+        "created_at": "2026-08-17T16:22:07+01:00",
+        "class": "PRELIMINARY_PROBABILISTIC_FORECAST",
+        "sha256": "fbe5197999f20d0612bc0c66e1954b5c611b11208e43a72eb5494a03b1e40d3f"
+      },
+      {
+        "id": "F0",
+        "status": "NOT_CREATED"
+      },
+      {
+        "id": "E_collect",
+        "status": "LOCKED"
+      },
+      {
+        "id": "E_reason",
+        "status": "LOCKED"
+      },
+      {
+        "id": "E_full",
+        "status": "LOCKED"
+      }
+    ],
+    "known_limitations": [
+      "F0 is preliminary and intentionally distribution-identical to F-1 because B2 failed its frozen historical calibration and authoritative roster gates.",
+      "No 2026 ballot change is mechanically admitted; missing or unresolved roster information remains NA rather than absence.",
+      "The 92 parsed Arabic PJD rows remain unresolved under B2 and are not transliterated or semantically guessed.",
+      "Sixteen historical input classes plus the 92 unresolved Arabic rows remain reserved for E_collect.",
+      "Local registered-voter counts remain latent constrained draws rather than official 2026 local counts.",
+      "No agentic collection, reasoning or free-form LLM feature is present in F0."
+    ],
+    "read_only_contract": true
+  },
+  "model": {
+    "forecast_label": "B2_FAIL_CLOSED_IDENTITY_COUNTERFACTUAL",
+    "calibration_status": "B2_FAIL_CLOSED_ZERO_EFFECT_EXACT_PARENT_DISTRIBUTION",
+    "party_buckets": [
+      "RNI",
+      "PAM",
+      "PI",
+      "PJD",
+      "USFP",
+      "MP",
+      "UC",
+      "PPS",
+      "OTHER"
+    ],
+    "national_projection_origin": "Registered F0 identity counterfactual over the immutable F-1 distribution; B2 admitted no mechanical constraint and promoted no predictive feature."
+  },
+  "certification": {
+    "forecast_hash_verified": true,
+    "forecast_sha256": "fbe5197999f20d0612bc0c66e1954b5c611b11208e43a72eb5494a03b1e40d3f",
+    "expected_forecast_sha256": "fbe5197999f20d0612bc0c66e1954b5c611b11208e43a72eb5494a03b1e40d3f",
+    "draws": 50000,
+    "local_constituencies": 92,
+    "regional_constituencies": 12,
+    "total_seats": 395,
+    "distribution_sha256": "de97880beb662e8940b038d8664b383ce23a7db66560101b95f9dd73ae0407a1",
+    "distribution_equivalence_to_parent": "EXACT",
+    "parent_snapshot": "F-1",
+    "parent_forecast_sha256": "de97880beb662e8940b038d8664b383ce23a7db66560101b95f9dd73ae0407a1",
+    "b2_freeze_certificate_sha256": "eab248d63051643600d0b2220f269b587302c4631fe24a7760fd971277fd88e1"
+  },
+  "b2": {
+    "phase": "F0_REGISTERED_B2_COMPLETE",
+    "closed_gates": [],
+    "open_gates": [],
+    "locked_gates": [],
+    "predictive_coefficients": null
+  },
+  "scientific_separation": {
+    "atlas_views_are_model_inputs": false,
+    "atlas_writes_scientific_artifacts": false,
+    "unknown_preserved": true,
+    "f_minus_1_mutable": false
+  }
+}
