@@ -1,0 +1,4 @@
+trigger_id=M26-CANDIDATE-INTEL-V2-REASONER-POWER-GATE-FINAL-20260818
+base=morocco26-e-reason
+network_required=false
+purpose=rerun_frozen_reasoner_gate_after_four_final_2021_mp_identity_resolutions

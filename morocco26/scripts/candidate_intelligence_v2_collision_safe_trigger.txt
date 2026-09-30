@@ -1,0 +1,3 @@
+trigger_id=M26-CANDIDATE-INTEL-V2-COLLISION-SAFE-LOCAL2015-20260818
+base=morocco26-e-reason
+purpose=recompute_local2015_feature_with_homonym_safe_identity_resolution

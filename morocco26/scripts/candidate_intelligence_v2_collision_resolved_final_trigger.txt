@@ -1,0 +1,3 @@
+trigger_id=M26-CANDIDATE-INTEL-V2-MULTIPART-HEAD-POWER-R3-20260818
+base=morocco26-e-reason
+purpose=rerun_frozen_PJD_RNI_gate_excluding_2021_heads_without_resolved_territory

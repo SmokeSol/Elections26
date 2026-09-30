@@ -1,0 +1,4 @@
+trigger_id=M26-CANDIDATE-INTEL-V2-IDENTITY-DIAGNOSTIC-20260818-R2
+base=morocco26-e-reason
+network_required=false
+purpose=closed_universe_contextual_identity_resolution_rebase_persistence
