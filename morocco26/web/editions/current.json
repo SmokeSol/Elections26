@@ -1,11 +1,11 @@
 {
-  "edition_id": "2026-10-11",
-  "edition_date": "2026-10-11",
+  "edition_id": "2026-10-12",
+  "edition_date": "2026-10-12",
   "product_version": "V0.5",
-  "published_at": "2026-10-11T11:28:50+00:00",
+  "published_at": "2026-10-12T13:15:21+00:00",
   "science_ref": "540802f08cd2ac565ea59d531d51ac3f58d83d38",
   "forecast_snapshot": "F0",
   "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
-  "path": "/editions/2026-10-11/",
+  "path": "/editions/2026-10-12/",
   "daily_update_path": "/data/daily_update.json"
 }
