@@ -1,16 +1,16 @@
 {
   "state": "COMPARED_WITH_PREVIOUS",
-  "previous_edition": "2026-10-14",
+  "previous_edition": "2026-10-15",
   "projection_changed": false,
   "national_party_seat_delta": {},
   "territories_changed": 0,
   "territory_changes": [],
-  "new_documented_signals": 30,
+  "new_documented_signals": 29,
   "signals_removed_by_policy": 0,
   "documents_acquired_delta": 0,
   "authorized_sources_delta": 0,
   "source_policy_changed": false,
   "previous_source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
   "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
-  "summary_fr": "30 nouveau(x) signal(aux) documenté(s) depuis l’édition précédente, sans modification chiffrée de la projection."
+  "summary_fr": "29 nouveau(x) signal(aux) documenté(s) depuis l’édition précédente, sans modification chiffrée de la projection."
 }
