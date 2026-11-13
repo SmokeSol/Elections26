@@ -1,0 +1,601 @@
+{
+  "as_of": "2026-08-17T16:22:07+01:00",
+  "parent_snapshot": "F-1",
+  "collection": {},
+  "wave1": {
+    "documents_acquired": 30,
+    "documents_blocked": 10,
+    "documents_error": 15,
+    "b2_claim_records_created": 0,
+    "sources_claim_eligible": 11,
+    "structured_states_available": [
+      "VERIFIED",
+      "UNKNOWN",
+      "BLOCKED_SOURCE",
+      "UNPARSABLE_NONAGENTIC",
+      "AMBIGUOUS_DETERMINISTIC_MATCH"
+    ]
+  },
+  "sources": [
+    {
+      "source": "T0_CHAMBRE_REPRESENTANTS",
+      "states": {
+        "BLOCKED_SOURCE": 1
+      }
+    },
+    {
+      "source": "T0_CONSTITUTIONAL_COURT",
+      "states": {
+        "ACQUIRED": 2,
+        "FETCH_ERROR": 2
+      }
+    },
+    {
+      "source": "T0_LISTES_ELECTORALES",
+      "states": {
+        "BLOCKED_SOURCE": 1
+      }
+    },
+    {
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "states": {
+        "ACQUIRED": 3,
+        "FETCH_ERROR": 2
+      }
+    },
+    {
+      "source": "T0_SGG_LEGISLATION",
+      "states": {
+        "BLOCKED_SOURCE": 1
+      }
+    },
+    {
+      "source": "T1_ISTIQLAL_OFFICIAL",
+      "states": {
+        "ACQUIRED": 1,
+        "FETCH_ERROR": 3
+      }
+    },
+    {
+      "source": "T1_MP_OFFICIAL",
+      "states": {
+        "ACQUIRED": 4
+      }
+    },
+    {
+      "source": "T1_PAM_OFFICIAL",
+      "states": {
+        "BLOCKED_SOURCE": 1
+      }
+    },
+    {
+      "source": "T1_PJD_OFFICIAL",
+      "states": {
+        "ACQUIRED": 5
+      }
+    },
+    {
+      "source": "T1_PPS_OFFICIAL",
+      "states": {
+        "ACQUIRED": 4,
+        "FETCH_ERROR": 1
+      }
+    },
+    {
+      "source": "T1_RNI_OFFICIAL",
+      "states": {
+        "BLOCKED_SOURCE": 1
+      }
+    },
+    {
+      "source": "T1_UC_OFFICIAL",
+      "states": {
+        "ACQUIRED": 2,
+        "BLOCKED_SOURCE": 2
+      }
+    },
+    {
+      "source": "T1_USFP_OFFICIAL",
+      "states": {
+        "BLOCKED_SOURCE": 1
+      }
+    },
+    {
+      "source": "T2_MEDIAS24",
+      "states": {
+        "BLOCKED_SOURCE": 1
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "PJD_ROSTER_SURFACE_WAVE1",
+      "as_of": "2026-08-17T11:03:44+01:00",
+      "source": "T1_PJD_OFFICIAL",
+      "status": "DETECTED_NOT_ADMITTED",
+      "summary": "93 structured roster-like rows detected on an official PJD source.",
+      "forecast_impact": "NONE",
+      "reason": "No B2 claim admitted: frozen critical verification/double-entry requirements are not satisfied."
+    },
+    {
+      "id": "INTAKE-3a5c522a88cc96e1",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Les préparatifs des élections du 23 septembre au cœur de deux réunions avec les chefs et cadres des partis politiques",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/les-preparatifs-des-elections-du-23-septembre-au-coeur-de-deux-reunions-avec-les-chefs-et-cadres-des",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "3a5c522a88cc96e1287e8ecabcba16171f87fb098f316d4dfbda1dddf97bd3ad",
+      "intake_relevance_score": 14,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-0296673d2d20119d",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "La date des élections des membres de la Chambre des représentants fixée au mercredi 23 septembre 2026",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/la-date-des-elections-des-membres-de-la-chambre-des-representants-fixee-au-mercredi-23-septembre-2026",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "0296673d2d20119d73e06f912254b04ddbe7a1fc8292549a7a7526f70cfa53e9",
+      "intake_relevance_score": 10,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-6c768ecd5c8765f2",
+      "source": "T1_USFP_OFFICIAL",
+      "source_role": "PUBLICATION_OFFICIELLE_D_UN_PARTI_DECLARATION_INTERESSEE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Driss Lachguar s’adresse aux membres du Conseil de l’Union arabe de la jeunesse socialiste",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://www.usfp.ma/fr/driss-lachguar-sadresse-aux-membres-conseil-de-lunion-arabe-de-jeunesse-socialiste/",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "6c768ecd5c8765f2cea9417ecc7c2a90927a781a10ec54f521e0a455ce620c14",
+      "intake_relevance_score": 10,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-b338e2db15dae7a2",
+      "source": "T1_USFP_OFFICIAL",
+      "source_role": "PUBLICATION_OFFICIELLE_D_UN_PARTI_DECLARATION_INTERESSEE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Driss Lachguar s’entretient avec le président du Parti socialiste belge",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://www.usfp.ma/fr/driss-lachguar-sentretient-president-parti-socialiste-belge/",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "b338e2db15dae7a2ff4da100973c6de3597f55342164f86b2e51476afd9578ea",
+      "intake_relevance_score": 9,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-23f19ac2c2a0d288",
+      "source": "T1_USFP_OFFICIAL",
+      "source_role": "PUBLICATION_OFFICIELLE_D_UN_PARTI_DECLARATION_INTERESSEE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Sahara: Le Conseil de l’Internationale Socialiste adopte une recommandation appuyant une solution politique négociée",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://www.usfp.ma/fr/sahara-conseil-de-linternationale-socialiste-adopte-recommandation-appuyant-solution-politique-negociee/",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "23f19ac2c2a0d288bf579c388101bebb61bff65ebf51c46c30fcfd0d045a6608",
+      "intake_relevance_score": 9,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-1b0f371cf8354ce5",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "ICESCO: ouverture des candidatures pour la \"Série d’études spécialisées sur l’enseignement de l’arabe aux non-arabophones 2025\"",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/icesco-ouverture-des-candidatures-pour-la-serie-detudes-specialisees-sur-lenseignement-de-larabe-aux",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "1b0f371cf8354ce5787bf886a2ff8cbc49b0582f7f90b1e5a0599e20daf43b9b",
+      "intake_relevance_score": 8,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-7f794044704ca795",
+      "source": "T1_USFP_OFFICIAL",
+      "source_role": "PUBLICATION_OFFICIELLE_D_UN_PARTI_DECLARATION_INTERESSEE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "La jeunesse socialiste célèbre la journée de la terre à Mohemmadia",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://www.usfp.ma/fr/jeunesse-socialiste-celebre-journee-de-terre-a-mohemmadia/",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "7f794044704ca79506e423a248da573f08c3eaef4f0d52a9cd4c74ea76e0e391",
+      "intake_relevance_score": 8,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-f629500f82a64299",
+      "source": "T1_USFP_OFFICIAL",
+      "source_role": "PUBLICATION_OFFICIELLE_D_UN_PARTI_DECLARATION_INTERESSEE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Rencontre à l’institut supérieur du journaliste",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://www.usfp.ma/fr/rencontre-a-linstitut-superieur-journaliste/",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "f629500f82a642993e3bf6d6e6bcfe926d33847f41deee5c52d789b08f39ef87",
+      "intake_relevance_score": 8,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-0720f25d1cb495e7",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Chambre des représentants : Ouverture de la deuxième session de l'année législative 2024-2025",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/chambre-des-representants-ouverture-de-la-deuxieme-session-de-lannee-legislative-2024-2025",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "0720f25d1cb495e712a07074a5d0395cc0c83deb3e68575ba63dbec9806655b9",
+      "intake_relevance_score": 6,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-61ff7088c0d4336e",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Hajj 1447/2026: L'inscription électronique des candidats au pèlerinage du 13 au 24 janvier",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/hajj-14472026-linscription-electronique-des-candidats-au-pelerinage-du-13-au-24-janvier",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "61ff7088c0d4336e91091d2db28699678e5ef8db841baf435e838a4fed9b444e",
+      "intake_relevance_score": 6,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-ce26656737f4d550",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Le Maroc porté à la présidence de l'Alliance mondiale des institutions nationales des droits de l’Homme",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/le-maroc-porte-la-presidence-de-lalliance-mondiale-des-institutions-nationales-des-droits-de-lhomme",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "ce26656737f4d5503bace40f97cc74c5bb2c010a59476d4120a41a10a09ab4d0",
+      "intake_relevance_score": 6,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-e2d42136ed3c96ce",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Chambre des conseillers: La 1ère session de l'année législative 2024-2025, un bilan législatif riche et diversifié",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/chambre-des-conseillers-la-1ere-session-de-lannee-legislative-2024-2025-un-bilan-legislatif-riche-et",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "e2d42136ed3c96ceafbc5455ec3dfb6cdf6d23b9a8dd05b0f565cd53c5cd1bec",
+      "intake_relevance_score": 5,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-d199bb9ffbb1e4b4",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Élection du Maroc à la présidence du Forum des présidents des Commissions des AE des parlements africains",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/election-du-maroc-la-presidence-du-forum-des-presidents-des-commissions-des-ae-des-parlements",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "d199bb9ffbb1e4b45fb6ed034e49e557277d56a6ad27783ac9ad30d7227527a5",
+      "intake_relevance_score": 5,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-fb46a87ae31706d6",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Congrès américain: une résolution en hommage à l’alliance historique et au partenariat stratégique entre le Maroc et les Etats-Unis",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/congres-americain-une-resolution-en-hommage-lalliance-historique-et-au-partenariat-strategique-entre",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "fb46a87ae31706d66a223918fb25f798ae20e9d9a85ab494718d3d7eeb27b9d2",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-5c83b6839078183d",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Culture amazighe: Ouverture du dépôt des candidatures pour des projets de partenariat avec des associations nationales",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/culture-amazighe-ouverture-du-depot-des-candidatures-pour-des-projets-de-partenariat-avec-des",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "5c83b6839078183da82abbd714f9b29d4df465964077e348087834129f9df9e1",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-a936b2fcbdb06044",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Feuille de route du tourisme : Plus de 400 startups touristiques présélectionnées par le programme d’incubation",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/feuille-de-route-du-tourisme-plus-de-400-startups-touristiques-preselectionnees-par-le-programme",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "a936b2fcbdb060445e28aef5fac4a5b94d529541d0c9302a5b16da3a617c36c3",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-fc9dbff86973edd3",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Hydrogène vert: la sélection d'investisseurs augure d'une dynamique \"prometteuse\" conformément à la vision de SM le Roi",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/hydrogene-vert-la-selection-dinvestisseurs-augure-dune-dynamique-prometteuse-conformement-la-vision",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "fc9dbff86973edd3fc6d5eac47aff439e67759e238448c28e1a64a4eaf255ee3",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-2ecafe64799a6ff8",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "M. Talbi Alami représente Sa Majesté le Roi à la cérémonie d’investiture du Président élu de la République du Ghana",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/m-talbi-alami-represente-sa-majeste-le-roi-la-ceremonie-dinvestiture-du-president-elu-de-la",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "2ecafe64799a6ff8396463bad541c8e156a4124ac60df5c95569f63749fca1e7",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-a0b1bb80ba4c6250",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Ouverture des candidatures pour la 4e édition du prix Moubdiaat",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/ouverture-des-candidatures-pour-la-4e-edition-du-prix-moubdiaat",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "a0b1bb80ba4c6250d29801c8c44a4efcd98e453ae5f51552805504c21441be15",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-c4f0727dbe3b9ade",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Révision des listes électorales générales : Possibilité de vérifier les inscriptions avant le 17 janvier courant",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/revision-des-listes-electorales-generales-possibilite-de-verifier-les-inscriptions-avant-le-17",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "c4f0727dbe3b9ade4dc94f4d2c37588b9e39411b7429701d5d0daa16236ff7e4",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-586fe963fa3d5fbf",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "\"Video Game Incubator\": appel à candidature au profit des startups gaming marocaines",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/fr/actualites/video-game-incubator-appel-candidature-au-profit-des-startups-gaming-marocaines",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "586fe963fa3d5fbf2c4966d5bacb3406f9dcbce180df6fc3d851c9d911520d61",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-6523ef2c009ba91f",
+      "source": "T1_PJD_OFFICIAL",
+      "source_role": "PUBLICATION_OFFICIELLE_D_UN_PARTI_DECLARATION_INTERESSEE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Message de condoléances et de solidarité de SM le Roi au Président français suite à l’attentat terroriste contre le siège du journal",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://www.pjd.ma/39820-20267.html",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "6523ef2c009ba91fc00e5263adef4b0186cce9a95d17cedd3e1b06b63615da35",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-a38814805c93ebc0",
+      "source": "T1_PPS_OFFICIAL",
+      "source_role": "PUBLICATION_OFFICIELLE_D_UN_PARTI_DECLARATION_INTERESSEE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "elections2016",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://pps.ma/elections2016/",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "a38814805c93ebc0e791a5dbe1b0dc36fccb20e2aa65902e08a301b9c1ffac91",
+      "intake_relevance_score": 4,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-d9c2e19fb2874c69",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Morocco Takes Helm of Global Alliance of National Human Rights Institutions",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/en/news/morocco-takes-helm-global-alliance-national-human-rights-institutions",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "d9c2e19fb2874c69c93e5e6a101041635f76cfeaccd97b29e755ff4b43b74cb6",
+      "intake_relevance_score": 3,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-a3d2776a40a2fcea",
+      "source": "T1_PPS_OFFICIAL",
+      "source_role": "PUBLICATION_OFFICIELLE_D_UN_PARTI_DECLARATION_INTERESSEE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "إنتخابات 2015",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://pps.ma/election-electorale/",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "a3d2776a40a2fceaeac904f80362b0c0b2bd5391aa8b9239ad68694a45684976",
+      "intake_relevance_score": 3,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-ece1a41f0dcca2b8",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Govt. Head Hails Green Hydrogen Investor Selection as ‘Promising,’ Aligned With Royal Vision",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/en/news/govt-head-hails-green-hydrogen-investor-selection-promising-aligned-royal-vision",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "ece1a41f0dcca2b841a92bfbe3ce60a89612665873aa2b9d17fd0d8ea0289d41",
+      "intake_relevance_score": 2,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-3447bec09ad189f6",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "Morocco's 57th UNECA Presidency Election Reflects African Trust in Kingdom's Role, Says Expert",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/en/news/moroccos-57th-uneca-presidency-election-reflects-african-trust-kingdoms-role-says-expert",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "3447bec09ad189f668b8086bd5baa5c6fb4540f1700ae45a3bbe362a3365ae42",
+      "intake_relevance_score": 2,
+      "intake_status": "DETECTED_UNVERIFIED"
+    },
+    {
+      "id": "INTAKE-667fd8b0d97f62d5",
+      "source": "T0_MAROC_MA_ELECTIONS",
+      "source_role": "SOURCE_INSTITUTIONNELLE_OFFICIELLE",
+      "status": "DETECTED_BY_DAILY_WATCH",
+      "verification_status": "PENDING",
+      "summary": "La Red Africana de INDH respalda la candidatura de Bouayach a la presidencia de la GANRHI",
+      "reason": "Signal repéré automatiquement dans une source autorisée. Il reste hors du calcul tant qu'il n'a pas satisfait les critères de validation scientifique et de corroboration applicables.",
+      "forecast_impact": "NONE",
+      "url": "https://maroc.ma/es/noticias/la-red-africana-de-indh-respalda-la-candidatura-de-bouayach-la-presidencia-de-la-ganrhi",
+      "retrieved_at": "2026-11-13T13:05:51+00:00",
+      "content_sha256": "667fd8b0d97f62d5dc7f3a4f7b0f1097a2f745c85f1d1aa073ba18b365af793a",
+      "intake_relevance_score": 2,
+      "intake_status": "DETECTED_UNVERIFIED"
+    }
+  ],
+  "blocking_historical_input_classes": [],
+  "forecast_change": "NONE",
+  "forecast_change_reason": "F0 is the registered B2 fail-closed identity counterfactual: zero admissible mechanical constraints, zero promoted predictive features, and exact distribution equivalence to F-1.",
+  "forecast_snapshot": "F0",
+  "source_policy": {
+    "policy_id": "ATLAS395-SOURCE-POLICY-V1",
+    "policy_sha256": "e4269bfdceca8548c93012caa3d228d9aa378d62d44056cc7ca532357d010768",
+    "effective_date": "2026-08-17",
+    "default_decision": "DENY",
+    "authorized_source_ids": [
+      "T0_CHAMBRE_REPRESENTANTS",
+      "T0_CONSTITUTIONAL_COURT",
+      "T0_LISTES_ELECTORALES",
+      "T0_MAROC_MA_ELECTIONS",
+      "T0_SGG_LEGISLATION",
+      "T1_ISTIQLAL_OFFICIAL",
+      "T1_MP_OFFICIAL",
+      "T1_PAM_OFFICIAL",
+      "T1_PJD_OFFICIAL",
+      "T1_PPS_OFFICIAL",
+      "T1_RNI_OFFICIAL",
+      "T1_UC_OFFICIAL",
+      "T1_USFP_OFFICIAL",
+      "T2_MEDIAS24"
+    ],
+    "authorized_media_source_ids": [
+      "T2_MEDIAS24"
+    ],
+    "sole_authorized_media_label": "Médias24",
+    "scientific_registry_unchanged": true,
+    "removed_from_reader_source_ids": [
+      "T2_HESPRESS",
+      "T2_LE360",
+      "T2_LEMATIN",
+      "T2_SNRTNEWS",
+      "T2_TELQUEL"
+    ],
+    "removed_from_reader_event_ids": [],
+    "reader_rule_fr": "Sources institutionnelles et officielles uniquement ; Médias24 est le seul média autorisé."
+  },
+  "reader_scope": {
+    "authorized_sources": 14,
+    "authorized_institutional_sources": 5,
+    "authorized_official_party_sources": 8,
+    "authorized_media_sources": 1,
+    "documents_acquired": 21,
+    "documents_blocked": 9,
+    "documents_error": 8,
+    "documented_signals": 29
+  },
+  "daily_watch": {
+    "run_id": "2026-11-13--e4269bfdceca",
+    "run_at": "2026-11-13T13:05:51+00:00",
+    "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
+    "authorized_sources_scanned": 14,
+    "detections": 28,
+    "probe_count": 221,
+    "probe_failures": 30,
+    "contract": "VEILLE_PRODUIT_SEULEMENT_AUCUNE_INCIDENCE_AUTOMATIQUE_SUR_LA_PROJECTION"
+  }
+}
