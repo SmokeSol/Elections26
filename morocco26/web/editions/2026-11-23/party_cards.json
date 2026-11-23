@@ -1,0 +1,1400 @@
+{
+  "snapshot_id": "F0",
+  "parties": [
+    {
+      "party": "RNI",
+      "national_seats": {
+        "mean": 70.90652,
+        "sd": 43.53899464124875,
+        "q025": 10.0,
+        "q10": 14.0,
+        "q25": 31.0,
+        "q50": 70.0,
+        "q75": 105.0,
+        "q90": 134.0,
+        "q975": 152.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.94616,
+          "p_ge_1": 0.6413
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.94562,
+          "p_ge_1": 0.64856
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.91256,
+          "p_ge_1": 0.62774
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "expected_seats": 0.86232,
+          "p_ge_1": 0.56942
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.8258,
+          "p_ge_1": 0.6735
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.81316,
+          "p_ge_1": 0.6037600000000001
+        },
+        {
+          "constituency_id": "taroudant-sud",
+          "name": "Taroudant-Sud",
+          "region": "Souss-Massa",
+          "expected_seats": 0.8069,
+          "p_ge_1": 0.60924
+        },
+        {
+          "constituency_id": "al-haouz",
+          "name": "Al Haouz",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.7762,
+          "p_ge_1": 0.5717
+        },
+        {
+          "constituency_id": "tetouan",
+          "name": "Tétouan",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "expected_seats": 0.77536,
+          "p_ge_1": 0.6513800000000001
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.76466,
+          "p_ge_1": 0.57562
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.7494390741911212
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.7411072887017913
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "entropy_bits": 1.7360827172400652
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.7212719676509471
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.6162839288262516
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.6047243397022293
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.5822045850166384
+        },
+        {
+          "constituency_id": "taza",
+          "name": "Taza",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.5428640923094208
+        },
+        {
+          "constituency_id": "al-haouz",
+          "name": "Al Haouz",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.5343221112675647
+        },
+        {
+          "constituency_id": "taroudant-sud",
+          "name": "Taroudant-Sud",
+          "region": "Souss-Massa",
+          "entropy_bits": 1.5267737359959852
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.11327684449202188,
+        "2016": 0.0967743890507928,
+        "2021": 0.27660731593377086
+      }
+    },
+    {
+      "party": "PAM",
+      "national_seats": {
+        "mean": 59.97464,
+        "sd": 40.1568192001429,
+        "q025": 8.0,
+        "q10": 13.0,
+        "q25": 25.0,
+        "q50": 52.0,
+        "q75": 80.0,
+        "q90": 125.0,
+        "q975": 141.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.8841,
+          "p_ge_1": 0.68738
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.81606,
+          "p_ge_1": 0.66976
+        },
+        {
+          "constituency_id": "tetouan",
+          "name": "Tétouan",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "expected_seats": 0.79302,
+          "p_ge_1": 0.70428
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.78598,
+          "p_ge_1": 0.61782
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.77748,
+          "p_ge_1": 0.60238
+        },
+        {
+          "constituency_id": "chichaoua",
+          "name": "Chichaoua",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.74646,
+          "p_ge_1": 0.57806
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.74556,
+          "p_ge_1": 0.61046
+        },
+        {
+          "constituency_id": "oujda-angad",
+          "name": "Oujda-Angad",
+          "region": "Oriental",
+          "expected_seats": 0.7085,
+          "p_ge_1": 0.6812400000000001
+        },
+        {
+          "constituency_id": "taza",
+          "name": "Taza",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.70414,
+          "p_ge_1": 0.5783
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.69954,
+          "p_ge_1": 0.63278
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.549126706409099
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.5426422671390894
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.524966840524117
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "entropy_bits": 1.5215482105294762
+        },
+        {
+          "constituency_id": "chichaoua",
+          "name": "Chichaoua",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.5059658700029201
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.4619789249272872
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.4546763993721736
+        },
+        {
+          "constituency_id": "taza",
+          "name": "Taza",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.4528652492045981
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.398822982778705
+        },
+        {
+          "constituency_id": "sidi-bennour",
+          "name": "Sidi Bennour",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.3916174430960768
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.11050220420273607,
+        "2016": 0.20873380744342454,
+        "2021": 0.18450564373351536
+      }
+    },
+    {
+      "party": "PI",
+      "national_seats": {
+        "mean": 50.97524,
+        "sd": 16.5024275046028,
+        "q025": 21.0,
+        "q10": 27.0,
+        "q25": 37.0,
+        "q50": 53.0,
+        "q75": 64.0,
+        "q90": 72.0,
+        "q975": 77.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.85402,
+          "p_ge_1": 0.83318
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.77622,
+          "p_ge_1": 0.7403
+        },
+        {
+          "constituency_id": "taroudant-sud",
+          "name": "Taroudant-Sud",
+          "region": "Souss-Massa",
+          "expected_seats": 0.75664,
+          "p_ge_1": 0.73136
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.74906,
+          "p_ge_1": 0.7172000000000001
+        },
+        {
+          "constituency_id": "tanger-assilah",
+          "name": "Tanger-Assilah",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "expected_seats": 0.73588,
+          "p_ge_1": 0.72604
+        },
+        {
+          "constituency_id": "berrechid",
+          "name": "Berrechid",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.70234,
+          "p_ge_1": 0.67152
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.6959,
+          "p_ge_1": 0.67764
+        },
+        {
+          "constituency_id": "tetouan",
+          "name": "Tétouan",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "expected_seats": 0.68656,
+          "p_ge_1": 0.67882
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.68552,
+          "p_ge_1": 0.6671400000000001
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.65596,
+          "p_ge_1": 0.64042
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "laayoune",
+          "name": "Laâyoune",
+          "region": "Laâyoune-Sakia El Hamra",
+          "entropy_bits": 1.2063202795696073
+        },
+        {
+          "constituency_id": "essaouira",
+          "name": "Essaouira",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.120260663130377
+        },
+        {
+          "constituency_id": "karia-ghafsay",
+          "name": "Karia-Ghafsay",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.1152742536073021
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "entropy_bits": 1.1131576003390284
+        },
+        {
+          "constituency_id": "al-haouz",
+          "name": "Al Haouz",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.1110916177439596
+        },
+        {
+          "constituency_id": "al-hoceima",
+          "name": "Al Hoceïma",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "entropy_bits": 1.1107671722900814
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.1048232188688027
+        },
+        {
+          "constituency_id": "berrechid",
+          "name": "Berrechid",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.0938034325397183
+        },
+        {
+          "constituency_id": "taroudant-nord",
+          "name": "Taroudant-Nord",
+          "region": "Souss-Massa",
+          "entropy_bits": 1.0845283997755586
+        },
+        {
+          "constituency_id": "benslimane",
+          "name": "Benslimane",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.084156471598651
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.11858020684946517,
+        "2016": 0.10758039352176525,
+        "2021": 0.16846796569284728
+      }
+    },
+    {
+      "party": "PJD",
+      "national_seats": {
+        "mean": 42.70336,
+        "sd": 43.43325423752949,
+        "q025": 1.0,
+        "q10": 3.0,
+        "q25": 6.0,
+        "q50": 19.0,
+        "q75": 63.0,
+        "q90": 114.0,
+        "q975": 126.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "taroudant-sud",
+          "name": "Taroudant-Sud",
+          "region": "Souss-Massa",
+          "expected_seats": 0.65778,
+          "p_ge_1": 0.5389200000000001
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.64872,
+          "p_ge_1": 0.51776
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.64002,
+          "p_ge_1": 0.5739000000000001
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "expected_seats": 0.57382,
+          "p_ge_1": 0.47104
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.56398,
+          "p_ge_1": 0.48350000000000004
+        },
+        {
+          "constituency_id": "tanger-assilah",
+          "name": "Tanger-Assilah",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "expected_seats": 0.56388,
+          "p_ge_1": 0.52432
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.5607,
+          "p_ge_1": 0.4709
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.54334,
+          "p_ge_1": 0.47840000000000005
+        },
+        {
+          "constituency_id": "fes-sud",
+          "name": "Fès-Sud",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.51202,
+          "p_ge_1": 0.48328000000000004
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.50668,
+          "p_ge_1": 0.42757999999999996
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.4561494534395074
+        },
+        {
+          "constituency_id": "taroudant-sud",
+          "name": "Taroudant-Sud",
+          "region": "Souss-Massa",
+          "entropy_bits": 1.4090942064745384
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.382323260670293
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.3433531858513301
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.326146852420356
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "entropy_bits": 1.3110843766513005
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.2916940871429576
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.2881098539139355
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.2799902728661803
+        },
+        {
+          "constituency_id": "karia-ghafsay",
+          "name": "Karia-Ghafsay",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.234151695724436
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.22777737973819298,
+        "2016": 0.2721473308363766,
+        "2021": 0.04253248828326528
+      }
+    },
+    {
+      "party": "USFP",
+      "national_seats": {
+        "mean": 34.45786,
+        "sd": 9.509737794632324,
+        "q025": 19.0,
+        "q10": 23.0,
+        "q25": 27.0,
+        "q50": 33.0,
+        "q75": 42.0,
+        "q90": 48.0,
+        "q975": 53.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "essaouira",
+          "name": "Essaouira",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.6884,
+          "p_ge_1": 0.6248400000000001
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.66702,
+          "p_ge_1": 0.6320399999999999
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.65708,
+          "p_ge_1": 0.63106
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.64114,
+          "p_ge_1": 0.61546
+        },
+        {
+          "constituency_id": "tanger-assilah",
+          "name": "Tanger-Assilah",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "expected_seats": 0.6355,
+          "p_ge_1": 0.6255200000000001
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.6199,
+          "p_ge_1": 0.59368
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.57482,
+          "p_ge_1": 0.55728
+        },
+        {
+          "constituency_id": "sidi-bennour",
+          "name": "Sidi Bennour",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.55658,
+          "p_ge_1": 0.51956
+        },
+        {
+          "constituency_id": "nador",
+          "name": "Nador",
+          "region": "Oriental",
+          "expected_seats": 0.551,
+          "p_ge_1": 0.5380199999999999
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "expected_seats": 0.54238,
+          "p_ge_1": 0.5103599999999999
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "essaouira",
+          "name": "Essaouira",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.2511937713843833
+        },
+        {
+          "constituency_id": "sidi-bennour",
+          "name": "Sidi Bennour",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.1917383263894272
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "entropy_bits": 1.1708872799601764
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.137000504494321
+        },
+        {
+          "constituency_id": "chefchaouen",
+          "name": "Chefchaouen",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "entropy_bits": 1.1304651187028314
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.1228722128154116
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.118078317076797
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.1106068754255038
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.1033360729215285
+        },
+        {
+          "constituency_id": "el-kelaa-des-sraghna",
+          "name": "El Kelâa des Sraghna",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.1000520539849101
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.08599930881596804,
+        "2016": 0.06365715849095156,
+        "2021": 0.07884201170059188
+      }
+    },
+    {
+      "party": "MP",
+      "national_seats": {
+        "mean": 42.79646,
+        "sd": 15.293943558238707,
+        "q025": 19.0,
+        "q10": 24.0,
+        "q25": 32.0,
+        "q50": 41.0,
+        "q75": 52.0,
+        "q90": 65.0,
+        "q975": 76.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.78656,
+          "p_ge_1": 0.6494
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.7399,
+          "p_ge_1": 0.58664
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.72768,
+          "p_ge_1": 0.54704
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.72474,
+          "p_ge_1": 0.5482
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "expected_seats": 0.72462,
+          "p_ge_1": 0.52966
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.71554,
+          "p_ge_1": 0.58438
+        },
+        {
+          "constituency_id": "taza",
+          "name": "Taza",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.67452,
+          "p_ge_1": 0.52598
+        },
+        {
+          "constituency_id": "fquih-ben-salah",
+          "name": "Fquih Ben Salah",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.6354,
+          "p_ge_1": 0.55366
+        },
+        {
+          "constituency_id": "ouarzazate",
+          "name": "Ouarzazate",
+          "region": "Drâa-Tafilalet",
+          "expected_seats": 0.6304,
+          "p_ge_1": 0.5392
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.61904,
+          "p_ge_1": 0.48338000000000003
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "entropy_bits": 1.5844325314346288
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.5526290313023179
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.550863403716926
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.5078612191350336
+        },
+        {
+          "constituency_id": "taza",
+          "name": "Taza",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.49740824887264
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.4576113254737038
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.4532492305329778
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.4460750735869912
+        },
+        {
+          "constituency_id": "chichaoua",
+          "name": "Chichaoua",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.434307756446536
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.401108747826886
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.07469592117130407,
+        "2016": 0.07083686145353357,
+        "2021": 0.07040807115499034
+      }
+    },
+    {
+      "party": "UC",
+      "national_seats": {
+        "mean": 38.59158,
+        "sd": 16.08497148364748,
+        "q025": 15.0,
+        "q10": 20.0,
+        "q25": 25.0,
+        "q50": 36.0,
+        "q75": 51.0,
+        "q90": 61.0,
+        "q975": 71.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.92392,
+          "p_ge_1": 0.5897399999999999
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.76182,
+          "p_ge_1": 0.52938
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.74336,
+          "p_ge_1": 0.59392
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "expected_seats": 0.7093,
+          "p_ge_1": 0.45562
+        },
+        {
+          "constituency_id": "al-haouz",
+          "name": "Al Haouz",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.70572,
+          "p_ge_1": 0.49344
+        },
+        {
+          "constituency_id": "tanger-assilah",
+          "name": "Tanger-Assilah",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "expected_seats": 0.6998,
+          "p_ge_1": 0.59256
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.66768,
+          "p_ge_1": 0.44918
+        },
+        {
+          "constituency_id": "larache",
+          "name": "Larache",
+          "region": "Tanger-Tétouan-Al Hoceïma",
+          "expected_seats": 0.66534,
+          "p_ge_1": 0.52866
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.66036,
+          "p_ge_1": 0.47850000000000004
+        },
+        {
+          "constituency_id": "sidi-bennour",
+          "name": "Sidi Bennour",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.6526,
+          "p_ge_1": 0.46674000000000004
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.7809856688853967
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.6432876322175904
+        },
+        {
+          "constituency_id": "sidi-kacem",
+          "name": "Sidi Kacem",
+          "region": "Rabat-Salé-Kénitra",
+          "entropy_bits": 1.6156643797903225
+        },
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.5616481530649782
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.5380105366395826
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.5338083391706894
+        },
+        {
+          "constituency_id": "taza",
+          "name": "Taza",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.5088181298797323
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.5045334787490354
+        },
+        {
+          "constituency_id": "al-haouz",
+          "name": "Al Haouz",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.5018265679788374
+        },
+        {
+          "constituency_id": "chichaoua",
+          "name": "Chichaoua",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.4776708498039497
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.05797875030555392,
+        "2016": 0.046547463822698754,
+        "2021": 0.05517279095157742
+      }
+    },
+    {
+      "party": "PPS",
+      "national_seats": {
+        "mean": 32.32542,
+        "sd": 7.964633734919053,
+        "q025": 18.0,
+        "q10": 22.0,
+        "q25": 26.0,
+        "q50": 32.0,
+        "q75": 38.0,
+        "q90": 43.0,
+        "q975": 49.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.67554,
+          "p_ge_1": 0.5901799999999999
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.64096,
+          "p_ge_1": 0.5739000000000001
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.61956,
+          "p_ge_1": 0.56246
+        },
+        {
+          "constituency_id": "essaouira",
+          "name": "Essaouira",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.59122,
+          "p_ge_1": 0.51684
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.57842,
+          "p_ge_1": 0.5347999999999999
+        },
+        {
+          "constituency_id": "taza",
+          "name": "Taza",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.56986,
+          "p_ge_1": 0.51688
+        },
+        {
+          "constituency_id": "sale-medina",
+          "name": "Salé-Médina",
+          "region": "Rabat-Salé-Kénitra",
+          "expected_seats": 0.52356,
+          "p_ge_1": 0.5131
+        },
+        {
+          "constituency_id": "benslimane",
+          "name": "Benslimane",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.514,
+          "p_ge_1": 0.45724
+        },
+        {
+          "constituency_id": "agadir-ida-outanane",
+          "name": "Agadir Ida-Outanane",
+          "region": "Souss-Massa",
+          "expected_seats": 0.50056,
+          "p_ge_1": 0.48326
+        },
+        {
+          "constituency_id": "taounate-tissa",
+          "name": "Taounate-Tissa",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.48722,
+          "p_ge_1": 0.43592
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "el-jadida",
+          "name": "El Jadida",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.3285111371037055
+        },
+        {
+          "constituency_id": "essaouira",
+          "name": "Essaouira",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.3066036130399248
+        },
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.2848283703615302
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.2574653988971058
+        },
+        {
+          "constituency_id": "taza",
+          "name": "Taza",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.2527118345501547
+        },
+        {
+          "constituency_id": "benslimane",
+          "name": "Benslimane",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.2421460981865522
+        },
+        {
+          "constituency_id": "taounate-tissa",
+          "name": "Taounate-Tissa",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.2159577653163374
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.2135594919103534
+        },
+        {
+          "constituency_id": "al-haouz",
+          "name": "Al Haouz",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.18595330871077
+        },
+        {
+          "constituency_id": "tinghir",
+          "name": "Tinghir",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.1370123677545407
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.056755270278243716,
+        "2016": 0.048350571339023346,
+        "2021": 0.05111270269967536
+      }
+    },
+    {
+      "party": "OTHER",
+      "national_seats": {
+        "mean": 22.26892,
+        "sd": 10.242547545860091,
+        "q025": 6.0,
+        "q10": 10.0,
+        "q25": 14.0,
+        "q50": 21.0,
+        "q75": 29.0,
+        "q90": 36.0,
+        "q975": 44.0
+      },
+      "p_first": null,
+      "p_first_status": "NOT_PUBLISHED_IN_REGISTERED_F0_DISTRIBUTION",
+      "strongest_territories": [
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.8292,
+          "p_ge_1": 0.43528
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "expected_seats": 0.54944,
+          "p_ge_1": 0.41956000000000004
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "expected_seats": 0.54444,
+          "p_ge_1": 0.36666
+        },
+        {
+          "constituency_id": "fes-sud",
+          "name": "Fès-Sud",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.51876,
+          "p_ge_1": 0.3428
+        },
+        {
+          "constituency_id": "tiflet-rommani",
+          "name": "Tiflet-Rommani",
+          "region": "Rabat-Salé-Kénitra",
+          "expected_seats": 0.51022,
+          "p_ge_1": 0.48324
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.47074,
+          "p_ge_1": 0.24212
+        },
+        {
+          "constituency_id": "fes-nord",
+          "name": "Fès-Nord",
+          "region": "Fès-Meknès",
+          "expected_seats": 0.46186,
+          "p_ge_1": 0.39942
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "expected_seats": 0.4483,
+          "p_ge_1": 0.36306000000000005
+        },
+        {
+          "constituency_id": "aousserd",
+          "name": "Aousserd",
+          "region": "Dakhla-Oued Eddahab",
+          "expected_seats": 0.41022,
+          "p_ge_1": 0.41022000000000003
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "expected_seats": 0.37728,
+          "p_ge_1": 0.23460000000000003
+        }
+      ],
+      "most_uncertain_territories": [
+        {
+          "constituency_id": "beni-mellal",
+          "name": "Béni-Mellal",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.7601320677514116
+        },
+        {
+          "constituency_id": "khouribga",
+          "name": "Khouribga",
+          "region": "Béni Mellal-Khénifra",
+          "entropy_bits": 1.4247374152145484
+        },
+        {
+          "constituency_id": "safi",
+          "name": "Safi",
+          "region": "Marrakech-Safi",
+          "entropy_bits": 1.3782908368769455
+        },
+        {
+          "constituency_id": "fes-sud",
+          "name": "Fès-Sud",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.3564111740713503
+        },
+        {
+          "constituency_id": "meknes",
+          "name": "Meknès",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.2549835130253792
+        },
+        {
+          "constituency_id": "errachidia",
+          "name": "Errachidia",
+          "region": "Drâa-Tafilalet",
+          "entropy_bits": 1.253764562318243
+        },
+        {
+          "constituency_id": "fes-nord",
+          "name": "Fès-Nord",
+          "region": "Fès-Meknès",
+          "entropy_bits": 1.221079744134403
+        },
+        {
+          "constituency_id": "tiflet-rommani",
+          "name": "Tiflet-Rommani",
+          "region": "Rabat-Salé-Kénitra",
+          "entropy_bits": 1.1493176057662056
+        },
+        {
+          "constituency_id": "settat",
+          "name": "Settat",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.1407527814154648
+        },
+        {
+          "constituency_id": "casablanca-anfa",
+          "name": "Casablanca-Anfa",
+          "region": "Casablanca-Settat",
+          "entropy_bits": 1.1062854436760081
+        }
+      ],
+      "historical_local_vote_share": {
+        "2011": 0.15443411414651415,
+        "2016": 0.08537202404143356,
+        "2021": 0.0723510098497662
+      }
+    }
+  ]
+}
