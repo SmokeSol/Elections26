@@ -776,6 +776,14 @@
       "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
       "detections": 28,
       "authorized_sources": 14
+    },
+    {
+      "run_id": "2026-11-25--e4269bfdceca",
+      "date": "2026-11-25",
+      "run_at": "2026-11-25T15:35:19+00:00",
+      "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
+      "detections": 27,
+      "authorized_sources": 14
     }
   ]
 }
