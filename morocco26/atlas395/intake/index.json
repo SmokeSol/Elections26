@@ -800,6 +800,14 @@
       "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
       "detections": 27,
       "authorized_sources": 14
+    },
+    {
+      "run_id": "2026-11-28--e4269bfdceca",
+      "date": "2026-11-28",
+      "run_at": "2026-11-28T14:11:06+00:00",
+      "source_policy_id": "ATLAS395-SOURCE-POLICY-V1",
+      "detections": 27,
+      "authorized_sources": 14
     }
   ]
 }
